@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react'
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'
+import Login from './components/Login'
+import Dashboard from './components/Dashboard'
+import ErrorAlert from './components/ErrorAlert'
 
-function App() {
+export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [error, setError] = useState<string | null>(null);
+
+  const closeError = () => setError(null)
+  const showError = (message: string) => setError(message)
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (token) setIsLoggedIn(true)
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Router>
+      {error && <ErrorAlert message={error} onClose={closeError} />}
+      <Routes>
+        <Route path='/' element={<Navigate to='/login' replace />} />
+        <Route path="/login" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login onLogin={() => setIsLoggedIn(true)} showError={showError} />}/>
+        <Route path="/dashboard" element={isLoggedIn ? <Dashboard onLogout={() => setIsLoggedIn(false)} showError={showError} /> : <Navigate to="/login" />}/>
+      </Routes>
+    </Router>
+  )
 }
-
-export default App;
