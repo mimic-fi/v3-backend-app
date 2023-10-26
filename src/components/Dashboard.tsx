@@ -18,7 +18,6 @@ export default function Dashboard({ onLogout, showError }: DashboardProps) {
   return (
     <div>
       <div>
-        <h1>Mimic Admin</h1>
         <NavBar onLogout={onLogout} />
         <div className="dashboard-content">
           <Routes>
