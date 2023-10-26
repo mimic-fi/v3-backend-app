@@ -5,7 +5,7 @@ import Dashboard from './components/Dashboard'
 import ErrorAlert from './components/ErrorAlert'
 
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(true)
   const [error, setError] = useState<string | null>(null);
 
   const closeError = () => setError(null)

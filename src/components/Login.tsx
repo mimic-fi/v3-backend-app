@@ -24,8 +24,9 @@ export default function Login({ onLogin, showError }: LoginFormProps) {
       localStorage.setItem('token', token)
       onLogin()
     } catch (error) {
+      console.log(error)
       if (axios.isAxiosError(error) && error.response) {
-        showError(error.response.data.content.message)
+        showError(error.message)
       } else {
         console.log(error)
         showError('Something went wrong :(')
