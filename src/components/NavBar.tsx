@@ -83,7 +83,6 @@ const ButtonColor = styled.button`
   text-align: center;
   cursor: pointer;
   color: #ffffff;
-  margin-top: 20px;
   &:hover {
     background: #582ea0;
   }
