@@ -26,7 +26,7 @@ export default function Login({ onLogin, showError }: LoginFormProps) {
     } catch (error) {
       console.log(error)
       if (axios.isAxiosError(error) && error.response) {
-        showError(error.message)
+        showError(error.response.data?.content?.message || error.response.data)
       } else {
         console.log(error)
         showError('Something went wrong :(')
