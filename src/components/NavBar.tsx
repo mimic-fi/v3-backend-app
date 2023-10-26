@@ -47,6 +47,7 @@ const NavbarSection = styled.section`
      padding: 0 15px;
      color: white;
      text-decoration: none;
+     font-weight: bold;
    }
 `
 
@@ -66,6 +67,7 @@ const NavbarLink = styled.div`
     font-weight: 700;
     color: #6f5ce6;
     font-family: 'DMSansBold';
+
   }
 `
 
