@@ -1,6 +1,5 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
-
 import NavBar from './NavBar'
 import ApiSettings from './settings/ApiSettings'
 import PriceOracleSettings from './settings/PriceOracleSettings'
@@ -8,6 +7,8 @@ import RelayerExecutorSettings from './settings/RelayerExecutorSettings'
 import TokenRegistrySettings from './settings/TokenRegistrySettings'
 import TokenMonitorSettings from './settings/TokenMonitorSettings'
 import Web3Settings from './settings/Web3Settings'
+import styled from 'styled-components'
+const bg: string = require('./assets/background-dashboard.png')
 
 interface DashboardProps {
   onLogout: () => void
@@ -16,9 +17,9 @@ interface DashboardProps {
 
 export default function Dashboard({ onLogout, showError }: DashboardProps) {
   return (
-    <div>
-      <div>
-        <NavBar onLogout={onLogout} />
+    <>
+    <NavBar onLogout={onLogout} />
+    <DashboardSection background={bg}>
         <div className="dashboard-content">
           <Routes>
             <Route path="/api" element={<ApiSettings/>}/>
@@ -29,7 +30,21 @@ export default function Dashboard({ onLogout, showError }: DashboardProps) {
             <Route path="/web3" element={<Web3Settings/>}/>
           </Routes>
         </div>
-      </div>
-    </div>
+      </DashboardSection>
+      </>
   )
 }
+
+
+interface DashProps {
+  background: string
+}
+
+const DashboardSection = styled.div<DashProps>`
+  height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: url(${props => props.background}) no-repeat;
+  background-size: cover;
+`
