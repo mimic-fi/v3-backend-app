@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import styled from 'styled-components'
 
 interface ErrorAlertProps {
   message: string
@@ -14,9 +15,26 @@ export default function ErrorAlert({ message, onClose }: ErrorAlertProps) {
   }
 
   return visible ? (
-    <div className="error-alert">
+    <Error className="error-alert">
       <span>{message}</span>
       <button className="close-button" onClick={closeAlert}>x</button>
-    </div>
+    </Error>
   ) : null
 }
+
+
+const Error = styled.div`
+  background: #6F5CE6;
+  padding: 5px 15px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  button {
+    background: transparent;
+    color: white;
+    font-weight: bold;
+    border: 0px;
+    font-size: 20px;
+  }
+`
