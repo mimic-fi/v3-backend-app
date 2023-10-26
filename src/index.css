@@ -5,9 +5,36 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: #191B23;
+  color: white;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+
+@font-face {
+ font-family: 'DMSans';
+ src: url('./fonts/DMSans-Regular.ttf') format('opentype');
+ font-display: swap;
+}
+
+@font-face {
+ font-family: 'Visby';
+ src: url('./fonts/Visby/VisbyRegular.otf') format('opentype');
+ font-display: swap;
+}
+
+@font-face {
+ font-family: 'DMSansBold';
+ src: url('./fonts/DMSans-Bold.ttf') format('opentype');
+ font-display: swap;
+}
+
+@font-face {
+ font-family: 'VisbyBold';
+ src: url('./fonts/Visby/VisbyBold.otf') format('opentype');
+ font-display: swap;
 }
