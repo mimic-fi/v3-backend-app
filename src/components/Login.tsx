@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import styled from 'styled-components'
 import bg from './assets/bg.png'
-import logo from './assets/logo.svg'
+import logo from './assets/mimic-admin.svg'
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL
 
