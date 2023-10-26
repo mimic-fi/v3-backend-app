@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import styled from 'styled-components'
-import bg from './assets/bg.png'
-import logo from './assets/mimic-admin.svg'
+
+const bg: string = require('./assets/bg.png')
+const logo: string = require('./assets/mimic-admin.svg').default
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL
 
 interface LoginFormProps {
   onLogin: () => void
   showError: (message: string) => void
-  background: string
 }
 
 export default function Login({ onLogin, showError }: LoginFormProps) {
@@ -25,11 +25,10 @@ export default function Login({ onLogin, showError }: LoginFormProps) {
       onLogin()
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        console.log(error)
         showError(error.response.data.content.message)
       } else {
-        console.log('Error desconocido:', error)
-        showError('Error desconocido')
+        console.log(error)
+        showError('Something went wrong :(')
       }
     }
   }
@@ -68,7 +67,11 @@ const LoginSection = styled.div`
   justify-content: center;
 `
 
-const Form = styled.form`
+interface FormProps {
+  background: string
+}
+
+const Form = styled.form<FormProps>`
   display: block;
   background-size: cover;
   background: url(${props => props.background}) no-repeat 10%;
