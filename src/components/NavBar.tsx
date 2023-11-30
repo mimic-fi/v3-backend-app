@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -19,12 +18,12 @@ export default function NavBar({ onLogout }: NavBarProps) {
       <NavbarContainer>
         <img alt="logo" src={logo} />
         <div className="nav-bar">
-          <Link to="/api">API</Link>
-          <Link to="/price-oracle">Price Oracle</Link>
-          <Link to="/relayer-executor">Relayer Executor</Link>
-          <Link to="/token-monitor">Token Monitor</Link>
-          <Link to="/token-registry">Token Registry</Link>
-          <Link to="/web3">Web3</Link>
+          <Link to="/dashboard/api">API</Link>
+          <Link to="/dashboard/price-oracle">Price Oracle</Link>
+          <Link to="/dashboard/relayer-executor">Relayer Executor</Link>
+          <Link to="/dashboard/token-monitor">Token Monitor</Link>
+          <Link to="/dashboard/token-registry">Token Registry</Link>
+          <Link to="/dashboard/web3">Web3</Link>
         </div>
         <NavbarLink>
           <ButtonColor onClick={handleLogout}>Logout</ButtonColor>
