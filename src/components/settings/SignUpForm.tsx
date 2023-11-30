@@ -87,6 +87,7 @@ const Form = styled.form<FormProps>`
   margin-top: 50px;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 30px;
   background-size: cover;
   background: url(${props => props.bg}) no-repeat 10%;
