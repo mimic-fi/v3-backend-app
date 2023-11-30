@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'
 import Login from './components/Login'
 import Dashboard from './components/Dashboard'
@@ -22,7 +22,7 @@ export default function App() {
       <Routes>
         <Route path='/' element={<Navigate to='/login' replace />} />
         <Route path="/login" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login onLogin={() => setIsLoggedIn(true)} showError={showError} />}/>
-        <Route path="/dashboard" element={isLoggedIn ? <Dashboard onLogout={() => setIsLoggedIn(false)} showError={showError} /> : <Navigate to="/login" />}/>
+        <Route path="/dashboard/*" element={isLoggedIn ? <Dashboard onLogout={() => setIsLoggedIn(false)} showError={showError} /> : <Navigate to="/login" />}/>
       </Routes>
     </Router>
   )
