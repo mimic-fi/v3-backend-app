@@ -71,7 +71,7 @@ const SignUpForm: React.FC = () => {
               title="Password must be min 8 chars, with at least a symbol, upper and lower case letters, and a number"
             />
           </div>
-          <button type="submit">Nuevo</button>
+          <button type="submit">New</button>
         </>
       )}
     </Form>

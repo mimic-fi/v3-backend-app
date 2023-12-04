@@ -61,7 +61,7 @@ const UserList: React.FC = () => {
             ))}
           </Container>
         ) : (
-          <p>Cargando lista de usuarios...</p>
+          <p>Loading users...</p>
         )}
     </div>
   )

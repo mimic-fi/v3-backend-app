@@ -98,7 +98,7 @@ const ApiSettings: React.FC = () => {
           </Form>
         </>
       ) : (
-        <p>Cargando configuraciones...</p>
+        <p>Loading configurations...</p>
       )}
 
       <UserList />
