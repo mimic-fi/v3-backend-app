@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import styled from 'styled-components'
 
-const bg: string = require('./assets/bg.png')
-const logo: string = require('./assets/mimic-admin.svg').default
+const bg: string = require('../assets/bg.png')
+const logo: string = require('../assets/mimic-admin.svg').default
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL
 

@@ -1,16 +1,16 @@
-import ethereumLogoUrl from '../components/assets/chainLogos/ethereum-logo.svg'
-import goerliLogoUrl from '../components/assets/chainLogos/goerli-logo.svg'
-import optimismLogoUrl from '../components/assets/chainLogos/optimism-logo.svg'
-import polygonLogoUrl from '../components/assets/chainLogos/polygon-logo.svg'
-import gnosisLogoUrl from '../components/assets/chainLogos/gnosis-logo.svg'
-import arbitrumLogoUrl from '../components/assets/chainLogos/arbitrum-logo.svg'
-import zksyncLogoUrl from '../components/assets/chainLogos/zksync.svg'
-import bscLogoUrl from '../components/assets/chainLogos/bsc.svg'
-import fantomLogoUrl from '../components/assets/chainLogos/fantom.svg'
-import avalancheLogoUrl from '../components/assets/chainLogos/avalanche.svg'
-import baseLogoUrl from '../components/assets/chainLogos/base.svg'
-import auroraLogoUrl from '../components/assets/chainLogos/aurora.svg'
-import zkevmLogoUrl from '../components/assets/chainLogos/polygonzkevm.png'
+import ethereumLogoUrl from '../assets/chainLogos/ethereum-logo.svg'
+import goerliLogoUrl from '../assets/chainLogos/goerli-logo.svg'
+import optimismLogoUrl from '../assets/chainLogos/optimism-logo.svg'
+import polygonLogoUrl from '../assets/chainLogos/polygon-logo.svg'
+import gnosisLogoUrl from '../assets/chainLogos/gnosis-logo.svg'
+import arbitrumLogoUrl from '../assets/chainLogos/arbitrum-logo.svg'
+import zksyncLogoUrl from '../assets/chainLogos/zksync.svg'
+import bscLogoUrl from '../assets/chainLogos/bsc.svg'
+import fantomLogoUrl from '../assets/chainLogos/fantom.svg'
+import avalancheLogoUrl from '../assets/chainLogos/avalanche.svg'
+import baseLogoUrl from '../assets/chainLogos/base.svg'
+import auroraLogoUrl from '../assets/chainLogos/aurora.svg'
+import zkevmLogoUrl from '../assets/chainLogos/polygonzkevm.png'
 
 export const SupportedChainId = {
   MAINNET: 1,
@@ -196,7 +196,6 @@ export const CHAIN_INFO = {
   },
 }
 
-// TODO: Check other chains.
 export const CHAIN_SUBGRAPH_URL = {
   [SupportedChainId.ARBITRUM]:
     'https://api.thegraph.com/subgraphs/name/mimic-fi/v3-arbitrum',
@@ -220,5 +219,4 @@ export const CHAIN_SUBGRAPH_URL = {
   'https://api.thegraph.com/subgraphs/name/mimic-fi/v3-fantom',
   [SupportedChainId.BASE]:
     'https://api.studio.thegraph.com/query/58251/mimic-v3-base/version/latest',
-
 }

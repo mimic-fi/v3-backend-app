@@ -3,6 +3,7 @@ import axios from 'axios'
 import styled from 'styled-components'
 import bg from '../assets/bg.png'
 
+
 const URL = process.env.REACT_APP_SERVER_BASE_URL
 
 const SignUpForm: React.FC = () => {

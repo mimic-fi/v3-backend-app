@@ -1,13 +1,13 @@
 import { Route, Routes } from 'react-router-dom'
 import NavBar from './NavBar'
-import ApiSettings from './settings/ApiSettings'
-import PriceOracleSettings from './settings/PriceOracleSettings'
-import RelayerExecutorSettings from './settings/RelayerExecutorSettings'
-import TokenRegistrySettings from './settings/TokenRegistrySettings'
-import TokenMonitorSettings from './settings/TokenMonitorSettings'
-import Web3Settings from './settings/Web3Settings'
+import ApiSettings from '../pages/ApiSettings'
+import PriceOracleSettings from '../pages/PriceOracleSettings'
+import RelayerExecutorSettings from '../pages/RelayerExecutorSettings'
+import TokenRegistrySettings from '../pages/TokenRegistrySettings'
+import TokenMonitorSettings from '../pages/TokenMonitorSettings'
+import Web3Settings from '../pages/Web3Settings'
 import styled from 'styled-components'
-import bg from './assets/background-dashboard.png'
+import bg from '../assets/background-dashboard.png'
 
 interface DashboardProps {
   onLogout: () => void

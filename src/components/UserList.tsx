@@ -3,7 +3,6 @@ import axios from 'axios'
 import SignUpForm from './SignUpForm'
 import styled from 'styled-components'
 
-
 const URL = process.env.REACT_APP_SERVER_BASE_URL
 
 interface User {

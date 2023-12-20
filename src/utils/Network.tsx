@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-
-// Asegúrate de importar la constante directamente si no necesitas la interfaz ChainInfo
-import { CHAIN_INFO } from '../../constants/chainInfo';
+import { CHAIN_INFO } from '../constants/chainInfo';
 
 interface NetworkProps {
   network: any;
@@ -27,26 +25,24 @@ const Network: React.FC<NetworkProps> = ({
     };
   }, []);
 
-  // Usamos 'any' para selectedChain
   const selectedChain: any = CHAIN_INFO[network || ''];
-
   const medium = 700;
 
   if (selectedChain) {
     return (
-      <Net>
+      <NetworkSection>
         {!noLogo && (
           <ChainLogo src={selectedChain?.logoUrl} alt={`${selectedChain?.name} Logo`} />
         )}
         {!small && (!totalWidth || totalWidth >= medium) && selectedChain?.name}
-      </Net>
+      </NetworkSection>
     );
   }
 
   return <>{network ? network : ''}</>;
 };
 
-const Net = styled.div`
+const NetworkSection = styled.div`
   display: flex;
   align-items: center;
 `;
