@@ -4,8 +4,10 @@ import styled from 'styled-components';
 import Network from '../utils/Network';
 import Token from '../components/Token';
 import TokenMonitorForm from '../components/TokenMonitorForm';
-import Modal from 'react-modal';
+import CustomConfirmationModal from '../components/CustomConfirmationModal';
+import { ContainerTable } from '../utils/styles';
 import deleteIcon from '../assets/delete.png';
+import { toast } from 'react-toastify';
 
 interface TokenMonitorSetting {
   address: string;
@@ -20,7 +22,7 @@ const TokenMonitorSettings: React.FC = () => {
     tokenMonitorSettings,
     setTokenMonitorSettings,
   ] = useState<TokenMonitorSetting[] | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [customModalOpen, setCustomModalOpen] = useState(false);
   const [deleteParams, setDeleteParams] = useState({
     address: '',
     chainId: 0,
@@ -54,7 +56,7 @@ const TokenMonitorSettings: React.FC = () => {
 
   const handleDeleteClick = (address: string, chainId: number) => {
     setDeleteParams({ address, chainId });
-    setIsModalOpen(true);
+    setCustomModalOpen(true);
   };
 
   const handleConfirmDelete = async () => {
@@ -70,30 +72,29 @@ const TokenMonitorSettings: React.FC = () => {
           'x-auth-token': `${token}`,
         },
       });
-      console.log('Token monitor eliminado con éxito');
+      console.log('Token monitor successfully deleted');
 
-      // Llamada a fetchTokenMonitorSettings después de una eliminación exitosa
       fetchTokenMonitorSettings();
+      toast.success('Token monitor successfully deleted');
+
     } catch (error) {
-      console.error('Error al eliminar el token monitor:', error);
+      console.error('There was an error deleting the token monitor:', error);
     }
 
-    setIsModalOpen(false);
+    setCustomModalOpen(false);
   };
 
   const handleCancelDelete = () => {
-    setIsModalOpen(false);
+    setCustomModalOpen(false);
   };
-
 
   return (
     <TokenMonitorSection>
       <h2>Token Monitor Settings:</h2>
-      <TokenMonitorForm />
+      <TokenMonitorForm onSuccess={fetchTokenMonitorSettings} />
       {tokenMonitorSettings ? (
         <>
-          {' '}
-          <Table>
+          <ContainerTable>
             <thead>
               <tr>
                 <th>Address</th>
@@ -123,33 +124,18 @@ const TokenMonitorSettings: React.FC = () => {
                       src={deleteIcon}
                       alt="Eliminar"
                     />
-                    <Modal
-                      isOpen={isModalOpen}
-                      onRequestClose={handleCancelDelete}
-                      contentLabel="Confirmar eliminación"
-                      style={{
-                        overlay: {
-                          backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                        },
-                        content: {
-                          width: '50%',
-                          height: '100px',
-                          margin: 'auto',
-                          background: 'black',
-                          border: 0,
-                          textAlign: 'center',
-                        },
-                      }}
-                    >
-                      <h2>¿Estás seguro que deseas eliminar este token?</h2>
-                      <button onClick={handleConfirmDelete}>Sí</button>
-                      <button onClick={handleCancelDelete}>No</button>
-                    </Modal>
                   </td>
                 </tr>
               ))}
             </tbody>
-          </Table>{' '}
+          </ContainerTable>{' '}
+          {customModalOpen && (
+            <CustomConfirmationModal
+              message="Are you sure you want to delete this token monitor?"
+              onConfirm={handleConfirmDelete}
+              onCancel={handleCancelDelete}
+            />
+          )}
         </>
       ) : (
         <p>Loading...</p>
@@ -157,24 +143,6 @@ const TokenMonitorSettings: React.FC = () => {
     </TokenMonitorSection>
   );
 };
-
-const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-
-  th,
-  td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-  }
-
-  th {
-    background-color: #272a38;
-    font-size: 18px;
-  }
-`;
 
 const TokenMonitorSection = styled.div`
   margin: 0px auto;

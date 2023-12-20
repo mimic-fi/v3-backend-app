@@ -1,22 +1,26 @@
-import React, { useState } from 'react'
-import axios from 'axios'
-import styled from 'styled-components'
-import bg from '../assets/bg.png'
+import React, { useState } from 'react';
+import axios from 'axios';
+import styled from 'styled-components';
+import bg from '../assets/bg.png';
+import { toast } from 'react-toastify';
 
+const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
-const URL = process.env.REACT_APP_SERVER_BASE_URL
+interface TokenMonitorFormProps {
+  onSuccess?: () => void;
+}
 
-const TokenMonitorForm: React.FC = () => {
-  const [address, setAddress] = useState('')
-  const [chain, setChain] = useState('')
-  const [message, setMessage] = useState('')
+const TokenMonitorForm: React.FC<TokenMonitorFormProps> = ({  onSuccess = () => {} }) => {
+  const [address, setAddress] = useState('');
+  const [chain, setChain] = useState('');
+  const [message, setMessage] = useState('');
 
   const handleFormSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     try {
-      const token = localStorage.getItem('token')
-      const chainId = parseInt(chain, 10)
+      const token = localStorage.getItem('token');
+      const chainId = parseInt(chain, 10);
       const response = await axios.post(
         `${URL}/token-monitor/monitors`,
         {
@@ -30,21 +34,27 @@ const TokenMonitorForm: React.FC = () => {
             'x-auth-token': `${token}`,
           },
         }
-      )
+      );
 
-      setMessage(`The monitor has been successfully created`)
+      setMessage(`The monitor has been successfully created`);
+
+      // Llamada a la función onSuccess después de un envío exitoso
+      onSuccess();
+
+      // Muestra un mensaje de éxito con react-toastify
+      toast.success('Token monitor creado con éxito');
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        setMessage(`Error: ${error.response.data.message}`)
+        setMessage(`Error: ${error.response.data.message}`);
       } else {
-        setMessage(`Error: An unexpected error occurred`)
+        setMessage(`Error: An unexpected error occurred`);
       }
     }
-  }
+  };
 
   return (
     <Form bg={bg} onSubmit={handleFormSubmit}>
-      {message != '' ? (
+      {message !== '' ? (
         <Message>
           <span>{message}</span>
           <span className="close" onClick={() => setMessage('')}>
@@ -58,7 +68,7 @@ const TokenMonitorForm: React.FC = () => {
             <input
               type="text"
               value={address}
-              onChange={e => setAddress(e.target.value)}
+              onChange={(e) => setAddress(e.target.value)}
               required
             />
           </div>
@@ -67,7 +77,7 @@ const TokenMonitorForm: React.FC = () => {
             <input
               type="number"
               value={chain}
-              onChange={e => setChain(e.target.value)}
+              onChange={(e) => setChain(e.target.value)}
               required
             />
           </div>
@@ -75,11 +85,11 @@ const TokenMonitorForm: React.FC = () => {
         </>
       )}
     </Form>
-  )
-}
+  );
+};
 
 interface FormProps {
-  bg: string
+  bg: string;
 }
 
 const Form = styled.form<FormProps>`
@@ -90,7 +100,7 @@ const Form = styled.form<FormProps>`
   justify-content: center;
   gap: 30px;
   background-size: cover;
-  background: url(${props => props.bg}) no-repeat 10%;
+  background: url(${(props) => props.bg}) no-repeat 10%;
   padding: 10px 20px;
   border-radius: 20px;
   background-size: cover;
@@ -99,7 +109,7 @@ const Form = styled.form<FormProps>`
     height: 46px;
     margin-top: 10px;
   }
-`
+`;
 
 const Message = styled.div`
   display: flex;
@@ -110,6 +120,6 @@ const Message = styled.div`
     cursor: pointer;
     font-weight: bold;
   }
-`
+`;
 
-export default TokenMonitorForm
+export default TokenMonitorForm;

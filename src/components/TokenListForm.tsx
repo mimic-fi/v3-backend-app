@@ -1,26 +1,35 @@
-import React, { useState } from 'react'
-import axios from 'axios'
-import styled from 'styled-components'
-import bg from '../assets/bg.png'
+import React, { useState } from 'react';
+import axios from 'axios';
+import styled from 'styled-components';
+import bg from '../assets/bg.png';
+import { toast } from 'react-toastify';
+import moment from 'moment';
 
+const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
-const URL = process.env.REACT_APP_SERVER_BASE_URL
+interface TokenListFormProps {
+  onSuccess?: () => void;
+}
 
-const SignUpForm: React.FC = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [message, setMessage] = useState('')
+const TokenListForm: React.FC<TokenListFormProps> = ({  onSuccess = () => {} }) => {
+  const [name, setName] = useState('');
+  const [url, setUrl] = useState('');
+  const [message, setMessage] = useState('');
 
   const handleFormSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     try {
-      const token = localStorage.getItem('token')
+      const token = localStorage.getItem('token');
+      const lastUpdate = moment().toISOString();
+      const isActive = true;
       const response = await axios.post(
-        `${URL}/user`,
+        `${URL}/token-registry/lists`,
         {
-          email,
-          password,
+          name,
+          url,
+          isActive,
+          lastUpdate,
         },
         {
           headers: {
@@ -29,17 +38,21 @@ const SignUpForm: React.FC = () => {
             'x-auth-token': `${token}`,
           },
         }
-      )
+      );
 
-      setMessage(`The user has been successfully created`)
+      setMessage(`The token has been successfully created`);
+
+      onSuccess();
+
+      toast.success('Token creado con éxito');
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        setMessage(`Error: ${error.response.data.message}`)
+        setMessage(`Error: ${error.response.data.message}`);
       } else {
-        setMessage(`Error: An unexpected error occurred`)
+        setMessage(`Error: An unexpected error occurred`);
       }
     }
-  }
+  };
 
   return (
     <Form bg={bg} onSubmit={handleFormSubmit}>
@@ -53,34 +66,32 @@ const SignUpForm: React.FC = () => {
       ) : (
         <>
           <div>
-            <label>Email:</label>
+            <label>Name:</label>
             <input
-              type="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               required
             />
           </div>
           <div>
-            <label>Password:</label>
+            <label>Url:</label>
             <input
-              type="password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+              type="text"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
               required
-              title="Password must be min 8 chars, with at least a symbol, upper and lower case letters, and a number"
             />
           </div>
           <button type="submit">New</button>
         </>
       )}
     </Form>
-  )
-}
+  );
+};
 
 interface FormProps {
-  bg: string
+  bg: string;
 }
 
 const Form = styled.form<FormProps>`
@@ -91,7 +102,7 @@ const Form = styled.form<FormProps>`
   justify-content: center;
   gap: 30px;
   background-size: cover;
-  background: url(${props => props.bg}) no-repeat 10%;
+  background: url(${(props) => props.bg}) no-repeat 10%;
   padding: 10px 20px;
   border-radius: 20px;
   background-size: cover;
@@ -100,7 +111,7 @@ const Form = styled.form<FormProps>`
     height: 46px;
     margin-top: 10px;
   }
-`
+`;
 
 const Message = styled.div`
   display: flex;
@@ -111,6 +122,6 @@ const Message = styled.div`
     cursor: pointer;
     font-weight: bold;
   }
-`
+`;
 
-export default SignUpForm
+export default TokenListForm;

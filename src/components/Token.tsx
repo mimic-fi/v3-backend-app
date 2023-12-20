@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import Modal from 'react-modal';
-import { getEtherscanLink } from '../utils/web3-utils'
-import deleteIcon from '../assets/delete.png'
+import { getEtherscanLink } from '../utils/web3-utils';
 
 interface TokenInfo {
   data?: {
@@ -19,7 +17,7 @@ interface TokenSectionProps {
 
 const TokenSection: React.FC<TokenSectionProps> = ({ token, chain }) => {
   const [tokenInfo, setTokenInfo] = useState<TokenInfo>({ isLoading: true });
-  
+
 
   useEffect(() => {
     const fetchData = async () => {
