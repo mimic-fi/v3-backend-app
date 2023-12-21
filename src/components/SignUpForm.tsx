@@ -3,6 +3,7 @@ import axios from 'axios'
 import styled from 'styled-components'
 import bg from '../assets/bg.png'
 
+
 const URL = process.env.REACT_APP_SERVER_BASE_URL
 
 const SignUpForm: React.FC = () => {
@@ -42,7 +43,7 @@ const SignUpForm: React.FC = () => {
 
   return (
     <Form bg={bg} onSubmit={handleFormSubmit}>
-      {message != '' ? (
+      {message !== '' ? (
         <Message>
           <span>{message}</span>
           <span className="close" onClick={() => setMessage('')}>
@@ -71,7 +72,7 @@ const SignUpForm: React.FC = () => {
               title="Password must be min 8 chars, with at least a symbol, upper and lower case letters, and a number"
             />
           </div>
-          <button type="submit">Nuevo</button>
+          <button type="submit">New</button>
         </>
       )}
     </Form>

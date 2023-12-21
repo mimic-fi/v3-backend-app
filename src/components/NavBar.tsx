@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-const logo: string = require('./assets/mimic-admin.svg').default
+const logo: string = require('../assets/mimic-admin.svg').default
 
 interface NavBarProps {
   onLogout: () => void

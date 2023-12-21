@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import UserList from './UserList'
+import UserList from '../components/UserList'
 import axios from 'axios'
 import styled from 'styled-components'
 import bg from '../assets/bg.png'
@@ -31,7 +31,7 @@ const ApiSettings: React.FC = () => {
           },
         })
         setApiSettings(response.data)
-        setEditedSettings(response.data) // Inicializa el objeto de edición con los valores actuales
+        setEditedSettings(response.data)
       } catch (error) {
         console.error('Error al obtener las configuraciones de la API:', error)
       }
@@ -47,16 +47,30 @@ const ApiSettings: React.FC = () => {
   const handleSaveClick = async () => {
     try {
       const token = localStorage.getItem('token')
+      console.log('put: ' , editedSettings , URL)
+      alert('put: ' + editedSettings + URL)
       await axios.put(`${URL}/api-setting`, editedSettings, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Content-type': 'application/json',
           'x-auth-token': `${token}`,
         },
+      }).then(response => {
+        localStorage.setItem('put', response.toString())
+        debugger;
       })
-      setApiSettings(editedSettings as ApiSetting)
+      .catch(error => {
+        alert('error del put: ' + error)
+        localStorage.setItem('put', error.toString())
+        debugger;
+      });
+      console.log('put done')
+      debugger;
+
+
     } catch (error) {
       console.error('Error al guardar las configuraciones de la API:', error)
+      debugger;
     }
   }
 
@@ -98,7 +112,7 @@ const ApiSettings: React.FC = () => {
           </Form>
         </>
       ) : (
-        <p>Cargando configuraciones...</p>
+        <p>Loading configurations...</p>
       )}
 
       <UserList />

@@ -38,3 +38,12 @@ code {
  src: url('./fonts/Visby/VisbyBold.otf') format('opentype');
  font-display: swap;
 }
+
+a {
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+}
+a:hover {
+  color: #6F5CE6;
+}
