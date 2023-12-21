@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.85bd601c.css",
-    "main.js": "/static/js/main.0cd995b6.js",
+    "main.css": "/static/css/main.c7477d06.css",
+    "main.js": "/static/js/main.46fc7fdc.js",
     "static/media/VisbyBold.otf": "/static/media/VisbyBold.bcfa9f291bda2787925d.otf",
     "static/media/DMSans-Regular.ttf": "/static/media/DMSans-Regular.4ee96395e07a04577aab.ttf",
     "static/media/DMSans-Bold.ttf": "/static/media/DMSans-Bold.c423ce2dc1d85bc50799.ttf",
@@ -9,12 +9,24 @@
     "static/media/bg.png": "/static/media/bg.b47d53a73279663fddf1.png",
     "static/media/mimic-admin.svg": "/static/media/mimic-admin.cf45e162764ab2c4deff42e45fffa526.svg",
     "static/media/background-dashboard.png": "/static/media/background-dashboard.bd18e88079aa49e79020.png",
+    "static/media/arbitrum-logo.svg": "/static/media/arbitrum-logo.abae01ba680d97dacc23a0fb5caa4863.svg",
+    "static/media/optimism-logo.svg": "/static/media/optimism-logo.5de498fa5eec2f40b0589c35b294f402.svg",
+    "static/media/avalanche.svg": "/static/media/avalanche.3552de276866361eb6ce1622ccb14661.svg",
+    "static/media/gnosis-logo.svg": "/static/media/gnosis-logo.a2a3e94209242d4799ef3e541f196e94.svg",
+    "static/media/polygon-logo.svg": "/static/media/polygon-logo.43892668eb87dd1101979d9210d1569c.svg",
+    "static/media/bsc.svg": "/static/media/bsc.8a50adcb7ab10330c08c08a8a56e8978.svg",
+    "static/media/aurora.svg": "/static/media/aurora.e07e6b2676143c25e0f39b99763261af.svg",
+    "static/media/fantom.svg": "/static/media/fantom.ad3ac22338e43731c239485b7dacf82b.svg",
     "index.html": "/index.html",
-    "main.85bd601c.css.map": "/static/css/main.85bd601c.css.map",
-    "main.0cd995b6.js.map": "/static/js/main.0cd995b6.js.map"
+    "static/media/base.svg": "/static/media/base.2cae4a0a9c6f130fb98b0ab08d383bfc.svg",
+    "static/media/zksync.svg": "/static/media/zksync.63fe34ac6991016164ed2e87ead2d949.svg",
+    "static/media/goerli-logo.svg": "/static/media/goerli-logo.74c2c571ab08c4801fed17751e1402c9.svg",
+    "static/media/ethereum-logo.svg": "/static/media/ethereum-logo.708673817da70e00cfbf6abe9e90ba7a.svg",
+    "main.c7477d06.css.map": "/static/css/main.c7477d06.css.map",
+    "main.46fc7fdc.js.map": "/static/js/main.46fc7fdc.js.map"
   },
   "entrypoints": [
-    "static/css/main.85bd601c.css",
-    "static/js/main.0cd995b6.js"
+    "static/css/main.c7477d06.css",
+    "static/js/main.46fc7fdc.js"
   ]
 }
