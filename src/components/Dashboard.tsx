@@ -4,6 +4,7 @@ import ApiSettings from '../pages/ApiSettings'
 import PriceOracleSettings from '../pages/PriceOracleSettings'
 import RelayerExecutorSettings from '../pages/RelayerExecutorSettings'
 import TokenRegistrySettings from '../pages/TokenRegistrySettings'
+import TokenListSettings from '../pages/TokenListSettings'
 import TokenMonitorSettings from '../pages/TokenMonitorSettings'
 import Web3Settings from '../pages/Web3Settings'
 import styled from 'styled-components'
@@ -31,6 +32,7 @@ export default function Dashboard({ onLogout, showError }: DashboardProps) {
             />
             <Route path="/token-monitor" element={<TokenMonitorSettings />} />
             <Route path="/token-registry" element={<TokenRegistrySettings />} />
+            <Route path="/token-list" element={<TokenListSettings />} />
             <Route path="/web3" element={<Web3Settings />} />
           </Routes>
         </div>

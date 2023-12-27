@@ -23,6 +23,7 @@ export default function NavBar({ onLogout }: NavBarProps) {
           <Link to="/dashboard/relayer-executor">Relayer Executor</Link>
           <Link to="/dashboard/token-monitor">Token Monitor</Link>
           <Link to="/dashboard/token-registry">Token Registry</Link>
+          <Link to="/dashboard/token-list">Token List</Link>
           <Link to="/dashboard/web3">Web3</Link>
         </div>
         <NavbarLink>

@@ -45,3 +45,27 @@ export const ContainerTable = styled.table`
     padding: 20px 8px;
   }
 `
+
+export const Button = styled.button`
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+  &:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+`;
+
+export const LittleButton = styled(Button)`
+  padding: 3px 7px;
+  font-size: 12px;
+  margin: 0px 2px;
+`;
