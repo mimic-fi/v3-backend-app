@@ -31,9 +31,9 @@ const TokenRegistrySettings: React.FC = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
   const [customModalOpen, setCustomModalOpen] = useState(false);
-  const [deleteParams, setDeleteParams] = useState<string>('');
+  const [deleteParams, setDeleteParams] = useState<any>('');
 
-  const fetchTokenListSettings = async (page: number) => {
+  const fetchTokenRegistrySettings = async (page: number) => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get<{ data: TokenRegistrySetting[]; pages: number; total: number }>(
@@ -64,8 +64,7 @@ const TokenRegistrySettings: React.FC = () => {
   };
 
   useEffect(() => {
-    console.log('se ejecuto de nuevo:', symbolFilter, addressFilter, isNativeFilter, isWrappedNativeFilter)
-    fetchTokenListSettings(1);
+    fetchTokenRegistrySettings(1);
   }, [symbolFilter, addressFilter, isNativeFilter, isWrappedNativeFilter]);
 
   const handleSymbolFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,15 +85,15 @@ const TokenRegistrySettings: React.FC = () => {
     setIsWrappedNativeFilter(value === 'yes' ? true : value === 'no' ? false : null);
   };
 
-  const handleDeleteClick = (id: string) => {
-    setDeleteParams(id);
+  const handleDeleteClick = (item: any) => {
+    setDeleteParams(item);
     setCustomModalOpen(true);
   };
 
   const handleConfirmDelete = async () => {
-    const id = deleteParams;
+    const item = deleteParams;
     const token = localStorage.getItem('token');
-    const url = `${URL}/token-registry/lists/${id}`;
+    const url = `${URL}/token-registry/tokens/${item.chainId}/${item.address}`;
 
     try {
       await axios.delete(url, {
@@ -104,10 +103,10 @@ const TokenRegistrySettings: React.FC = () => {
           'x-auth-token': `${token}`,
         },
       });
-      console.log('Token list item successfully deleted');
+      console.log('Token registry item successfully deleted');
 
-      fetchTokenListSettings(currentPage);
-      toast.success('Token list item successfully deleted');
+      fetchTokenRegistrySettings(currentPage);
+      toast.success('Token registry item successfully deleted');
     } catch (error) {
       console.error('There was an error deleting the token list item:', error);
     }
@@ -122,21 +121,21 @@ const TokenRegistrySettings: React.FC = () => {
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
-      fetchTokenListSettings(currentPage + 1);
+      fetchTokenRegistrySettings(currentPage + 1);
     }
   };
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
-      fetchTokenListSettings(currentPage - 1);
+      fetchTokenRegistrySettings(currentPage - 1);
     }
   };
 
   return (
     <TokenRegistrySection>
       <h2>Token Registry Settings:</h2>
-      <TokenRegistryForm onSuccess={() => fetchTokenListSettings(1)} />
+      <TokenRegistryForm onSuccess={() => fetchTokenRegistrySettings(1)} />
       <Filters>
         <Filter>
           <label>Symbol:</label>
@@ -189,7 +188,7 @@ const TokenRegistrySettings: React.FC = () => {
                   <td>{item.isNativeToken ? 'yes' : 'no'}</td>
                   <td>{item.isWrappedNativeToken ? 'yes' : 'no'}</td>
                   <td>
-                    <img onClick={() => handleDeleteClick(item._id)} src={deleteIcon} alt="Eliminar" />
+                    <img onClick={() => handleDeleteClick(item)} src={deleteIcon} alt="Eliminar" />
                   </td>
                 </tr>
               ))}
