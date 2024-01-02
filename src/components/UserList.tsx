@@ -25,7 +25,6 @@ const UserList: React.FC = () => {
             'x-auth-token': `${token}`,
           },
         })
-        console.log(response.data)
         setUsers(response.data)
       } catch (error) {
         console.error('Error al obtener la lista de usuarios:', error)

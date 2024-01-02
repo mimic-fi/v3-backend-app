@@ -30,6 +30,10 @@ export default function Dashboard({ onLogout, showError }: DashboardProps) {
               path="/relayer-executor"
               element={<RelayerExecutorSettings />}
             />
+            <Route
+              path="/relayer-executor/:tab"
+              element={<RelayerExecutorSettings />}
+            />
             <Route path="/token-monitor" element={<TokenMonitorSettings />} />
             <Route path="/token-registry" element={<TokenRegistrySettings />} />
             <Route path="/token-list" element={<TokenListSettings />} />
@@ -56,6 +60,7 @@ const DashboardContainer = styled.div<DashProps>`
   background: url(${props => props.background}) no-repeat;
   background-size: cover;
   padding: 30px 0;
+  min-height: calc(100vh - 80px);
 
   .dashboard-content {
     flex-grow: 1;

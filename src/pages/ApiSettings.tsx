@@ -32,7 +32,10 @@ const ApiSettings: React.FC = () => {
         })
         setApiSettings(response.data)
         setEditedSettings(response.data)
-      } catch (error) {
+      } catch (error: any) {
+        if (error.response.status === 401) {
+          localStorage.removeItem('token');
+        }
         console.error('Error al obtener las configuraciones de la API:', error)
       }
     }
@@ -47,8 +50,6 @@ const ApiSettings: React.FC = () => {
   const handleSaveClick = async () => {
     try {
       const token = localStorage.getItem('token')
-      console.log('put: ' , editedSettings , URL)
-      alert('put: ' + editedSettings + URL)
       await axios.put(`${URL}/api-setting`, editedSettings, {
         headers: {
           'Access-Control-Allow-Origin': '*',
@@ -57,18 +58,14 @@ const ApiSettings: React.FC = () => {
         },
       }).then(response => {
         localStorage.setItem('put', response.toString())
-        debugger;
       })
       .catch(error => {
         alert('error del put: ' + error)
         localStorage.setItem('put', error.toString())
-        debugger;
       });
-      console.log('put done')
-      debugger;
 
 
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error al guardar las configuraciones de la API:', error)
       debugger;
     }

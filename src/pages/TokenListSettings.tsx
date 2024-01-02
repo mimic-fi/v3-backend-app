@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
-import Network from '../utils/Network';
-import Token from '../components/Token';
 import TokenListForm from '../components/TokenListForm';
 import CustomConfirmationModal from '../components/CustomConfirmationModal';
 import deleteIcon from '../assets/delete.png';
@@ -44,14 +42,18 @@ const TokenListSettings: React.FC = () => {
       );
 
       setTokenListSettings(response.data);
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 401) {
+        localStorage.removeItem('token');
+        window.location.reload();
+      }
       console.error('Token list error:', error);
     }
   };
 
   useEffect(() => {
     fetchTokenListSettings();
-  }, []); // Llamada inicial
+  }, []);
 
   const handleDeleteClick = (id: string) => {
     setDeleteParams(id);
@@ -71,12 +73,13 @@ const TokenListSettings: React.FC = () => {
           'x-auth-token': `${token}`,
         },
       });
-      console.log('Token list item successfully deleted');
-
       fetchTokenListSettings();
       toast.success('Token list item successfully deleted');
 
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 401) {
+        localStorage.removeItem('token');
+      }
       console.error('There was an error deleting the token list item:', error);
     }
 
@@ -94,7 +97,7 @@ const TokenListSettings: React.FC = () => {
       <TokenListForm onSuccess={fetchTokenListSettings} />
       {tokenRegistrySettings ? (
         <>
-          <Table>
+          <ContainerTable>
             <thead>
               <tr>
                 <th>Name</th>
@@ -129,7 +132,7 @@ const TokenListSettings: React.FC = () => {
                 </tr>
               ))}
             </tbody>
-          </Table>{' '}
+          </ContainerTable>
           {customModalOpen && (
             <CustomConfirmationModal
               message="Are you sure you want to delete this token list item?"
@@ -144,10 +147,6 @@ const TokenListSettings: React.FC = () => {
     </TokenListSection>
   );
 };
-
-const Table = styled(ContainerTable)`
-
-`;
 
 const TokenListSection = styled.div`
   margin: 0px auto;

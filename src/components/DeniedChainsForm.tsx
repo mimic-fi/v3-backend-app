@@ -2,17 +2,15 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import bg from '../assets/bg.png';
-import { toast } from 'react-toastify';
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
-interface TokenMonitorFormProps {
+interface DeniedChainsFormProps {
   onSuccess?: () => void;
 }
 
-const TokenMonitorForm: React.FC<TokenMonitorFormProps> = ({  onSuccess = () => {} }) => {
-  const [address, setAddress] = useState('');
-  const [chain, setChain] = useState('');
+const DeniedChainsForm: React.FC<DeniedChainsFormProps> = ({  onSuccess = () => {} }) => {
+  const [chainId, setChainId] = useState(0);
   const [message, setMessage] = useState('');
 
   const handleFormSubmit = async (e: React.FormEvent) => {
@@ -20,12 +18,10 @@ const TokenMonitorForm: React.FC<TokenMonitorFormProps> = ({  onSuccess = () => 
 
     try {
       const token = localStorage.getItem('token');
-      const chainId = parseInt(chain, 10);
       const response = await axios.post(
-        `${URL}/token-monitor/monitors`,
+        `${URL}/relayer-executor/denied-chains`,
         {
           chainId,
-          address,
         },
         {
           headers: {
@@ -36,11 +32,13 @@ const TokenMonitorForm: React.FC<TokenMonitorFormProps> = ({  onSuccess = () => 
         }
       );
 
-      setMessage(`The monitor has been successfully created`);    
+      setMessage(`The chain was succesfully created in the denied list`);
       onSuccess();
-      toast.success('Token monitor creado con éxito');
-    } catch (error) {
+    } catch (error: any) {
       if (axios.isAxiosError(error) && error.response) {
+        if (error.response.status === 401) {
+          localStorage.removeItem('token');
+        }
         setMessage(`Error: ${error.response.data.message}`);
       } else {
         setMessage(`Error: An unexpected error occurred`);
@@ -60,20 +58,11 @@ const TokenMonitorForm: React.FC<TokenMonitorFormProps> = ({  onSuccess = () => 
       ) : (
         <>
           <div>
-            <label>Address:</label>
-            <input
-              type="text"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label>Chain:</label>
+            <label>Chain id:</label>
             <input
               type="number"
-              value={chain}
-              onChange={(e) => setChain(e.target.value)}
+              value={chainId}
+              onChange={(e) => setChainId(parseFloat(e.target.value))}
               required
             />
           </div>
@@ -118,4 +107,4 @@ const Message = styled.div`
   }
 `;
 
-export default TokenMonitorForm;
+export default DeniedChainsForm;

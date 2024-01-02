@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import bg from '../assets/bg.png';
-import { toast } from 'react-toastify';
-import moment from 'moment';
-import Switch from './Switch'; // Ajusta la ruta según la estructura de tu proyecto
+import Switch from './Switch';
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
@@ -40,7 +38,6 @@ const TokenListForm: React.FC<TokenListFormProps> = ({ onSuccess = () => {} }) =
     e.preventDefault();
 
     try {
-      console.log(formData)
       const token = localStorage.getItem('token');
       const response = await axios.post(
         `${URL}/token-registry/tokens`,
