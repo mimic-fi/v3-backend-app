@@ -100,19 +100,22 @@ const RelayerExecutorForm: React.FC<RelayerExecutorFormProps> = ({ onSuccess = (
       ) : (
         <>
         <div className="container">
-        {editedSettings && Object.entries(editedSettings as RelayerData).map(
-          ([key, value]) => (
-            <div key={key} className="input-group">
-              <label>{key}:</label>
-              <input
-                type={typeof value === 'number' ? 'number' : 'text'}
-                name={key}
-                value={typeof value === 'number' ? value : String(value) }
-                onChange={handleInputChange}
-              />
-            </div>
-          )
-          )}
+        {editedSettings &&
+          Object.entries(editedSettings as RelayerData).map(([key, value]) => (
+            key !== '__v' && key !== 'createdAt' && key !== 'updatedAt' && (
+              <div key={key} className="input-group">
+                <label>{key}:</label>
+                <input
+                  type={typeof value === 'number' ? 'number' : 'text'}
+                  name={key}
+                  value={typeof value === 'number' ? value : String(value)}
+                  onChange={handleInputChange}
+                  disabled={key === '_id'} 
+                />
+              </div>
+            )
+          ))
+        }
         </div>
         <div className="buttons">
           <button type="submit">Guardar</button>
