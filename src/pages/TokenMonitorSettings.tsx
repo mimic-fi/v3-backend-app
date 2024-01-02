@@ -45,7 +45,10 @@ const TokenMonitorSettings: React.FC = () => {
       const sortedData = [...response.data];
       sortedData.sort((a, b) => a.address.localeCompare(b.address));
       setTokenMonitorSettings(sortedData);
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 401) {
+        localStorage.removeItem('token');
+      }
       console.error('Token monitor error:', error);
     }
   };
@@ -72,12 +75,14 @@ const TokenMonitorSettings: React.FC = () => {
           'x-auth-token': `${token}`,
         },
       });
-      console.log('Token monitor successfully deleted');
 
       fetchTokenMonitorSettings();
       toast.success('Token monitor successfully deleted');
 
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 401) {
+        localStorage.removeItem('token');
+      }
       console.error('There was an error deleting the token monitor:', error);
     }
 

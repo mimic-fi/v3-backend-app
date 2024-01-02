@@ -4,6 +4,7 @@ export const ContainerTable = styled.table`
   background-color: rgba(168, 154, 255, 0.12);
   border-radius: 24px;
   margin-top: 50px;
+  min-width: 500px;
   tbody tr:hover {
     background: rgba(0, 0, 0, 0.24);
   }
@@ -68,4 +69,15 @@ export const LittleButton = styled(Button)`
   padding: 3px 7px;
   font-size: 12px;
   margin: 0px 2px;
+`;
+
+
+export const Section = styled.div`
+  margin: 0px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 874px;
+  max-width: 90%;
+  min-height: calc(100vh - 150px);
 `;

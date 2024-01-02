@@ -20,7 +20,7 @@ export default function NavBar({ onLogout }: NavBarProps) {
         <div className="nav-bar">
           <Link to="/dashboard/api">API</Link>
           <Link to="/dashboard/price-oracle">Price Oracle</Link>
-          <Link to="/dashboard/relayer-executor">Relayer Executor</Link>
+          <Link to="/dashboard/relayer-executor/settings">Relayer Executor</Link>
           <Link to="/dashboard/token-monitor">Token Monitor</Link>
           <Link to="/dashboard/token-registry">Token Registry</Link>
           <Link to="/dashboard/token-list">Token List</Link>
@@ -67,7 +67,6 @@ const NavbarLink = styled.div`
     font-weight: 700;
     color: #6f5ce6;
     font-family: 'DMSansBold';
-
   }
 `
 

@@ -58,7 +58,10 @@ const TokenRegistrySettings: React.FC = () => {
       setTokenRegistrySettings(response.data.data);
       setTotalPages(response.data.pages);
       setTotalItems(response.data.total);
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 401) {
+        localStorage.removeItem('token');
+      }
       console.error('Token list error:', error);
     }
   };
@@ -107,7 +110,10 @@ const TokenRegistrySettings: React.FC = () => {
 
       fetchTokenRegistrySettings(currentPage);
       toast.success('Token registry item successfully deleted');
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 401) {
+        localStorage.removeItem('token');
+      }
       console.error('There was an error deleting the token list item:', error);
     }
 

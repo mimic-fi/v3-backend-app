@@ -30,6 +30,10 @@ export default function Dashboard({ onLogout, showError }: DashboardProps) {
               path="/relayer-executor"
               element={<RelayerExecutorSettings />}
             />
+            <Route
+              path="/relayer-executor/:tab"
+              element={<RelayerExecutorSettings />}
+            />
             <Route path="/token-monitor" element={<TokenMonitorSettings />} />
             <Route path="/token-registry" element={<TokenRegistrySettings />} />
             <Route path="/token-list" element={<TokenListSettings />} />
