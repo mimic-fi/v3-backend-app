@@ -60,6 +60,7 @@ const DashboardContainer = styled.div<DashProps>`
   background: url(${props => props.background}) no-repeat;
   background-size: cover;
   padding: 30px 0;
+  min-height: calc(100vh - 80px);
 
   .dashboard-content {
     flex-grow: 1;
