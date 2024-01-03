@@ -18,7 +18,8 @@ interface TokenFormData {
   chainId: number;
   isNativeToken: boolean;
   isWrappedNativeToken: boolean;
-  [key: string]: string | number | boolean;
+  incompatibleTasks: string[];
+  [key: string]: string | number | boolean | string[];
 }
 
 const TokenListForm: React.FC<TokenListFormProps> = ({ onSuccess = () => {} }) => {
@@ -30,6 +31,7 @@ const TokenListForm: React.FC<TokenListFormProps> = ({ onSuccess = () => {} }) =
     chainId: 0,
     isNativeToken: false,
     isWrappedNativeToken: false,
+    incompatibleTasks: [],
   });
 
   const [message, setMessage] = useState('');
@@ -65,10 +67,20 @@ const TokenListForm: React.FC<TokenListFormProps> = ({ onSuccess = () => {} }) =
     }
   };
 
-  const handleSwitchToggle = (field: string) => {
+  const handleSwitchToggle = (field: keyof TokenFormData) => {
     setFormData((prevData) => ({
       ...prevData,
       [field]: !prevData[field],
+    }));
+  };
+
+  const handleAddressInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputAddresses = e.target.value;
+    const addressesArray = inputAddresses.split(',').map((address) => address.trim());
+
+    setFormData((prevData) => ({
+      ...prevData,
+      incompatibleTasks: addressesArray,
     }));
   };
 
@@ -149,6 +161,17 @@ const TokenListForm: React.FC<TokenListFormProps> = ({ onSuccess = () => {} }) =
               <Switch
                 isOn={formData.isWrappedNativeToken}
                 onToggle={() => handleSwitchToggle('isWrappedNativeToken')}
+              />
+            </div>
+          </Group>
+          <Group>
+            <div>
+              <label>Incompatible Addresses (comma-separated):</label>
+              <input
+                type="text"
+                placeholder="Enter addresses separated by commas"
+                value={formData.incompatibleTasks.join(', ')}
+                onChange={handleAddressInputChange}
               />
             </div>
           </Group>
