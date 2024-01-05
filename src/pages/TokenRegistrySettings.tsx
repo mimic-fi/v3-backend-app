@@ -55,11 +55,11 @@ const TokenRegistrySettings: React.FC = () => {
         }
       );
 
-      setTokenRegistrySettings(response.data.data);
-      setTotalPages(response.data.pages);
-      setTotalItems(response.data.total);
+      setTokenRegistrySettings(response?.data?.data);
+      setTotalPages(response?.data?.pages);
+      setTotalItems(response?.data?.total);
     } catch (error: any) {
-      if (error.response.status === 401) {
+      if (error.response?.status === 401) {
         localStorage.removeItem('token');
       }
       console.error('Token list error:', error);

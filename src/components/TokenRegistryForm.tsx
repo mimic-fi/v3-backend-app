@@ -152,14 +152,14 @@ const TokenListForm: React.FC<TokenListFormProps> = ({ onSuccess = () => {} }) =
             <div>
               <label>Is Native Token:</label>
               <Switch
-                isOn={formData.isNativeToken}
+                ison={formData.isNativeToken}
                 onToggle={() => handleSwitchToggle('isNativeToken')}
               />
             </div>
             <div>
               <label>Is Wrapped Native Token:</label>
               <Switch
-                isOn={formData.isWrappedNativeToken}
+                ison={formData.isWrappedNativeToken}
                 onToggle={() => handleSwitchToggle('isWrappedNativeToken')}
               />
             </div>
