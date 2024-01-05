@@ -6,6 +6,7 @@ import CustomConfirmationModal from '../components/CustomConfirmationModal';
 import deleteIcon from '../assets/delete.png';
 import { toast } from 'react-toastify';
 import { ContainerTable, LittleButton } from '../utils/styles';
+import { logout } from '../utils/web3-utils';
 
 interface TokenRegistrySetting {
   _id: string;
@@ -59,8 +60,8 @@ const TokenRegistrySettings: React.FC = () => {
       setTotalPages(response?.data?.pages);
       setTotalItems(response?.data?.total);
     } catch (error: any) {
-      if (error.response?.status === 401) {
-        localStorage.removeItem('token');
+      if (error.response.status === 401) {
+        logout();
       }
       console.error('Token list error:', error);
     }

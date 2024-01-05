@@ -44,3 +44,8 @@ export function isAddress(address) {
 
   return true
 }
+
+export function logout() {
+  localStorage.removeItem('token');
+  window.location.reload();
+}

@@ -5,6 +5,7 @@ import DeniedSmartVaultsForm from '../components/DeniedSmartVaultsForm';
 import deleteIcon from '../assets/delete.png';
 import { toast } from 'react-toastify';
 import { ContainerTable, Section } from '../utils/styles';
+import { logout } from '../utils/web3-utils';
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
@@ -39,7 +40,7 @@ const RelayerExecutorSmartVaults: React.FC = () => {
       setDeniedSmartVaults(response.data);
     } catch (error: any) {
       if (error.response.status === 401) {
-        localStorage.removeItem('token');
+        logout();
       }
       console.error('Denied chains error:', error);
     }

@@ -3,6 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import bg from '../assets/bg.png';
 import Switch from './Switch';
+import { logout } from '../utils/web3-utils';
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
@@ -60,6 +61,9 @@ const TokenListForm: React.FC<TokenListFormProps> = ({ onSuccess = () => {} }) =
       onSuccess();
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
+        if (error.response.status === 401) {
+          logout();
+        }
         setMessage(`Error: ${error.response?.data?.content?.message}`);
       } else {
         setMessage(`Error: An unexpected error occurred`);

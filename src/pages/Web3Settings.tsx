@@ -6,6 +6,7 @@ import moment from 'moment';
 import CustomConfirmationModal from '../components/CustomConfirmationModal';
 import Web3Form from '../components/Web3Form';
 import deleteIcon from '../assets/delete.png';
+import { logout } from '../utils/web3-utils';
 
 interface Web3Data {
   name: string;
@@ -32,8 +33,11 @@ const Web3Settings: React.FC = () => {
         },
       });
       setWeb3Data(response.data);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Web3 data error:', error);
+      if (error.response.status === 401) {
+        logout();
+      }
     }
   };
 

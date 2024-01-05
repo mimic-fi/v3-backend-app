@@ -8,6 +8,7 @@ import CustomConfirmationModal from '../components/CustomConfirmationModal';
 import { ContainerTable } from '../utils/styles';
 import deleteIcon from '../assets/delete.png';
 import { toast } from 'react-toastify';
+import { logout } from '../utils/web3-utils';
 
 interface TokenMonitorSetting {
   address: string;
@@ -47,7 +48,7 @@ const TokenMonitorSettings: React.FC = () => {
       setTokenMonitorSettings(sortedData);
     } catch (error: any) {
       if (error.response.status === 401) {
-        localStorage.removeItem('token');
+        logout();
       }
       console.error('Token monitor error:', error);
     }

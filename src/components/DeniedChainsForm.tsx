@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import bg from '../assets/bg.png';
+import { logout } from '../utils/web3-utils';
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
@@ -37,7 +38,7 @@ const DeniedChainsForm: React.FC<DeniedChainsFormProps> = ({  onSuccess = () => 
     } catch (error: any) {
       if (axios.isAxiosError(error) && error.response) {
         if (error.response.status === 401) {
-          localStorage.removeItem('token');
+          logout()
         }
         setMessage(`Error: ${error.response.data.message}`);
       } else {
