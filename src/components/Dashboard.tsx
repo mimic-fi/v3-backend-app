@@ -1,29 +1,51 @@
-import { Route, Routes } from 'react-router-dom'
-import NavBar from './NavBar'
-import ApiSettings from '../pages/ApiSettings'
-import PriceOracleSettings from '../pages/PriceOracleSettings'
-import RelayerExecutorSettings from '../pages/RelayerExecutorSettings'
-import TokenRegistrySettings from '../pages/TokenRegistrySettings'
-import TokenListSettings from '../pages/TokenListSettings'
-import TokenMonitorSettings from '../pages/TokenMonitorSettings'
-import Web3Settings from '../pages/Web3Settings'
-import styled from 'styled-components'
-import bg from '../assets/background-dashboard.png'
+import React, { useEffect, useState } from 'react';
+import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
+import NavBar from './NavBar';
+import ApiSettings from '../pages/ApiSettings';
+import PriceOracleSettings from '../pages/PriceOracleSettings';
+import RelayerExecutorSettings from '../pages/RelayerExecutorSettings';
+import TokenRegistrySettings from '../pages/TokenRegistrySettings';
+import TokenListSettings from '../pages/TokenListSettings';
+import TokenMonitorSettings from '../pages/TokenMonitorSettings';
+import Web3Settings from '../pages/Web3Settings';
+import styled from 'styled-components';
+import bg from '../assets/background-dashboard.png';
 
 interface DashboardProps {
-  onLogout: () => void
-  showError: (message: string) => void
+  onLogout: () => void;
+  showError: (message: string) => void;
 }
 
 export default function Dashboard({ onLogout, showError }: DashboardProps) {
-  console.log(showError)
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [storedPath, setStoredPath] = useState<string | null>(localStorage.getItem('currentPath') || null);
+
+  useEffect(() => {
+    const path = localStorage.getItem('currentPath');
+    if (storedPath) {
+      setStoredPath(path);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (location.pathname !== storedPath) {
+      setStoredPath(location.pathname);
+      localStorage.setItem('currentPath', location.pathname);
+    }
+  }, [location.pathname, storedPath]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('currentPath');
+    onLogout();
+  };
+
   return (
     <DashboardSection>
-      <NavBar onLogout={onLogout} />
+      <NavBar onLogout={handleLogout} />
       <DashboardContainer background={bg}>
         <div className="dashboard-content">
           <Routes>
-            <Route path="/" element={<ApiSettings />} />
             <Route path="/api" element={<ApiSettings />} />
             <Route path="/price-oracle" element={<PriceOracleSettings />} />
             <Route
@@ -42,7 +64,7 @@ export default function Dashboard({ onLogout, showError }: DashboardProps) {
         </div>
       </DashboardContainer>
     </DashboardSection>
-  )
+  );
 }
 
 interface DashProps {

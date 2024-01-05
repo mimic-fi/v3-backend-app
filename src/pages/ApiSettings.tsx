@@ -33,7 +33,7 @@ const ApiSettings: React.FC = () => {
         setApiSettings(response.data)
         setEditedSettings(response.data)
       } catch (error: any) {
-        if (error.response.status === 401) {
+        if (error.response?.status === 401) {
           localStorage.removeItem('token');
         }
         console.error('Error al obtener las configuraciones de la API:', error)
@@ -89,12 +89,13 @@ const ApiSettings: React.FC = () => {
               {Object.entries(editedSettings as ApiSetting).map(
                 ([key, value]) => (
                   <div key={key}>
-                    <label>{key}:</label>
+                    <label>{key}</label>
                     <input
                       type="text"
                       name={key}
                       value={String(value)}
                       onChange={handleInputChange}
+                      disabled={key === '_id'}
                     />
                   </div>
                 )

@@ -2,33 +2,33 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 interface SwitchProps {
-  isOn: boolean;
+  ison: boolean;
   onToggle: () => void;
 }
 
-const StyledSwitch = styled.div<{ isOn: boolean }>`
+const StyledSwitch = styled.div<{ ison: string }>`
   width: 60px;
   height: 30px;
-  background-color: ${({ isOn }) => (isOn ? '#6f5ce6' : '#ccc')}; 
+  background-color: ${({ ison }) => (ison === 'true' ? '#6f5ce6' : '#ccc')};
   border-radius: 15px;
   position: relative;
   cursor: pointer;
 `;
 
-const SwitchHandle = styled.div<{ isOn: boolean }>`
+const SwitchHandle = styled.div<{ ison: string }>`
   width: 30px;
   height: 30px;
   background-color: #fff;
   border-radius: 50%;
   position: absolute;
   transition: transform 0.3s ease;
-  transform: ${({ isOn }) => (isOn ? 'translateX(30px)' : 'translateX(0)')};
+  transform: ${({ ison }) => (ison === 'true' ? 'translateX(30px)' : 'translateX(0)')};
 `;
 
-const Switch: React.FC<SwitchProps> = ({ isOn, onToggle }) => {
+const Switch: React.FC<SwitchProps> = ({ ison, onToggle }) => {
   return (
-    <StyledSwitch isOn={isOn} onClick={onToggle}>
-      <SwitchHandle isOn={isOn} />
+    <StyledSwitch ison={ison.toString()} onClick={onToggle}>
+      <SwitchHandle ison={ison.toString()} />
     </StyledSwitch>
   );
 };
