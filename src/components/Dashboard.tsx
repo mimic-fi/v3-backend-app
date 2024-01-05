@@ -60,6 +60,7 @@ export default function Dashboard({ onLogout, showError }: DashboardProps) {
             <Route path="/token-registry" element={<TokenRegistrySettings />} />
             <Route path="/token-list" element={<TokenListSettings />} />
             <Route path="/web3" element={<Web3Settings />} />
+            <Route path="/" element={<ApiSettings />} />
           </Routes>
         </div>
       </DashboardContainer>

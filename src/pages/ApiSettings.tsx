@@ -3,6 +3,7 @@ import UserList from '../components/UserList'
 import axios from 'axios'
 import styled from 'styled-components'
 import bg from '../assets/bg.png'
+import { logout } from '../utils/web3-utils';
 
 interface ApiSetting {
   _id: string
@@ -34,7 +35,7 @@ const ApiSettings: React.FC = () => {
         setEditedSettings(response.data)
       } catch (error: any) {
         if (error.response?.status === 401) {
-          localStorage.removeItem('token');
+          logout();
         }
         console.error('Error al obtener las configuraciones de la API:', error)
       }

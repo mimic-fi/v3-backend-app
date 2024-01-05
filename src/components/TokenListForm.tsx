@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import bg from '../assets/bg.png';
 import { toast } from 'react-toastify';
 import moment from 'moment';
+import { logout } from '../utils/web3-utils';
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
@@ -47,6 +48,9 @@ const TokenListForm: React.FC<TokenListFormProps> = ({  onSuccess = () => {} }) 
       toast.success('Token creado con éxito');
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
+        if (error.response.status === 401) {
+          logout();
+        }
         setMessage(`Error: ${error.response.data.message}`);
       } else {
         setMessage(`Error: An unexpected error occurred`);

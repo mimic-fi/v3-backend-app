@@ -1,40 +1,50 @@
-import { Link } from 'react-router-dom'
-import styled from 'styled-components'
+import { NavLink } from 'react-router-dom';
+import styled from 'styled-components';
 
-const logo: string = require('../assets/mimic-admin.svg').default
+const logo: string = require('../assets/mimic-admin.svg').default;
 
 interface NavBarProps {
-  onLogout: () => void
+  onLogout: () => void;
 }
+
+const NavItem: React.FC<{ to: string; label: string }> = ({ to, label }) => {
+  const isActive = window.location.pathname.includes(to);
+
+  return (
+    <div className={`nav-item ${isActive ? 'active' : ''}`}>
+      <NavLink to={to} className="nav-link">
+        {label}
+      </NavLink>
+    </div>
+  );
+};
 
 export default function NavBar({ onLogout }: NavBarProps) {
   const handleLogout = () => {
-    localStorage.removeItem('token')
-    onLogout()
-  }
+    localStorage.removeItem('token');
+    onLogout();
+  };
 
   return (
     <NavbarSection>
       <NavbarContainer>
         <img alt="logo" src={logo} />
         <div className="nav-bar">
-          <Link to="/dashboard/api">API</Link>
-          <Link to="/dashboard/price-oracle">Price Oracle</Link>
-          <Link to="/dashboard/relayer-executor/settings">Relayer Executor</Link>
-          <Link to="/dashboard/token-monitor">Token Monitor</Link>
-          <Link to="/dashboard/token-registry">Token Registry</Link>
-          <Link to="/dashboard/token-list">Token List</Link>
-          <Link to="/dashboard/web3">Web3</Link>
+          <NavItem to="/dashboard/api" label="API" />
+          <NavItem to="/dashboard/price-oracle" label="Price Oracle" />
+          <NavItem to="/dashboard/relayer-executor/settings" label="Relayer Executor" />
+          <NavItem to="/dashboard/token-monitor" label="Token Monitor" />
+          <NavItem to="/dashboard/token-registry" label="Token Registry" />
+          <NavItem to="/dashboard/token-list" label="Token List" />
+          <NavItem to="/dashboard/web3" label="Web3" />
         </div>
         <NavbarLink>
           <ButtonColor onClick={handleLogout}>Logout</ButtonColor>
         </NavbarLink>
       </NavbarContainer>
     </NavbarSection>
-
-  )
+  );
 }
-
 
 const NavbarSection = styled.section`
   z-index: 100;
@@ -43,13 +53,19 @@ const NavbarSection = styled.section`
   position: sticky;
   background: #12141a;
 
-   a {
-     padding: 0 15px;
-     color: white;
-     text-decoration: none;
-     font-weight: bold;
-   }
-`
+  .nav-item.active {
+    .nav-link {
+      color: #6f5ce6;
+    }
+    border-bottom: 2px solid #6f5ce6;
+    padding-bottom: 7px;
+  }
+  .nav-item {
+    display: inline;
+    margin: 0 10px;
+    font-weight: bold;
+  }
+`;
 
 const NavbarContainer = styled.div`
   margin: 0 32px;
@@ -57,18 +73,19 @@ const NavbarContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding 0;
-`
+  padding: 0;
+`;
 
 const NavbarLink = styled.div`
   color: #a5a1b7;
   font-feature-settings: 'clig' off, 'liga' off;
+
   a {
     font-weight: 700;
     color: #6f5ce6;
     font-family: 'DMSansBold';
   }
-`
+`;
 
 const ButtonColor = styled.button`
   display: inline-block;
@@ -87,4 +104,6 @@ const ButtonColor = styled.button`
   &:hover {
     background: #582ea0;
   }
-`
+`;
+
+export { NavItem };

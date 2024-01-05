@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import SignUpForm from './SignUpForm'
 import styled from 'styled-components'
+import { logout } from '../utils/web3-utils';
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL
 
@@ -27,7 +28,14 @@ const UserList: React.FC = () => {
         })
         setUsers(response.data)
       } catch (error) {
-        console.error('Error al obtener la lista de usuarios:', error)
+        if (axios.isAxiosError(error) && error.response) {
+          if (error.response.status === 401) {
+            logout();
+          }
+          console.error('Error al obtener la lista de usuarios:', error)
+        } else {
+          console.error('Error al obtener la lista de usuarios:', error)
+        }
       }
     }
 
