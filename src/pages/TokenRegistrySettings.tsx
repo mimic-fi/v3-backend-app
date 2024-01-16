@@ -195,9 +195,9 @@ const TokenRegistrySettings: React.FC = () => {
                   <td>{item.name}</td>
                   <td>{item.chainId}</td>
                   <td>{item.decimals}</td>
-                  <td>{item.isERC20 ? 'yes' : 'no'}</td>
-                  <td>{item.isNativeToken ? 'yes' : 'no'}</td>
-                  <td>{item.isWrappedNativeToken ? 'yes' : 'no'}</td>
+                  <td>{item.isERC20 ? '✅' : '❌'}</td>
+                  <td>{item.isNativeToken ? '✅' : '❌'}</td>
+                  <td>{item.isWrappedNativeToken ? '✅' : '❌'}</td>
                   <td>
                     <img onClick={() => handleDeleteClick(item)} src={deleteIcon} alt="Eliminar" />
                   </td>
