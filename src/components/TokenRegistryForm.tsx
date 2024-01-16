@@ -17,6 +17,7 @@ interface TokenFormData {
   name: string;
   decimals: number;
   chainId: number;
+  isERC20: boolean;
   isNativeToken: boolean;
   isWrappedNativeToken: boolean;
   incompatibleTasks: string[];
@@ -30,6 +31,7 @@ const TokenListForm: React.FC<TokenListFormProps> = ({ onSuccess = () => {} }) =
     name: '',
     decimals: 0,
     chainId: 0,
+    isERC20: false,
     isNativeToken: false,
     isWrappedNativeToken: false,
     incompatibleTasks: [],
@@ -165,6 +167,13 @@ const TokenListForm: React.FC<TokenListFormProps> = ({ onSuccess = () => {} }) =
               <Switch
                 ison={formData.isWrappedNativeToken}
                 onToggle={() => handleSwitchToggle('isWrappedNativeToken')}
+              />
+            </div>
+            <div>
+              <label>Is ERC20:</label>
+              <Switch
+                ison={formData.isERC20}
+                onToggle={() => handleSwitchToggle('isERC20')}
               />
             </div>
           </Group>
