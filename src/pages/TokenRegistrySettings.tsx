@@ -14,6 +14,7 @@ interface TokenRegistrySetting {
   chainId: number;
   decimals: number;
   isNativeToken: boolean;
+  isERC20: boolean;
   isWrappedNativeToken: boolean;
   name: string;
   symbol: string;
@@ -138,6 +139,7 @@ const TokenRegistrySettings: React.FC = () => {
       fetchTokenRegistrySettings(currentPage - 1);
     }
   };
+  console.log(tokenRegistrySettings)
 
   return (
     <TokenRegistrySection>
@@ -179,6 +181,7 @@ const TokenRegistrySettings: React.FC = () => {
                 <th>Name</th>
                 <th>Network</th>
                 <th>Decimals</th>
+                <th>ERC20</th>
                 <th>Native</th>
                 <th>Wrapped</th>
                 <th></th>
@@ -192,8 +195,9 @@ const TokenRegistrySettings: React.FC = () => {
                   <td>{item.name}</td>
                   <td>{item.chainId}</td>
                   <td>{item.decimals}</td>
-                  <td>{item.isNativeToken ? 'yes' : 'no'}</td>
-                  <td>{item.isWrappedNativeToken ? 'yes' : 'no'}</td>
+                  <td>{item.isERC20 ? '✅' : '❌'}</td>
+                  <td>{item.isNativeToken ? '✅' : '❌'}</td>
+                  <td>{item.isWrappedNativeToken ? '✅' : '❌'}</td>
                   <td>
                     <img onClick={() => handleDeleteClick(item)} src={deleteIcon} alt="Eliminar" />
                   </td>

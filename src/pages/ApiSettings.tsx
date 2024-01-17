@@ -4,6 +4,39 @@ import axios from 'axios'
 import styled from 'styled-components'
 import bg from '../assets/bg.png'
 import { logout } from '../utils/web3-utils';
+import { Tab } from '../utils/styles';
+
+function Tabs() {
+  const [activeTab, setActiveTab] = useState('settings');
+
+
+  const handleTabClick = (tab: string) => {
+    setActiveTab(tab);
+  };
+
+  return (
+    <div>
+      <Tab>
+        <button
+          onClick={() => handleTabClick('settings')}
+          className={activeTab === 'settings' ? 'active' : ''}
+        >
+          Settings
+        </button>
+        <button
+          onClick={() => handleTabClick('users')}
+          className={activeTab === 'users' ? 'active' : ''}
+        >
+          Users
+        </button>
+      </Tab>
+      <div>
+        {activeTab === 'settings' && <ApiSettings />}
+        {activeTab === 'users' && <UserList /> }
+      </div>
+    </div>
+  );
+}
 
 interface ApiSetting {
   _id: string
@@ -113,8 +146,6 @@ const ApiSettings: React.FC = () => {
       ) : (
         <p>Loading configurations...</p>
       )}
-
-      <UserList />
     </ApiSection>
   )
 }
@@ -156,4 +187,4 @@ const ApiSection = styled.div`
   width: 874px;
 `
 
-export default ApiSettings
+export default Tabs
