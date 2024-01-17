@@ -4,6 +4,7 @@ import RelayerExecutorForm from '../components/RelayerExecutorForm';
 import RelayerExecutorSmartVaults from './RelayerExecutorSmartVaults';
 import RelayerExecutorChains from './RelayerExecutorChains';
 import RelayerExecutorTasks from './RelayerExecutorTasks';
+import NetworkThresholds from './NetworkThresholds';
 import styled from 'styled-components';
 import { Tab } from '../utils/styles';
 
@@ -50,12 +51,19 @@ export default function RelayerExecutorSettings() {
         >
           Tasks
         </button>
+        <button
+          onClick={() => handleTabClick('thresholds')}
+          className={activeTab === 'thresholds' ? 'active' : ''}
+        >
+          Networks Thresholds
+        </button>
       </Tab>
       <div>
         {activeTab === 'settings' && <RelayerExecutorForm />}
         {activeTab === 'smartVault' && <RelayerExecutorSmartVaults />}
         {activeTab === 'chains' && <RelayerExecutorChains />}
         {activeTab === 'tasks' && <RelayerExecutorTasks />}
+        {activeTab === 'thresholds' && <NetworkThresholds />}
       </div>
     </div>
   );
