@@ -31,7 +31,7 @@ const TokenListForm: React.FC<TokenListFormProps> = ({ onSuccess = () => {} }) =
     name: '',
     decimals: 0,
     chainId: 0,
-    isERC20: false,
+    isERC20: true,
     isNativeToken: false,
     isWrappedNativeToken: false,
     incompatibleTasks: [],
