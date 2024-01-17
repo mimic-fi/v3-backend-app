@@ -139,7 +139,6 @@ const TokenRegistrySettings: React.FC = () => {
       fetchTokenRegistrySettings(currentPage - 1);
     }
   };
-  console.log(tokenRegistrySettings)
 
   return (
     <TokenRegistrySection>
@@ -171,7 +170,7 @@ const TokenRegistrySettings: React.FC = () => {
           </select>
         </Filter>
       </Filters>
-      {tokenRegistrySettings?.length ? (
+      {tokenRegistrySettings ? (
         <>
           <Table>
             <thead>
@@ -188,7 +187,7 @@ const TokenRegistrySettings: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {tokenRegistrySettings.map((item, index) => (
+              {Object.values(tokenRegistrySettings).map((item, index) => (
                 <tr key={index}>
                   <td>{item.address}</td>
                   <td>{item.symbol}</td>
