@@ -82,7 +82,7 @@ const TokenMonitorSettings: React.FC = () => {
 
     } catch (error: any) {
       if (error.response.status === 401) {
-        localStorage.removeItem('token');
+        logout();
       }
       console.error('There was an error deleting the token monitor:', error);
     }

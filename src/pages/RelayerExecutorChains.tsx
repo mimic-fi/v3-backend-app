@@ -69,7 +69,7 @@ const RelayerExecutorChains: React.FC = () => {
       toast.success('Denied chain item successfully deleted');
     } catch (error: any) {
       if (error.response.status === 401) {
-        localStorage.removeItem('token');
+        logout();
       }
       console.error('There was an error deleting the denied chain item:', error);
     }

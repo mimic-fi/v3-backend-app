@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
+import { logout } from '../utils/web3-utils'; 
 
 const logo: string = require('../assets/mimic-admin.svg').default;
 
@@ -21,7 +22,7 @@ const NavItem: React.FC<{ to: string; label: string }> = ({ to, label }) => {
 
 export default function NavBar({ onLogout }: NavBarProps) {
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    logout();
     onLogout();
   };
 

@@ -20,8 +20,7 @@ export default function Login({ onLogin, showError }: LoginFormProps) {
     e.preventDefault()
     try {
       const response = await axios.post(`${URL}/login`, { email, password })
-      const token: string = response.data.token
-      localStorage.setItem('token', token)
+      localStorage.setItem('token', response.data.accessToken)
       onLogin()
     } catch (error) {
       console.log(error)
