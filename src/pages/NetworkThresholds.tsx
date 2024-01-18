@@ -72,7 +72,7 @@ const NetworkThresholds: React.FC = () => {
       toast.success('Threshold item successfully deleted');
     } catch (error: any) {
       if (error.response.status === 401) {
-        localStorage.removeItem('token');
+        logout();
       }
       console.error('There was an error deleting the threshold item:', error);
     }
