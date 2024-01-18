@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import bg from '../assets/bg.png';
 import { toast } from 'react-toastify';
 import moment from 'moment';
-import { logout } from '../utils/web3-utils';
+import { refresh } from '../utils/web3-utils';
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
@@ -49,7 +49,12 @@ const TokenListForm: React.FC<TokenListFormProps> = ({  onSuccess = () => {} }) 
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         if (error.response.status === 401) {
-          logout();
+          try {
+            await refresh();
+            await handleFormSubmit(e);
+          } catch (refreshError) {
+            console.error(`Error: Unable to refresh token. Please log in again.`);
+          }
         }
         setMessage(`Error: ${error.response.data.message}`);
       } else {

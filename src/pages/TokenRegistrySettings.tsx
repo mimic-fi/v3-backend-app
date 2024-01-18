@@ -6,7 +6,7 @@ import CustomConfirmationModal from '../components/CustomConfirmationModal';
 import deleteIcon from '../assets/delete.png';
 import { toast } from 'react-toastify';
 import { ContainerTable, LittleButton } from '../utils/styles';
-import { logout } from '../utils/web3-utils';
+import { refresh } from '../utils/web3-utils';
 
 interface TokenRegistrySetting {
   _id: string;
@@ -62,7 +62,12 @@ const TokenRegistrySettings: React.FC = () => {
       setTotalItems(response?.data?.total);
     } catch (error: any) {
       if (error.response.status === 401) {
-        logout();
+        try {
+          await refresh();
+          await fetchTokenRegistrySettings(page);
+        } catch (refreshError) {
+          console.error(`Error: Unable to refresh token. Please log in again.`);
+        }
       }
       console.error('Token list error:', error);
     }
@@ -114,7 +119,12 @@ const TokenRegistrySettings: React.FC = () => {
       toast.success('Token registry item successfully deleted');
     } catch (error: any) {
       if (error.response.status === 401) {
-        logout();
+        try {
+          await refresh();
+          await handleConfirmDelete();
+        } catch (refreshError) {
+          console.error(`Error: Unable to refresh token. Please log in again.`);
+        }
       }
       console.error('There was an error deleting the token list item:', error);
     }

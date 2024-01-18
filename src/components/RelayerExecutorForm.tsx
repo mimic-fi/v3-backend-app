@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import bg from '../assets/bg.png';
-import { logout } from '../utils/web3-utils';
+import { refresh } from '../utils/web3-utils';
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
@@ -41,7 +41,12 @@ const RelayerExecutorForm: React.FC<RelayerExecutorFormProps> = ({ onSuccess = (
 
       } catch (error: any) {
         if (error.response.status === 401) {
-          logout();
+          try {
+            await refresh();
+            await fetchApiSettings();
+          } catch (refreshError) {
+            console.error(`Error: Unable to refresh token. Please log in again.`);
+          }
         }
         console.error('There was an error with relayer executor form data:', error)
       }

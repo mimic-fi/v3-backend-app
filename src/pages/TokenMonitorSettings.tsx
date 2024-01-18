@@ -8,7 +8,7 @@ import CustomConfirmationModal from '../components/CustomConfirmationModal';
 import { ContainerTable } from '../utils/styles';
 import deleteIcon from '../assets/delete.png';
 import { toast } from 'react-toastify';
-import { logout } from '../utils/web3-utils';
+import { refresh } from '../utils/web3-utils';
 
 interface TokenMonitorSetting {
   address: string;
@@ -48,7 +48,12 @@ const TokenMonitorSettings: React.FC = () => {
       setTokenMonitorSettings(sortedData);
     } catch (error: any) {
       if (error.response.status === 401) {
-        logout();
+        try {
+          await refresh();
+          await fetchTokenMonitorSettings();
+        } catch (refreshError) {
+          console.error(`Error: Unable to refresh token. Please log in again.`);
+        }
       }
       console.error('Token monitor error:', error);
     }
@@ -82,7 +87,12 @@ const TokenMonitorSettings: React.FC = () => {
 
     } catch (error: any) {
       if (error.response.status === 401) {
-        logout();
+        try {
+          await refresh();
+          await handleConfirmDelete();
+        } catch (refreshError) {
+          console.error(`Error: Unable to refresh token. Please log in again.`);
+        }
       }
       console.error('There was an error deleting the token monitor:', error);
     }

@@ -1,4 +1,6 @@
 import { CHAIN_INFO } from '../constants/chainInfo'
+import axios from 'axios'
+const URL = process.env.REACT_APP_SERVER_BASE_URL
 
 export function shortenAddress(address, charsLength = 4) {
   const prefixLength = 2 // "0x"
@@ -44,6 +46,31 @@ export function isAddress(address) {
 
   return true
 }
+
+export const refresh = async () => {
+  console.log('refresh')
+  try {
+    const refreshToken = localStorage.getItem('refreshToken');
+    const response = await axios.post(
+      `${URL}/renew-token`,
+      {
+        refreshToken,
+      },
+      {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    console.log('response', response)
+    localStorage.setItem('token', response.data.accessToken);
+  } catch (error) {
+    throw new Error('Unable to refresh token');
+    logout()
+  }
+};
+
 
 export function logout() {
   localStorage.removeItem('token');

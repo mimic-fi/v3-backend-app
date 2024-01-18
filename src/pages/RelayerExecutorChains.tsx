@@ -5,7 +5,7 @@ import DeniedChainsForm from '../components/DeniedChainsForm';
 import deleteIcon from '../assets/delete.png';
 import { toast } from 'react-toastify';
 import { ContainerTable, Section } from '../utils/styles';
-import { logout } from '../utils/web3-utils';
+import { refresh } from '../utils/web3-utils';
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
@@ -37,7 +37,12 @@ const RelayerExecutorChains: React.FC = () => {
       setDeniedChainsSettings(response.data);
     } catch (error: any) {
       if (error.response.status === 401) {
-        logout();
+        try {
+          await refresh();
+          await fetchDeniedChainsSettings();
+        } catch (refreshError) {
+          console.error(`Error: Unable to refresh token. Please log in again.`);
+        }
       }
       console.error('Denied chains error:', error);
     }
@@ -69,7 +74,12 @@ const RelayerExecutorChains: React.FC = () => {
       toast.success('Denied chain item successfully deleted');
     } catch (error: any) {
       if (error.response.status === 401) {
-        logout();
+        try {
+          await refresh();
+          await handleConfirmDelete();
+        } catch (refreshError) {
+          console.error(`Error: Unable to refresh token. Please log in again.`);
+        }
       }
       console.error('There was an error deleting the denied chain item:', error);
     }

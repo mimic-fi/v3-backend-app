@@ -7,7 +7,7 @@ import deleteIcon from '../assets/delete.png';
 import { toast } from 'react-toastify';
 import { ContainerTable } from '../utils/styles';
 import moment from 'moment';
-import { logout } from '../utils/web3-utils';
+import { refresh } from '../utils/web3-utils';
 
 interface TokenListSetting {
   isActive: boolean;
@@ -45,7 +45,12 @@ const TokenListSettings: React.FC = () => {
       setTokenListSettings(response.data);
     } catch (error: any) {
       if (error.response.status === 401) {
-        logout();
+        try {
+          await refresh();
+          await fetchTokenListSettings();
+        } catch (refreshError) {
+          console.error(`Error: Unable to refresh token. Please log in again.`);
+        }
       }
       console.error('Token list error:', error);
     }
@@ -78,7 +83,12 @@ const TokenListSettings: React.FC = () => {
 
     } catch (error: any) {
       if (error.response.status === 401) {
-        logout();
+        try {
+          await refresh();
+          await handleConfirmDelete();
+        } catch (refreshError) {
+          console.error(`Error: Unable to refresh token. Please log in again.`);
+        }
       }
       console.error('There was an error deleting the token list item:', error);
     }
