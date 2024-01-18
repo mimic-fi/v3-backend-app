@@ -3,7 +3,7 @@ import UserList from '../components/UserList'
 import axios from 'axios'
 import styled from 'styled-components'
 import bg from '../assets/bg.png'
-import { logout } from '../utils/web3-utils';
+import { refresh } from '../utils/web3-utils';
 import { Tab } from '../utils/styles';
 
 function Tabs() {
@@ -68,7 +68,12 @@ const ApiSettings: React.FC = () => {
         setEditedSettings(response.data)
       } catch (error: any) {
         if (error.response?.status === 401) {
-          logout();
+          try {
+            await refresh();
+            await fetchApiSettings();
+          } catch (refreshError) {
+            console.error(`Error: Unable to refresh token. Please log in again.`);
+          }
         }
         console.error('Error al obtener las configuraciones de la API:', error)
       }
@@ -100,6 +105,14 @@ const ApiSettings: React.FC = () => {
 
 
     } catch (error: any) {
+      if (error.response?.status === 401) {
+        try {
+          await refresh();
+          await handleSaveClick();
+        } catch (refreshError) {
+          console.error(`Error: Unable to refresh token. Please log in again.`);
+        }
+      }
       console.error('Error al guardar las configuraciones de la API:', error)
       debugger;
     }

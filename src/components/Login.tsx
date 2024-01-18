@@ -21,6 +21,7 @@ export default function Login({ onLogin, showError }: LoginFormProps) {
     try {
       const response = await axios.post(`${URL}/login`, { email, password })
       localStorage.setItem('token', response.data.accessToken)
+      localStorage.setItem('refreshToken', response.data.refreshToken)
       onLogin()
     } catch (error) {
       console.log(error)

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import SignUpForm from './SignUpForm'
 import styled from 'styled-components'
-import { logout } from '../utils/web3-utils';
+import { refresh } from '../utils/web3-utils';
 import { ContainerTable, Section } from '../utils/styles';
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL
@@ -31,7 +31,12 @@ const UserList: React.FC = () => {
       } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
           if (error.response.status === 401) {
-            logout();
+            try {
+              await refresh();
+              await fetchUsers();
+            } catch (refreshError) {
+              console.error(`Error: Unable to refresh token. Please log in again.`);
+            }
           }
           console.error('Error al obtener la lista de usuarios:', error)
         } else {

@@ -37,25 +37,25 @@ export default function RelayerExecutorSettings() {
           onClick={() => handleTabClick('smartVault')}
           className={activeTab === 'smartVault' ? 'active' : ''}
         >
-          Smart Vaults
+          Denied Smart Vaults
         </button>
         <button
           onClick={() => handleTabClick('chains')}
           className={activeTab === 'chains' ? 'active' : ''}
         >
-          Chains
+          Denied Chains
         </button>
         <button
           onClick={() => handleTabClick('tasks')}
           className={activeTab === 'tasks' ? 'active' : ''}
         >
-          Tasks
+          Denied Tasks
         </button>
         <button
           onClick={() => handleTabClick('thresholds')}
           className={activeTab === 'thresholds' ? 'active' : ''}
         >
-          Networks Thresholds
+          Thresholds
         </button>
       </Tab>
       <div>

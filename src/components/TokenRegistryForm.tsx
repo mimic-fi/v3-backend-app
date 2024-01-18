@@ -3,7 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import bg from '../assets/bg.png';
 import Switch from './Switch';
-import { logout } from '../utils/web3-utils';
+import { refresh } from '../utils/web3-utils';
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
@@ -20,7 +20,6 @@ interface TokenFormData {
   isERC20: boolean;
   isNativeToken: boolean;
   isWrappedNativeToken: boolean;
-  incompatibleTasks: string[];
   [key: string]: string | number | boolean | string[];
 }
 
@@ -34,7 +33,6 @@ const TokenListForm: React.FC<TokenListFormProps> = ({ onSuccess = () => {} }) =
     isERC20: true,
     isNativeToken: false,
     isWrappedNativeToken: false,
-    incompatibleTasks: [],
   });
 
   const [message, setMessage] = useState('');
@@ -64,7 +62,12 @@ const TokenListForm: React.FC<TokenListFormProps> = ({ onSuccess = () => {} }) =
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         if (error.response.status === 401) {
-          logout();
+          try {
+            await refresh();
+            await handleFormSubmit(e);
+          } catch (refreshError) {
+            console.error(`Error: Unable to refresh token. Please log in again.`);
+          }
         }
         setMessage(`Error: ${error.response?.data?.content?.message}`);
       } else {
@@ -177,17 +180,7 @@ const TokenListForm: React.FC<TokenListFormProps> = ({ onSuccess = () => {} }) =
               />
             </div>
           </Group>
-          <Group>
-            <div>
-              <label>Incompatible Addresses (comma-separated):</label>
-              <input
-                type="text"
-                placeholder="Enter addresses separated by commas"
-                value={formData.incompatibleTasks.join(', ')}
-                onChange={handleAddressInputChange}
-              />
-            </div>
-          </Group>
+          <br/>
           <Button type="submit">New</Button>
         </>
       )}
