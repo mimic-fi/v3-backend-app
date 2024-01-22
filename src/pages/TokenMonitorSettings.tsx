@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import Network from '../utils/Network';
+import Address from '../utils/Address';
 import Token from '../components/Token';
 import TokenMonitorForm from '../components/TokenMonitorForm';
 import CustomConfirmationModal from '../components/CustomConfirmationModal';
@@ -11,6 +12,7 @@ import { toast } from 'react-toastify';
 import { refresh } from '../utils/web3-utils';
 
 interface TokenMonitorSetting {
+  environment: string;
   address: string;
   chainId: number;
   tokens: string[];
@@ -61,7 +63,7 @@ const TokenMonitorSettings: React.FC = () => {
 
   useEffect(() => {
     fetchTokenMonitorSettings();
-  }, []); // Llamada inicial
+  }, []);
 
   const handleDeleteClick = (address: string, chainId: number) => {
     setDeleteParams({ address, chainId });
@@ -104,6 +106,13 @@ const TokenMonitorSettings: React.FC = () => {
     setCustomModalOpen(false);
   };
 
+  function compare(a: TokenMonitorSetting, b: TokenMonitorSetting): number {
+    return a.environment.localeCompare(b.environment);
+  }
+
+  if (tokenMonitorSettings) {
+    tokenMonitorSettings.sort(compare);
+  }
   return (
     <TokenMonitorSection>
       <h2>Token Monitor Settings:</h2>
@@ -113,6 +122,7 @@ const TokenMonitorSettings: React.FC = () => {
           <ContainerTable>
             <thead>
               <tr>
+                <th>Environment</th>
                 <th>Address</th>
                 <th>Chain ID</th>
                 <th>Tokens</th>
@@ -122,7 +132,18 @@ const TokenMonitorSettings: React.FC = () => {
             <tbody>
               {tokenMonitorSettings.map((setting, index) => (
                 <tr key={index}>
-                  <td>{setting.address}</td>
+                  <td><Address
+                    address={setting.environment}
+                    short={true}
+                    showIdentity={false}
+                    withLink={false}
+                    chainId={setting.chainId}/></td>
+                  <td>
+                    <Address
+                      address={setting.address}
+                      short={true}
+                      chainId={setting.chainId}/>
+                  </td>
                   <td>
                     <Network network={setting.chainId} width={1200} />
                   </td>
@@ -164,8 +185,12 @@ const TokenMonitorSection = styled.div`
   margin: 0px auto;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  width: 874px;
+  align-items: center;
+  width: auto;
+  max-width: 85%;
+  table {
+    max-width: 100%;
+  }
 `;
 
 export default TokenMonitorSettings;
