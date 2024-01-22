@@ -50,13 +50,14 @@ const Address: React.FC<AddressProps> = ({
   return (
     <Container>
       {showIdentity && <SingleNameBlockies imageSize={20} address={address} />}
-      <TextAddress
+      {withLink ? <TextAddress
         href={getEtherscanLink(chainId, address, type === 'transaction' ? 'transaction' : 'address')}
         target="_blank"
         rel="noreferrer"
       >
         {totalWidth < 700 || short ? shortenAddress(address) : address}
       </TextAddress>
+      :   <>{totalWidth < 700 || short ? shortenAddress(address) : address}</>}
       {copied ? (
         <ImgSm src={ok} />
       ) : (
@@ -85,7 +86,9 @@ const ImgSm = styled.img`
 
 const Container = styled.div`
   display: inline-flex;
-  cursor: pointer;
+  a, img {
+    cursor: pointer;
+  }
 `;
 
 const TextAddress = styled.a`
