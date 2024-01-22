@@ -93,7 +93,6 @@ const RelayerExecutorChains: React.FC = () => {
 
   return (
     <Section>
-      <h2>Denied Chains:</h2>
       <DeniedChainsForm onSuccess={fetchDeniedChainsSettings}/>
       {deniedChainsSettings ? (
         <>

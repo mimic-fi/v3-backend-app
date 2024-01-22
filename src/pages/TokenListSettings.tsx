@@ -103,7 +103,6 @@ const TokenListSettings: React.FC = () => {
 
   return (
     <TokenListSection>
-      <h2>Token List Settings:</h2>
       <TokenListForm onSuccess={fetchTokenListSettings} />
       {tokenRegistrySettings ? (
         <>
@@ -162,7 +161,7 @@ const TokenListSection = styled.div`
   margin: 0px auto;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   min-width: 874px;
   max-width: 90%;
 `;

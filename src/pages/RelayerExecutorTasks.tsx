@@ -96,7 +96,6 @@ const RelayerExecutorTasks: React.FC = () => {
 
   return (
     <Section>
-      <h2>Denied Tasks:</h2>
       <DeniedTasksForm onSuccess={fetchDeniedTasks}/>
       {deniedTasks ? (
         <>

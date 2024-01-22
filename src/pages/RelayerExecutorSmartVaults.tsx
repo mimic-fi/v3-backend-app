@@ -96,7 +96,6 @@ const RelayerExecutorSmartVaults: React.FC = () => {
 
   return (
     <Section>
-      <h2>Denied Smart Vaults:</h2>
       <DeniedSmartVaultsForm onSuccess={fetchDeniedSmartVaults}/>
       {deniedSmartVaults ? (
         <>

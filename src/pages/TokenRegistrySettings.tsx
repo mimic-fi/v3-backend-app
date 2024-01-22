@@ -1,12 +1,46 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
+import TokenListSettings from './TokenListSettings';
 import TokenRegistryForm from '../components/TokenRegistryForm';
 import CustomConfirmationModal from '../components/CustomConfirmationModal';
 import deleteIcon from '../assets/delete.png';
 import { toast } from 'react-toastify';
 import { ContainerTable, LittleButton } from '../utils/styles';
 import { refresh } from '../utils/web3-utils';
+import { Tab } from '../utils/styles';
+
+function Tabs() {
+  const [activeTab, setActiveTab] = useState('tokens');
+
+
+  const handleTabClick = (tab: string) => {
+    setActiveTab(tab);
+  };
+
+  return (
+    <div>
+      <Tab>
+        <button
+          onClick={() => handleTabClick('tokens')}
+          className={activeTab === 'tokens' ? 'active' : ''}
+        >
+          Tokens
+        </button>
+        <button
+          onClick={() => handleTabClick('list')}
+          className={activeTab === 'list' ? 'active' : ''}
+        >
+          List
+        </button>
+      </Tab>
+      <div>
+        {activeTab === 'tokens' && <TokenRegistrySettings />}
+        {activeTab === 'list' && <TokenListSettings /> }
+      </div>
+    </div>
+  );
+}
 
 interface TokenRegistrySetting {
   _id: string;
@@ -152,7 +186,6 @@ const TokenRegistrySettings: React.FC = () => {
 
   return (
     <TokenRegistrySection>
-      <h2>Token Registry Settings:</h2>
       <TokenRegistryForm onSuccess={() => fetchTokenRegistrySettings(1)} />
       <Filters>
         <Filter>
@@ -287,4 +320,4 @@ const Pagination = styled.div`
   }
 `;
 
-export default TokenRegistrySettings;
+export default Tabs;

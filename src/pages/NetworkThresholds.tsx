@@ -96,7 +96,6 @@ const NetworkThresholds: React.FC = () => {
 
   return (
     <Section>
-      <h2>Network Thresholds:</h2>
       <NetworkThresholdForm onSuccess={fetchThresholds}/>
       {thresholdData ? (
         <>

@@ -86,7 +86,6 @@ const Web3Settings: React.FC = () => {
 
   return (
     <Section>
-      <h2>Network Settings:</h2>
       <Web3Form onSuccess={fetchWeb3Data} />
       {web3Data ? (
         <>

@@ -88,7 +88,7 @@ const TokenMonitorSettings: React.FC = () => {
       toast.success('Token monitor successfully deleted');
 
     } catch (error: any) {
-      if (error.response.status === 401) {
+      if (error.response?.status === 401) {
         try {
           await refresh();
           await handleConfirmDelete();
@@ -115,7 +115,6 @@ const TokenMonitorSettings: React.FC = () => {
   }
   return (
     <TokenMonitorSection>
-      <h2>Token Monitor Settings:</h2>
       <TokenMonitorForm onSuccess={fetchTokenMonitorSettings} />
       {tokenMonitorSettings ? (
         <>
