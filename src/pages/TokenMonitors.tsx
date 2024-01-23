@@ -20,10 +20,10 @@ interface TokenMonitorSetting {
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
-const TokenMonitorSettings: React.FC = () => {
+const TokenMonitors: React.FC = () => {
   const [
-    tokenMonitorSettings,
-    setTokenMonitorSettings,
+    tokenMonitorsData,
+    setTokenMonitors,
   ] = useState<TokenMonitorSetting[] | null>(null);
   const [customModalOpen, setCustomModalOpen] = useState(false);
   const [deleteParams, setDeleteParams] = useState({
@@ -31,7 +31,7 @@ const TokenMonitorSettings: React.FC = () => {
     chainId: 0,
   });
 
-  const fetchTokenMonitorSettings = async () => {
+  const fetchTokenMonitors = async () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get<TokenMonitorSetting[]>(
@@ -47,12 +47,12 @@ const TokenMonitorSettings: React.FC = () => {
 
       const sortedData = [...response.data];
       sortedData.sort((a, b) => a.address.localeCompare(b.address));
-      setTokenMonitorSettings(sortedData);
+      setTokenMonitors(sortedData);
     } catch (error: any) {
       if (error.response?.status === 401) {
         try {
           await refresh();
-          await fetchTokenMonitorSettings();
+          await fetchTokenMonitors();
         } catch (refreshError) {
           console.error(`Error: Unable to refresh token. Please log in again.`);
         }
@@ -62,7 +62,7 @@ const TokenMonitorSettings: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchTokenMonitorSettings();
+    fetchTokenMonitors();
   }, []);
 
   const handleDeleteClick = (address: string, chainId: number) => {
@@ -84,7 +84,7 @@ const TokenMonitorSettings: React.FC = () => {
         },
       });
 
-      fetchTokenMonitorSettings();
+      fetchTokenMonitors();
       toast.success('Token monitor successfully deleted');
 
     } catch (error: any) {
@@ -110,14 +110,14 @@ const TokenMonitorSettings: React.FC = () => {
     return a.environment.localeCompare(b.environment);
   }
 
-  if (tokenMonitorSettings) {
-    tokenMonitorSettings.sort(compare);
+  if (tokenMonitorsData) {
+    tokenMonitorsData.sort(compare);
   }
-  
+
   return (
     <TokenMonitorSection>
-      <TokenMonitorForm onSuccess={fetchTokenMonitorSettings} />
-      {tokenMonitorSettings ? (
+      <TokenMonitorForm onSuccess={fetchTokenMonitors} />
+      {tokenMonitorsData ? (
         <>
           <ContainerTable>
             <thead>
@@ -131,7 +131,7 @@ const TokenMonitorSettings: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {tokenMonitorSettings.map((setting, index) => (
+              {tokenMonitorsData.map((setting, index) => (
                 <tr key={index}>
                   <td><Address
                     address={setting.environment}
@@ -202,4 +202,4 @@ const TokenMonitorSection = styled.div`
   }
 `;
 
-export default TokenMonitorSettings;
+export default TokenMonitors;

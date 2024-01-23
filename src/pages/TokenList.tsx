@@ -9,7 +9,7 @@ import { ContainerTable } from '../utils/styles';
 import moment from 'moment';
 import { refresh } from '../utils/web3-utils';
 
-interface TokenListSetting {
+interface TokenList {
   isActive: boolean;
   lastUpdate: string;
   name: string;
@@ -20,18 +20,18 @@ interface TokenListSetting {
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
-const TokenListSettings: React.FC = () => {
+const TokenLists: React.FC = () => {
   const [
-    tokenRegistrySettings,
-    setTokenListSettings,
-  ] = useState<TokenListSetting[] | null>(null);
+    tokenRegistryData,
+    setTokenLists,
+  ] = useState<TokenList[] | null>(null);
   const [customModalOpen, setCustomModalOpen] = useState(false);
   const [deleteParams, setDeleteParams] = useState<string>('');
 
-  const fetchTokenListSettings = async () => {
+  const fetchTokenList = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get<TokenListSetting[]>(
+      const response = await axios.get<TokenList[]>(
         `${URL}/token-registry/lists`,
         {
           headers: {
@@ -42,12 +42,12 @@ const TokenListSettings: React.FC = () => {
         }
       );
 
-      setTokenListSettings(response.data);
+      setTokenLists(response.data);
     } catch (error: any) {
       if (error.response?.status === 401) {
         try {
           await refresh();
-          await fetchTokenListSettings();
+          await fetchTokenList();
         } catch (refreshError) {
           console.error(`Error: Unable to refresh token. Please log in again.`);
         }
@@ -57,7 +57,7 @@ const TokenListSettings: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchTokenListSettings();
+    fetchTokenList();
   }, []);
 
   const handleDeleteClick = (id: string) => {
@@ -78,7 +78,7 @@ const TokenListSettings: React.FC = () => {
           'x-auth-token': `${token}`,
         },
       });
-      fetchTokenListSettings();
+      fetchTokenList();
       toast.success('Token list item successfully deleted');
 
     } catch (error: any) {
@@ -103,8 +103,8 @@ const TokenListSettings: React.FC = () => {
 
   return (
     <TokenListSection>
-      <TokenListForm onSuccess={fetchTokenListSettings} />
-      {tokenRegistrySettings ? (
+      <TokenListForm onSuccess={fetchTokenList} />
+      {tokenRegistryData ? (
         <>
           <ContainerTable>
             <thead>
@@ -117,7 +117,7 @@ const TokenListSettings: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {tokenRegistrySettings.map((item, index) => (
+              {tokenRegistryData.map((item, index) => (
                 <tr key={index}>
                   <td>{item.name}</td>
                   <td>
@@ -166,4 +166,4 @@ const TokenListSection = styled.div`
   max-width: 90%;
 `;
 
-export default TokenListSettings;
+export default TokenLists;
