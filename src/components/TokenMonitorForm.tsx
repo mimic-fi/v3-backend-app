@@ -13,6 +13,7 @@ interface TokenMonitorFormProps {
 
 const TokenMonitorForm: React.FC<TokenMonitorFormProps> = ({  onSuccess = () => {} }) => {
   const [address, setAddress] = useState('');
+  const [environment, setEnvironment] = useState('');
   const [chain, setChain] = useState('');
   const [message, setMessage] = useState('');
 
@@ -27,6 +28,7 @@ const TokenMonitorForm: React.FC<TokenMonitorFormProps> = ({  onSuccess = () => 
         {
           chainId,
           address,
+          environment
         },
         {
           headers: {
@@ -69,6 +71,15 @@ const TokenMonitorForm: React.FC<TokenMonitorFormProps> = ({  onSuccess = () => 
       ) : (
         <>
           <div>
+            <label>Environment:</label>
+            <input
+              type="text"
+              value={environment}
+              onChange={(e) => setEnvironment(e.target.value)}
+              required
+            />
+          </div>
+          <div>
             <label>Address:</label>
             <input
               type="text"
@@ -98,7 +109,7 @@ interface FormProps {
 }
 
 const Form = styled.form<FormProps>`
-  width: 874px;
+  width: auto;
   margin-top: 50px;
   display: flex;
   align-items: center;

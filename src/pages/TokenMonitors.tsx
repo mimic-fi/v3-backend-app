@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import Network from '../utils/Network';
+import Address from '../utils/Address';
 import Token from '../components/Token';
 import TokenMonitorForm from '../components/TokenMonitorForm';
 import CustomConfirmationModal from '../components/CustomConfirmationModal';
@@ -11,6 +12,7 @@ import { toast } from 'react-toastify';
 import { refresh } from '../utils/web3-utils';
 
 interface TokenMonitorSetting {
+  environment: string;
   address: string;
   chainId: number;
   tokens: string[];
@@ -18,10 +20,10 @@ interface TokenMonitorSetting {
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
-const TokenMonitorSettings: React.FC = () => {
+const TokenMonitors: React.FC = () => {
   const [
-    tokenMonitorSettings,
-    setTokenMonitorSettings,
+    tokenMonitorsData,
+    setTokenMonitors,
   ] = useState<TokenMonitorSetting[] | null>(null);
   const [customModalOpen, setCustomModalOpen] = useState(false);
   const [deleteParams, setDeleteParams] = useState({
@@ -29,7 +31,7 @@ const TokenMonitorSettings: React.FC = () => {
     chainId: 0,
   });
 
-  const fetchTokenMonitorSettings = async () => {
+  const fetchTokenMonitors = async () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get<TokenMonitorSetting[]>(
@@ -45,12 +47,12 @@ const TokenMonitorSettings: React.FC = () => {
 
       const sortedData = [...response.data];
       sortedData.sort((a, b) => a.address.localeCompare(b.address));
-      setTokenMonitorSettings(sortedData);
+      setTokenMonitors(sortedData);
     } catch (error: any) {
-      if (error.response.status === 401) {
+      if (error.response?.status === 401) {
         try {
           await refresh();
-          await fetchTokenMonitorSettings();
+          await fetchTokenMonitors();
         } catch (refreshError) {
           console.error(`Error: Unable to refresh token. Please log in again.`);
         }
@@ -60,8 +62,8 @@ const TokenMonitorSettings: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchTokenMonitorSettings();
-  }, []); // Llamada inicial
+    fetchTokenMonitors();
+  }, []);
 
   const handleDeleteClick = (address: string, chainId: number) => {
     setDeleteParams({ address, chainId });
@@ -82,11 +84,11 @@ const TokenMonitorSettings: React.FC = () => {
         },
       });
 
-      fetchTokenMonitorSettings();
+      fetchTokenMonitors();
       toast.success('Token monitor successfully deleted');
 
     } catch (error: any) {
-      if (error.response.status === 401) {
+      if (error.response?.status === 401) {
         try {
           await refresh();
           await handleConfirmDelete();
@@ -104,33 +106,56 @@ const TokenMonitorSettings: React.FC = () => {
     setCustomModalOpen(false);
   };
 
+  function compare(a: TokenMonitorSetting, b: TokenMonitorSetting): number {
+    return a.environment.localeCompare(b.environment);
+  }
+
+  if (tokenMonitorsData) {
+    tokenMonitorsData.sort(compare);
+  }
+
   return (
     <TokenMonitorSection>
-      <h2>Token Monitor Settings:</h2>
-      <TokenMonitorForm onSuccess={fetchTokenMonitorSettings} />
-      {tokenMonitorSettings ? (
+      <TokenMonitorForm onSuccess={fetchTokenMonitors} />
+      {tokenMonitorsData ? (
         <>
           <ContainerTable>
             <thead>
               <tr>
+                <th>Environment</th>
                 <th>Address</th>
                 <th>Chain ID</th>
                 <th>Tokens</th>
+                <th>Total</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-              {tokenMonitorSettings.map((setting, index) => (
+              {tokenMonitorsData.map((setting, index) => (
                 <tr key={index}>
-                  <td>{setting.address}</td>
+                  <td><Address
+                    address={setting.environment}
+                    short={true}
+                    showIdentity={false}
+                    withLink={false}
+                    chainId={setting.chainId}/></td>
+                  <td>
+                    <Address
+                      address={setting.address}
+                      short={true}
+                      chainId={setting.chainId}/>
+                  </td>
                   <td>
                     <Network network={setting.chainId} width={1200} />
                   </td>
                   <td>
-                    {setting?.tokens?.length > 0 &&
-                      setting?.tokens.map((item, index) => (
-                        <Token key={index} token={item} chain={setting.chainId} />
-                      ))}
+                    <TokenContainer>
+                      <Token tokens={setting?.tokens} chain={setting.chainId} />
+                    </TokenContainer>
+
+                  </td>
+                  <td>
+                    {setting?.tokens?.length}
                   </td>
                   <td>
                     <img
@@ -159,13 +184,22 @@ const TokenMonitorSettings: React.FC = () => {
     </TokenMonitorSection>
   );
 };
+const TokenContainer = styled.div`
+  display: flex;
+  max-width: 400px;
+  flex-wrap: wrap;
+`
 
 const TokenMonitorSection = styled.div`
   margin: 0px auto;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  width: 874px;
+  align-items: center;
+  width: auto;
+  max-width: 85%;
+  table {
+    max-width: 100%;
+  }
 `;
 
-export default TokenMonitorSettings;
+export default TokenMonitors;

@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { logout } from '../utils/web3-utils'; 
+import { logout } from '../utils/web3-utils';
 
 const logo: string = require('../assets/mimic-admin.svg').default;
 
@@ -36,7 +36,6 @@ export default function NavBar({ onLogout }: NavBarProps) {
           <NavItem to="/dashboard/relayer-executor/settings" label="Relayer Executor" />
           <NavItem to="/dashboard/token-monitor" label="Token Monitor" />
           <NavItem to="/dashboard/token-registry" label="Token Registry" />
-          <NavItem to="/dashboard/token-list" label="Token List" />
           <NavItem to="/dashboard/web3" label="Web3" />
         </div>
         <NavbarLink>

@@ -36,7 +36,7 @@ const RelayerExecutorChains: React.FC = () => {
       );
       setDeniedChainsSettings(response.data);
     } catch (error: any) {
-      if (error.response.status === 401) {
+      if (error.response?.status === 401) {
         try {
           await refresh();
           await fetchDeniedChainsSettings();
@@ -73,7 +73,7 @@ const RelayerExecutorChains: React.FC = () => {
       fetchDeniedChainsSettings();
       toast.success('Denied chain item successfully deleted');
     } catch (error: any) {
-      if (error.response.status === 401) {
+      if (error.response?.status === 401) {
         try {
           await refresh();
           await handleConfirmDelete();
@@ -93,7 +93,6 @@ const RelayerExecutorChains: React.FC = () => {
 
   return (
     <Section>
-      <h2>Denied Chains:</h2>
       <DeniedChainsForm onSuccess={fetchDeniedChainsSettings}/>
       {deniedChainsSettings ? (
         <>

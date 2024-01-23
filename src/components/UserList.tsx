@@ -50,7 +50,6 @@ const UserList: React.FC = () => {
 
   return (
     <Section>
-      <h2>Users:</h2>
       <SignUpForm/>
       {users && users?.length > 0 ? (
         <ContainerTable>

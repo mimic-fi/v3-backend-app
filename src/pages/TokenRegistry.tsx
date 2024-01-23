@@ -1,14 +1,48 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
+import TokenList from './TokenList';
 import TokenRegistryForm from '../components/TokenRegistryForm';
 import CustomConfirmationModal from '../components/CustomConfirmationModal';
 import deleteIcon from '../assets/delete.png';
 import { toast } from 'react-toastify';
 import { ContainerTable, LittleButton } from '../utils/styles';
 import { refresh } from '../utils/web3-utils';
+import { Tab } from '../utils/styles';
 
-interface TokenRegistrySetting {
+function Tabs() {
+  const [activeTab, setActiveTab] = useState('tokens');
+
+
+  const handleTabClick = (tab: string) => {
+    setActiveTab(tab);
+  };
+
+  return (
+    <div>
+      <Tab>
+        <button
+          onClick={() => handleTabClick('tokens')}
+          className={activeTab === 'tokens' ? 'active' : ''}
+        >
+          Tokens
+        </button>
+        <button
+          onClick={() => handleTabClick('list')}
+          className={activeTab === 'list' ? 'active' : ''}
+        >
+          List
+        </button>
+      </Tab>
+      <div>
+        {activeTab === 'tokens' && <TokenRegistry />}
+        {activeTab === 'list' && <TokenList /> }
+      </div>
+    </div>
+  );
+}
+
+interface TokenRegistryData {
   _id: string;
   address: string;
   chainId: number;
@@ -22,30 +56,30 @@ interface TokenRegistrySetting {
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
-const TokenRegistrySettings: React.FC = () => {
+const TokenRegistry: React.FC = () => {
   const [symbolFilter, setSymbolFilter] = useState<string>('');
   const [addressFilter, setAddressFilter] = useState<string>('');
   const [isNativeFilter, setIsNativeFilter] = useState<boolean | null>(null);
   const [isWrappedNativeFilter, setIsWrappedNativeFilter] = useState<boolean | null>(null);
 
-  const [tokenRegistrySettings, setTokenRegistrySettings] = useState<TokenRegistrySetting[] | null>(null);
+  const [tokenRegistryData, setTokenRegistry] = useState<TokenRegistryData[] | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
   const [customModalOpen, setCustomModalOpen] = useState(false);
   const [deleteParams, setDeleteParams] = useState<any>('');
 
-  const fetchTokenRegistrySettings = async (page: number) => {
+  const fetchTokenRegistry = async (page: number) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get<{ data: TokenRegistrySetting[]; pages: number; total: number }>(
+      const response = await axios.get<{ data: TokenRegistryData[]; pages: number; total: number }>(
         `${URL}/token-registry/tokens`,
         {
           params: {
             limit: 20,
             page,
-            symbol: symbolFilter,
-            address: addressFilter,
+            ...(symbolFilter !== '' && { symbol: symbolFilter }),
+            ...(addressFilter !== '' && { addresses: [addressFilter] }),
             isNativeToken: isNativeFilter,
             isWrappedNativeToken: isWrappedNativeFilter,
           },
@@ -57,14 +91,14 @@ const TokenRegistrySettings: React.FC = () => {
         }
       );
 
-      setTokenRegistrySettings(response?.data?.data);
+      setTokenRegistry(response?.data?.data);
       setTotalPages(response?.data?.pages);
       setTotalItems(response?.data?.total);
     } catch (error: any) {
-      if (error.response.status === 401) {
+      if (error.response?.status === 401) {
         try {
           await refresh();
-          await fetchTokenRegistrySettings(page);
+          await fetchTokenRegistry(page);
         } catch (refreshError) {
           console.error(`Error: Unable to refresh token. Please log in again.`);
         }
@@ -74,7 +108,7 @@ const TokenRegistrySettings: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchTokenRegistrySettings(1);
+    fetchTokenRegistry(1);
   }, [symbolFilter, addressFilter, isNativeFilter, isWrappedNativeFilter]);
 
   const handleSymbolFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,10 +149,10 @@ const TokenRegistrySettings: React.FC = () => {
       });
       console.log('Token registry item successfully deleted');
 
-      fetchTokenRegistrySettings(currentPage);
+      fetchTokenRegistry(currentPage);
       toast.success('Token registry item successfully deleted');
     } catch (error: any) {
-      if (error.response.status === 401) {
+      if (error.response?.status === 401) {
         try {
           await refresh();
           await handleConfirmDelete();
@@ -139,21 +173,20 @@ const TokenRegistrySettings: React.FC = () => {
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
-      fetchTokenRegistrySettings(currentPage + 1);
+      fetchTokenRegistry(currentPage + 1);
     }
   };
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
-      fetchTokenRegistrySettings(currentPage - 1);
+      fetchTokenRegistry(currentPage - 1);
     }
   };
 
   return (
     <TokenRegistrySection>
-      <h2>Token Registry Settings:</h2>
-      <TokenRegistryForm onSuccess={() => fetchTokenRegistrySettings(1)} />
+      <TokenRegistryForm onSuccess={() => fetchTokenRegistry(1)} />
       <Filters>
         <Filter>
           <label>Symbol:</label>
@@ -180,7 +213,7 @@ const TokenRegistrySettings: React.FC = () => {
           </select>
         </Filter>
       </Filters>
-      {tokenRegistrySettings ? (
+      {tokenRegistryData ? (
         <>
           <Table>
             <thead>
@@ -197,7 +230,7 @@ const TokenRegistrySettings: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {Object.values(tokenRegistrySettings).map((item, index) => (
+              {Object.values(tokenRegistryData).map((item, index) => (
                 <tr key={index}>
                   <td>{item.address}</td>
                   <td>{item.symbol}</td>
@@ -287,4 +320,4 @@ const Pagination = styled.div`
   }
 `;
 
-export default TokenRegistrySettings;
+export default Tabs;

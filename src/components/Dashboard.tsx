@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import NavBar from './NavBar';
 import ApiSettings from '../pages/ApiSettings';
-import PriceOracleSettings from '../pages/PriceOracleSettings';
+import PriceOracle from '../pages/PriceOracle';
 import RelayerExecutorSettings from '../pages/RelayerExecutorSettings';
-import TokenRegistrySettings from '../pages/TokenRegistrySettings';
-import TokenListSettings from '../pages/TokenListSettings';
-import TokenMonitorSettings from '../pages/TokenMonitorSettings';
+import TokenRegistry from '../pages/TokenRegistry';
+import TokenList from '../pages/TokenList';
+import TokenMonitors from '../pages/TokenMonitors';
 import Web3Settings from '../pages/Web3Settings';
 import styled from 'styled-components';
 import bg from '../assets/background-dashboard.png';
@@ -47,7 +47,7 @@ export default function Dashboard({ onLogout, showError }: DashboardProps) {
         <div className="dashboard-content">
           <Routes>
             <Route path="/api" element={<ApiSettings />} />
-            <Route path="/price-oracle" element={<PriceOracleSettings />} />
+            <Route path="/price-oracle" element={<PriceOracle />} />
             <Route
               path="/relayer-executor"
               element={<RelayerExecutorSettings />}
@@ -56,9 +56,9 @@ export default function Dashboard({ onLogout, showError }: DashboardProps) {
               path="/relayer-executor/:tab"
               element={<RelayerExecutorSettings />}
             />
-            <Route path="/token-monitor" element={<TokenMonitorSettings />} />
-            <Route path="/token-registry" element={<TokenRegistrySettings />} />
-            <Route path="/token-list" element={<TokenListSettings />} />
+            <Route path="/token-monitor" element={<TokenMonitors />} />
+            <Route path="/token-registry" element={<TokenRegistry />} />
+            <Route path="/token-list" element={<TokenList />} />
             <Route path="/web3" element={<Web3Settings />} />
             <Route path="/" element={<ApiSettings />} />
           </Routes>

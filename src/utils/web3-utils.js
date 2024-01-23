@@ -48,7 +48,6 @@ export function isAddress(address) {
 }
 
 export const refresh = async () => {
-  console.log('refresh')
   try {
     const refreshToken = localStorage.getItem('refreshToken');
     const response = await axios.post(
@@ -63,7 +62,6 @@ export const refresh = async () => {
         },
       }
     );
-    console.log('response', response)
     localStorage.setItem('token', response.data.accessToken);
   } catch (error) {
     throw new Error('Unable to refresh token');

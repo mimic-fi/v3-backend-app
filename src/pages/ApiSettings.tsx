@@ -128,7 +128,6 @@ const ApiSettings: React.FC = () => {
 
   return (
     <ApiSection>
-      <h2>API Settings:</h2>
       {apiSettings ? (
         <>
           <Form bg={bg}>
@@ -175,6 +174,7 @@ const Form = styled.form<FormProps>`
   padding: 40px 20px;
   border-radius: 20px;
   background-size: cover;
+  margin-top: 50px;
   .container {
     display: grid;
     grid-template-columns: 320px 320px;
