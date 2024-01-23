@@ -49,7 +49,7 @@ const TokenMonitorSettings: React.FC = () => {
       sortedData.sort((a, b) => a.address.localeCompare(b.address));
       setTokenMonitorSettings(sortedData);
     } catch (error: any) {
-      if (error.response.status === 401) {
+      if (error.response?.status === 401) {
         try {
           await refresh();
           await fetchTokenMonitorSettings();
@@ -113,6 +113,7 @@ const TokenMonitorSettings: React.FC = () => {
   if (tokenMonitorSettings) {
     tokenMonitorSettings.sort(compare);
   }
+  
   return (
     <TokenMonitorSection>
       <TokenMonitorForm onSuccess={fetchTokenMonitorSettings} />
@@ -125,6 +126,7 @@ const TokenMonitorSettings: React.FC = () => {
                 <th>Address</th>
                 <th>Chain ID</th>
                 <th>Tokens</th>
+                <th>Total</th>
                 <th></th>
               </tr>
             </thead>
@@ -147,10 +149,13 @@ const TokenMonitorSettings: React.FC = () => {
                     <Network network={setting.chainId} width={1200} />
                   </td>
                   <td>
-                    {setting?.tokens?.length > 0 &&
-                      setting?.tokens.map((item, index) => (
-                        <Token key={index} token={item} chain={setting.chainId} />
-                      ))}
+                    <TokenContainer>
+                      <Token tokens={setting?.tokens} chain={setting.chainId} />
+                    </TokenContainer>
+
+                  </td>
+                  <td>
+                    {setting?.tokens?.length}
                   </td>
                   <td>
                     <img
@@ -179,6 +184,11 @@ const TokenMonitorSettings: React.FC = () => {
     </TokenMonitorSection>
   );
 };
+const TokenContainer = styled.div`
+  display: flex;
+  max-width: 400px;
+  flex-wrap: wrap;
+`
 
 const TokenMonitorSection = styled.div`
   margin: 0px auto;

@@ -78,8 +78,8 @@ const TokenRegistrySettings: React.FC = () => {
           params: {
             limit: 20,
             page,
-            symbol: symbolFilter,
-            address: addressFilter,
+            ...(symbolFilter !== '' && { symbol: symbolFilter }),
+            ...(addressFilter !== '' && { addresses: [addressFilter] }),
             isNativeToken: isNativeFilter,
             isWrappedNativeToken: isWrappedNativeFilter,
           },
@@ -95,7 +95,7 @@ const TokenRegistrySettings: React.FC = () => {
       setTotalPages(response?.data?.pages);
       setTotalItems(response?.data?.total);
     } catch (error: any) {
-      if (error.response.status === 401) {
+      if (error.response?.status === 401) {
         try {
           await refresh();
           await fetchTokenRegistrySettings(page);
@@ -152,7 +152,7 @@ const TokenRegistrySettings: React.FC = () => {
       fetchTokenRegistrySettings(currentPage);
       toast.success('Token registry item successfully deleted');
     } catch (error: any) {
-      if (error.response.status === 401) {
+      if (error.response?.status === 401) {
         try {
           await refresh();
           await handleConfirmDelete();

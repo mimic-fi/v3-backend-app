@@ -39,7 +39,7 @@ const RelayerExecutorSmartVaults: React.FC = () => {
       );
       setDeniedSmartVaults(response.data);
     } catch (error: any) {
-      if (error.response.status === 401) {
+      if (error.response?.status === 401) {
         try {
           await refresh();
           await fetchDeniedSmartVaults();
@@ -76,7 +76,7 @@ const RelayerExecutorSmartVaults: React.FC = () => {
       fetchDeniedSmartVaults();
       toast.success('Denied chain item successfully deleted');
     } catch (error: any) {
-      if (error.response.status === 401) {
+      if (error.response?.status === 401) {
         try {
           await refresh();
           await handleConfirmDelete();

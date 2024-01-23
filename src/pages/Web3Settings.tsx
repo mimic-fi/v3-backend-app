@@ -35,7 +35,7 @@ const Web3Settings: React.FC = () => {
       setWeb3Data(response.data);
     } catch (error: any) {
       console.error('Web3 data error:', error);
-      if (error.response.status === 401) {
+      if (error.response?.status === 401) {
         try {
           await refresh();
           await fetchWeb3Data();

@@ -44,7 +44,7 @@ const TokenListSettings: React.FC = () => {
 
       setTokenListSettings(response.data);
     } catch (error: any) {
-      if (error.response.status === 401) {
+      if (error.response?.status === 401) {
         try {
           await refresh();
           await fetchTokenListSettings();
@@ -82,7 +82,7 @@ const TokenListSettings: React.FC = () => {
       toast.success('Token list item successfully deleted');
 
     } catch (error: any) {
-      if (error.response.status === 401) {
+      if (error.response?.status === 401) {
         try {
           await refresh();
           await handleConfirmDelete();

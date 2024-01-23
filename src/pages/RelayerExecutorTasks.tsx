@@ -39,7 +39,7 @@ const RelayerExecutorTasks: React.FC = () => {
       );
       setDeniedTasks(response.data);
     } catch (error: any) {
-      if (error.response.status === 401) {
+      if (error.response?.status === 401) {
         try {
           await refresh();
           await fetchDeniedTasks();
@@ -76,7 +76,7 @@ const RelayerExecutorTasks: React.FC = () => {
       fetchDeniedTasks();
       toast.success('Denied chain item successfully deleted');
     } catch (error: any) {
-      if (error.response.status === 401) {
+      if (error.response?.status === 401) {
         try {
           await refresh();
           await handleConfirmDelete();

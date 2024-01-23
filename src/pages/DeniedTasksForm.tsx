@@ -39,7 +39,7 @@ const DeniedChainsForm: React.FC<DeniedChainsFormProps> = ({  onSuccess = () => 
       onSuccess();
     } catch (error: any) {
       if (axios.isAxiosError(error) && error.response) {
-        if (error.response.status === 401) {
+        if (error.response?.status === 401) {
           try {
             await refresh();
             await handleFormSubmit(e);
