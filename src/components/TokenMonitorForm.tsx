@@ -71,7 +71,7 @@ const TokenMonitorForm: React.FC<TokenMonitorFormProps> = ({  onSuccess = () => 
       ) : (
         <>
           <div>
-            <label>Environment:</label>
+            <label>Environment</label>
             <input
               type="text"
               value={environment}
@@ -80,7 +80,7 @@ const TokenMonitorForm: React.FC<TokenMonitorFormProps> = ({  onSuccess = () => 
             />
           </div>
           <div>
-            <label>Address:</label>
+            <label>Address</label>
             <input
               type="text"
               value={address}
@@ -89,7 +89,7 @@ const TokenMonitorForm: React.FC<TokenMonitorFormProps> = ({  onSuccess = () => 
             />
           </div>
           <div>
-            <label>Chain:</label>
+            <label>Chain</label>
             <input
               type="number"
               value={chain}

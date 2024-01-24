@@ -63,7 +63,7 @@ const UserList: React.FC = () => {
           {users.map((user) => (
             <tr key={user._id}>
               <td>{user.email}:</td>
-              <td>Last update:{' '}
+              <td>Last update{' '}
                 {new Date(user.lastUpdate).toLocaleDateString('en-US', {
                  year: 'numeric',
                  month: 'long',

@@ -189,15 +189,15 @@ const TokenRegistry: React.FC = () => {
       <TokenRegistryForm onSuccess={() => fetchTokenRegistry(1)} />
       <Filters>
         <Filter>
-          <label>Symbol:</label>
+          <label>Symbol</label>
           <input type="text" placeholder="Filter by Symbol" value={symbolFilter} onChange={handleSymbolFilterChange} />
         </Filter>
         <Filter>
-          <label>Address:</label>
+          <label>Address</label>
           <input type="text" placeholder="Filter by Address" value={addressFilter} onChange={handleAddressFilterChange} />
         </Filter>
         <Filter>
-          <label>Native:</label>
+          <label>Native</label>
           <select value={isNativeFilter === null ? 'all' : isNativeFilter ? 'yes' : 'no'} onChange={handleIsNativeFilterChange}>
             <option value="all">All</option>
             <option value="yes">Yes</option>
@@ -205,7 +205,7 @@ const TokenRegistry: React.FC = () => {
           </select>
         </Filter>
         <Filter>
-          <label>Wrapped:</label>
+          <label>Wrapped</label>
           <select value={isWrappedNativeFilter === null ? 'all' : isWrappedNativeFilter ? 'yes' : 'no'} onChange={handleIsWrappedNativeFilterChange}>
             <option value="all">All</option>
             <option value="yes">Yes</option>

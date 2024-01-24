@@ -106,7 +106,7 @@ const TokenListForm: React.FC<TokenListFormProps> = ({ onSuccess = () => {} }) =
         <>
           <Group>
             <div>
-              <label>Address:</label>
+              <label>Address</label>
               <input
                 type="text"
                 value={formData.address}
@@ -115,7 +115,7 @@ const TokenListForm: React.FC<TokenListFormProps> = ({ onSuccess = () => {} }) =
               />
             </div>
             <div>
-              <label>Symbol:</label>
+              <label>Symbol</label>
               <input
                 type="text"
                 value={formData.symbol}
@@ -126,7 +126,7 @@ const TokenListForm: React.FC<TokenListFormProps> = ({ onSuccess = () => {} }) =
           </Group>
           <Group>
             <div>
-              <label>Name:</label>
+              <label>Name</label>
               <input
                 type="text"
                 value={formData.name}
@@ -135,7 +135,7 @@ const TokenListForm: React.FC<TokenListFormProps> = ({ onSuccess = () => {} }) =
               />
             </div>
             <div>
-              <label>Decimals:</label>
+              <label>Decimals</label>
               <input
                 type="number"
                 value={formData.decimals}
@@ -148,7 +148,7 @@ const TokenListForm: React.FC<TokenListFormProps> = ({ onSuccess = () => {} }) =
           </Group>
           <Group>
             <div>
-              <label>Chain ID:</label>
+              <label>Chain ID</label>
               <input
                 type="number"
                 value={formData.chainId}
@@ -159,21 +159,21 @@ const TokenListForm: React.FC<TokenListFormProps> = ({ onSuccess = () => {} }) =
           </Group>
           <Group>
             <div>
-              <label>Is Native Token:</label>
+              <label>Is Native Token</label>
               <Switch
                 ison={formData.isNativeToken}
                 onToggle={() => handleSwitchToggle('isNativeToken')}
               />
             </div>
             <div>
-              <label>Is Wrapped Native Token:</label>
+              <label>Is Wrapped Native Token</label>
               <Switch
                 ison={formData.isWrappedNativeToken}
                 onToggle={() => handleSwitchToggle('isWrappedNativeToken')}
               />
             </div>
             <div>
-              <label>Is ERC20:</label>
+              <label>Is ERC20</label>
               <Switch
                 ison={formData.isERC20}
                 onToggle={() => handleSwitchToggle('isERC20')}
