@@ -3,9 +3,43 @@ import axios from 'axios';
 import styled from 'styled-components';
 import bg from '../assets/bg.png';
 import { refresh } from '../utils/web3-utils';
+import { Tab } from '../utils/styles';
+import PriceOraclePrices from './PriceOraclePrices'
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
+
+function Tabs() {
+  const [activeTab, setActiveTab] = useState('settings');
+
+
+  const handleTabClick = (tab: string) => {
+    setActiveTab(tab);
+  };
+
+  return (
+    <div>
+      <Tab>
+        <button
+          onClick={() => handleTabClick('settings')}
+          className={activeTab === 'settings' ? 'active' : ''}
+        >
+          Settings
+        </button>
+        <button
+          onClick={() => handleTabClick('prices')}
+          className={activeTab === 'prices' ? 'active' : ''}
+        >
+          Prices
+        </button>
+      </Tab>
+      <div>
+        {activeTab === 'settings' && <PriceOracleSettings />}
+        {activeTab === 'prices' && <PriceOraclePrices /> }
+      </div>
+    </div>
+  );
+}
 interface PriceOracleSettingsProps {
   onSuccess?: () => void;
 }
@@ -177,4 +211,4 @@ const Message = styled.div`
   }
 `;
 
-export default PriceOracleSettings;
+export default Tabs;

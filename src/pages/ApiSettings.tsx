@@ -171,10 +171,12 @@ const Form = styled.form<FormProps>`
   flex-direction: column;
   align-items: center;
   background: #3d404f;
-  padding: 40px 20px;
   border-radius: 20px;
+  margin: 50px auto 0 auto;
+  gap: 30px;
+  background: url(${(props) => props.bg}) no-repeat 10%;
+  padding: 10px 20px;
   background-size: cover;
-  margin-top: 50px;
   .container {
     display: grid;
     grid-template-columns: 320px 320px;
@@ -186,7 +188,7 @@ const Form = styled.form<FormProps>`
     gap: 10px;
     width: 670px;
   }
-
+  
   button {
     margin-right: 20px;
   }
