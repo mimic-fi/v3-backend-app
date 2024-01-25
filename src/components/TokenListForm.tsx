@@ -75,7 +75,7 @@ const TokenListForm: React.FC<TokenListFormProps> = ({  onSuccess = () => {} }) 
       ) : (
         <>
           <div>
-            <label>Name:</label>
+            <label>Name</label>
             <input
               type="text"
               value={name}
@@ -84,7 +84,7 @@ const TokenListForm: React.FC<TokenListFormProps> = ({  onSuccess = () => {} }) 
             />
           </div>
           <div>
-            <label>Url:</label>
+            <label>Url</label>
             <input
               type="text"
               value={url}

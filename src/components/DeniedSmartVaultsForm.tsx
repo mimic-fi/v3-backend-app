@@ -66,7 +66,7 @@ const DeniedChainsForm: React.FC<DeniedChainsFormProps> = ({  onSuccess = () => 
       ) : (
         <>
           <div>
-            <label>Chain id:</label>
+            <label>Chain id</label>
             <input
               type="number"
               value={chainId}
@@ -75,7 +75,7 @@ const DeniedChainsForm: React.FC<DeniedChainsFormProps> = ({  onSuccess = () => 
             />
           </div>
           <div>
-            <label>Address:</label>
+            <label>Address</label>
             <input
               type="text"
               value={address}

@@ -53,7 +53,7 @@ const SignUpForm: React.FC = () => {
       ) : (
         <>
           <div>
-            <label>Email:</label>
+            <label>Email</label>
             <input
               type="email"
               value={email}
@@ -62,7 +62,7 @@ const SignUpForm: React.FC = () => {
             />
           </div>
           <div>
-            <label>Password:</label>
+            <label>Password</label>
             <input
               type="password"
               value={password}

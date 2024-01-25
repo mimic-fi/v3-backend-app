@@ -66,7 +66,7 @@ const NetworkThresholdForm: React.FC<NetworkThresholdFormProps> = ({  onSuccess 
       ) : (
         <>
           <div>
-            <label>Chain id:</label>
+            <label>Chain id</label>
             <input
               type="number"
               value={chainId}
@@ -75,7 +75,7 @@ const NetworkThresholdForm: React.FC<NetworkThresholdFormProps> = ({  onSuccess 
             />
           </div>
           <div>
-            <label>Amount:</label>
+            <label>Amount</label>
             <input
               type="number"
               value={amount}

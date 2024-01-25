@@ -90,7 +90,7 @@ const Web3Form: React.FC<Web3FormProps> = ({ onSuccess = () => {} }) => {
         <>
           <Group>
             <div>
-              <label>Name:</label>
+              <label>Name</label>
               <input
                 type="text"
                 name="name"
@@ -100,7 +100,7 @@ const Web3Form: React.FC<Web3FormProps> = ({ onSuccess = () => {} }) => {
               />
             </div>
             <div>
-              <label>Chain ID:</label>
+              <label>Chain ID</label>
               <input
                 type="number"
                 name="chainId"
@@ -112,7 +112,7 @@ const Web3Form: React.FC<Web3FormProps> = ({ onSuccess = () => {} }) => {
           </Group>
           <Group>
             <div>
-              <label>Native Token Symbol:</label>
+              <label>Native Token Symbol</label>
               <input
                 type="text"
                 name="nativeTokenSymbol"
@@ -123,7 +123,7 @@ const Web3Form: React.FC<Web3FormProps> = ({ onSuccess = () => {} }) => {
             </div>
 
             <div>
-              <label>RPC Query Endpoints (comma-separated):</label>
+              <label>RPC Query Endpoints (comma-separated)</label>
               <input
                 type="text"
                 name="rpcQueryEndpoints"
@@ -135,7 +135,7 @@ const Web3Form: React.FC<Web3FormProps> = ({ onSuccess = () => {} }) => {
           </Group>
           <Group>
             <div>
-              <label>RPC Execution Endpoints (comma-separated):</label>
+              <label>RPC Execution Endpoints (comma-separated)</label>
               <input
                 type="text"
                 name="rpcExecutionEndpoints"
