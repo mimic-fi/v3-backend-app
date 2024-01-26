@@ -11,8 +11,10 @@ interface Status {
   suspend: boolean;
   schedule: string;
   name: string;
-  lastScheduleTime: string;
-  nextScheduleTime: string;
+  lastScheduleTime: any;
+  nextScheduleTime: any;
+  lastCompletionTime: any;
+  lastStartTime: any;
   _id: string;
 }
 
@@ -59,7 +61,25 @@ const StatusRelayer: React.FC = () => {
 
   const filteredData = statusRelayerData ? statusRelayerData.filter(obj => !obj.name.startsWith("relayer-executor-cron")) : null;
 
+  const formatDuration = (duration:any) => {
+    const hours = duration.hours();
+    const minutes = duration.minutes();
+    const seconds = duration.seconds();
 
+    let formattedDuration = '';
+    if (hours > 0) {
+      formattedDuration += `${hours} h${hours > 1 ? 's' : ''} `;
+    }
+    if (minutes > 0) {
+      formattedDuration += ` ${minutes} min`;
+    }
+    if (seconds > 0) {
+      formattedDuration += ` ${seconds} sec`;
+    }
+
+    return formattedDuration.trim();
+  };
+  
   return (
     <Section>
       {statusRelayerData ? (
@@ -75,23 +95,38 @@ const StatusRelayer: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredData?.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.name}</td>
-                  <td>
-                    {item.schedule}
-                  </td>
-                  <td>
-                    {moment(item.nextScheduleTime).format('MMMM DD, YYYY [at] HH:mm:ss')}
-                  </td>
-                  <td>
-                    {moment(item.lastScheduleTime).format('MMMM DD, YYYY [at] HH:mm:ss')}
-                  </td>
-                  <td>
-                    {item.suspend ? '🚨' : '🟢'}
-                  </td>
-                </tr>
-              ))}
+            {filteredData?.map((item, index) => (
+              <tr key={index}>
+                <td>{item.name}</td>
+                <td>
+                  {formatDuration(moment.duration(moment(item.lastCompletionTime).diff(moment(item.lastStartTime))))}
+                  {moment.duration(moment(item.lastCompletionTime).diff(moment(item.lastStartTime))).asMinutes() < 2 ? (
+                      <> 🚨</>
+                    ) : ''
+                  }
+                </td>
+                <td>
+                  {moment(item.lastStartTime).format('DD/MM/YY HH:mm[hs]')}
+                </td>
+                <td>
+                  {moment(item.lastCompletionTime).format('DD/MM/YY HH:mm[hs]')}
+                </td>
+                <td>
+                  {moment(item.lastScheduleTime).format('DD/MM/YY HH:mm[hs]')}
+                </td>
+
+                <td>
+                  {moment(item.nextScheduleTime).format('DD/MM/YY HH:mm[hs]')}
+                </td>
+                <td>
+                  {item.schedule}
+                </td>
+                <td>
+                  {item.suspend ? '🚨' : '🟢'}
+                </td>
+
+              </tr>
+            ))}
             </tbody>
           </ContainerTable>
         </>

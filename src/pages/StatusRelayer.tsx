@@ -88,13 +88,14 @@ const StatusRelayer: React.FC = () => {
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Last Completion Time</th>
+                <th>Duration</th>
                 <th>Last Start Time</th>
-                <th>Schedule</th>
-                <th>Next Schedule Time</th>
+                <th>Last Completion Time</th>
                 <th>Last Schedule Time</th>
+                <th>Next Schedule Time</th>
+                <th>Schedule</th>
                 <th>Suspended</th>
-                <th>Time</th>
+
               </tr>
             </thead>
             <tbody>
@@ -102,30 +103,32 @@ const StatusRelayer: React.FC = () => {
                 <tr key={index}>
                   <td>{item.name}</td>
                   <td>
-                    {moment(item.lastCompletionTime).format('DD/MM/YY HH:mm[hs]')}
-                  </td>
-                  <td>
-                    {moment(item.lastStartTime).format('DD/MM/YY HH:mm[hs]')}
-                  </td>
-                  <td>
-                    {item.schedule}
-                  </td>
-                  <td>
-                    {moment(item.nextScheduleTime).format('DD/MM/YY HH:mm[hs]')}
-                  </td>
-                  <td>
-                    {moment(item.lastScheduleTime).format('DD/MM/YY HH:mm[hs]')}
-                  </td>
-                  <td>
-                    {item.suspend ? '🚨' : '🟢'}
-                  </td>
-                  <td>
                     {formatDuration(moment.duration(moment(item.lastCompletionTime).diff(moment(item.lastStartTime))))}
                     {moment.duration(moment(item.lastCompletionTime).diff(moment(item.lastStartTime))).asMinutes() < 2 ? (
                         <> 🚨</>
                       ) : ''
                     }
                   </td>
+                  <td>
+                    {moment(item.lastStartTime).format('DD/MM/YY HH:mm[hs]')}
+                  </td>
+                  <td>
+                    {moment(item.lastCompletionTime).format('DD/MM/YY HH:mm[hs]')}
+                  </td>
+                  <td>
+                    {moment(item.lastScheduleTime).format('DD/MM/YY HH:mm[hs]')}
+                  </td>
+
+                  <td>
+                    {moment(item.nextScheduleTime).format('DD/MM/YY HH:mm[hs]')}
+                  </td>
+                  <td>
+                    {item.schedule}
+                  </td>
+                  <td>
+                    {item.suspend ? '🚨' : '🟢'}
+                  </td>
+
                 </tr>
               ))}
             </tbody>
