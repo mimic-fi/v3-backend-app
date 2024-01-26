@@ -57,7 +57,7 @@ const ApiSettings: React.FC = () => {
     const fetchApiSettings = async () => {
       try {
         const token = localStorage.getItem('token')
-        const response = await axios.get(`${URL}/api-setting`, {
+        const response = await axios.get(`${URL}/api/settings`, {
           headers: {
             'Access-Control-Allow-Origin': '*',
             'Content-type': 'application/json',
@@ -89,7 +89,7 @@ const ApiSettings: React.FC = () => {
   const handleSaveClick = async () => {
     try {
       const token = localStorage.getItem('token')
-      await axios.put(`${URL}/api-setting`, editedSettings, {
+      await axios.put(`${URL}/api/settings`, editedSettings, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Content-type': 'application/json',
@@ -188,7 +188,7 @@ const Form = styled.form<FormProps>`
     gap: 10px;
     width: 670px;
   }
-  
+
   button {
     margin-right: 20px;
   }

@@ -51,7 +51,7 @@ export const refresh = async () => {
   try {
     const refreshToken = localStorage.getItem('refreshToken');
     const response = await axios.post(
-      `${URL}/renew-token`,
+      `${URL}/users/renew-token`,
       {
         refreshToken,
       },

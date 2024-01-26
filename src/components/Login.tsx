@@ -19,7 +19,7 @@ export default function Login({ onLogin, showError }: LoginFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const response = await axios.post(`${URL}/login`, { email, password })
+      const response = await axios.post(`${URL}/users/login`, { email, password })
       localStorage.setItem('token', response.data.accessToken)
       localStorage.setItem('refreshToken', response.data.refreshToken)
       onLogin()
