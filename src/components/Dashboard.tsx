@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import NavBar from './NavBar';
 import ApiSettings from '../pages/ApiSettings';
+import Status from '../pages/Status';
 import PriceOracle from '../pages/PriceOracle';
 import RelayerExecutorSettings from '../pages/RelayerExecutorSettings';
 import TokenRegistry from '../pages/TokenRegistry';
@@ -46,6 +47,8 @@ export default function Dashboard({ onLogout, showError }: DashboardProps) {
       <DashboardContainer background={bg}>
         <div className="dashboard-content">
           <Routes>
+            <Route path="/status" element={<Status />} />
+            <Route path="/status/:tab" element={<Status />} />
             <Route path="/api" element={<ApiSettings />} />
             <Route path="/price-oracle" element={<PriceOracle />} />
             <Route
@@ -60,7 +63,7 @@ export default function Dashboard({ onLogout, showError }: DashboardProps) {
             <Route path="/token-registry" element={<TokenRegistry />} />
             <Route path="/token-list" element={<TokenList />} />
             <Route path="/web3" element={<Web3Settings />} />
-            <Route path="/" element={<ApiSettings />} />
+            <Route path="/" element={<Status />} />
           </Routes>
         </div>
       </DashboardContainer>

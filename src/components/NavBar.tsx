@@ -31,6 +31,7 @@ export default function NavBar({ onLogout }: NavBarProps) {
       <NavbarContainer>
         <img alt="logo" src={logo} />
         <div className="nav-bar">
+          <NavItem to="/dashboard/status" label="Status" />
           <NavItem to="/dashboard/api" label="API" />
           <NavItem to="/dashboard/price-oracle" label="Price Oracle" />
           <NavItem to="/dashboard/relayer-executor/settings" label="Relayer Executor" />
