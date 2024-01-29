@@ -16,6 +16,7 @@ interface Status {
   lastScheduleTime: any;
   nextScheduleTime: any;
   _id: string;
+  active: boolean;
 }
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
@@ -41,7 +42,6 @@ const StatusRelayer: React.FC = () => {
           },
         }
       );
-      console.log(response.data)
       setData(response.data);
     } catch (error: any) {
       if (error.response?.status === 401) {
@@ -61,7 +61,7 @@ const StatusRelayer: React.FC = () => {
   }, []);
 
   const filteredData = statusRelayerData ? statusRelayerData.filter(obj => obj.name.startsWith("relayer-executor-cron")) : null;
-
+  console.log(filteredData)
   const formatDuration = (duration:any) => {
     const hours = duration.hours();
     const minutes = duration.minutes();
@@ -78,7 +78,7 @@ const StatusRelayer: React.FC = () => {
       formattedDuration += ` ${seconds} sec`;
     }
 
-    return formattedDuration.trim();  // Elimina espacios al final
+    return formattedDuration.trim();
   };
   return (
     <Section>
@@ -95,7 +95,6 @@ const StatusRelayer: React.FC = () => {
                 <th>Next Schedule Time</th>
                 <th>Schedule</th>
                 <th>Suspended</th>
-
               </tr>
             </thead>
             <tbody>
@@ -104,7 +103,7 @@ const StatusRelayer: React.FC = () => {
                   <td>{item.name}</td>
                   <td>
                     {formatDuration(moment.duration(moment(item.lastCompletionTime).diff(moment(item.lastStartTime))))}
-                    {moment.duration(moment(item.lastCompletionTime).diff(moment(item.lastStartTime))).asMinutes() < 2 ? (
+                    {moment.duration(moment(item.lastCompletionTime).diff(moment(item.lastStartTime))).asMinutes() < 2 && item.active !== true ? (
                         <> 🚨</>
                       ) : ''
                     }
@@ -113,7 +112,7 @@ const StatusRelayer: React.FC = () => {
                     {moment(item.lastStartTime).format('DD/MM/YY HH:mm[hs]')}
                   </td>
                   <td>
-                    {moment(item.lastCompletionTime).format('DD/MM/YY HH:mm[hs]')}
+                    {item.active === true ? 'Running' : moment(item.lastCompletionTime).format('DD/MM/YY HH:mm[hs]')}
                   </td>
                   <td>
                     {moment(item.lastScheduleTime).format('DD/MM/YY HH:mm[hs]')}

@@ -28,36 +28,39 @@ interface NoncesData {
   };
 }
 
-
+interface Balances {
+  [key: string]: string;
+}
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
-const NoncesTable: React.FC<{ name: string; nonceData: NoncesData }> = ({ name, nonceData }) => (
-  <div>
-    <h2>{name}</h2>
-    <ContainerTable>
-      <thead>
-        <tr>
-          <th>Chain</th>
-          <th>On Chain</th>
-          <th>Local</th>
-          <th>Balances</th>
-        </tr>
-      </thead>
-      <tbody>
-        {Object.entries<any>(nonceData).map(([key, value]) => (
-          <tr key={key + value.onChain}>
-            <td><Network network={key} width={1200} /></td>
-            <td>{value.onChain}</td>
-            <td>{value.local}</td>
-            <td></td>
+const NoncesTable: React.FC<{ name: string; nonceData: NoncesData; balances: Balances | null }> = ({ name, nonceData, balances }) => {
+  return (
+    <div>
+      <h2>{name}</h2>
+      <ContainerTable>
+        <thead>
+          <tr>
+            <th>Chain</th>
+            <th>On Chain</th>
+            <th>Local</th>
+            <th>Balances</th>
           </tr>
-        ))}
-      </tbody>
-    </ContainerTable>
-  </div>
-);
-
+        </thead>
+        <tbody>
+          {Object.entries<any>(nonceData).map(([key, value]) => (
+            <tr key={key + value.onChain}>
+              <td><Network network={key} width={1200} /></td>
+              <td>{value.onChain}</td>
+              <td>{value.local}</td>
+              <td>{(balances && key in balances) ? balances[key] : ''}</td>
+            </tr>
+          ))}
+        </tbody>
+      </ContainerTable>
+    </div>
+  );
+};
 
 
 const StatusRelayer: React.FC = () => {
@@ -65,6 +68,10 @@ const StatusRelayer: React.FC = () => {
     statusData,
     setData,
   ] = useState<Status | null>(null);
+  const [
+    balances,
+    setBalances,
+  ] = useState<{ [key: string]: Balances }>({});
   const [customModalOpen, setCustomModalOpen] = useState(false);
   const [deleteParams, setDeleteParams] = useState<string>('');
 
@@ -81,7 +88,7 @@ const StatusRelayer: React.FC = () => {
           },
         }
       );
-      console.log(response.data)
+
       setData(response.data);
     } catch (error: any) {
       if (error.response?.status === 401) {
@@ -96,8 +103,37 @@ const StatusRelayer: React.FC = () => {
     }
   };
 
+  const fetchBalances = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get<{ [key: string]: Balances }>(
+        `${URL}/web3/wallets/balances`,
+        {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-type': 'application/json',
+            'x-auth-token': `${token}`,
+          },
+        }
+      );
+
+      setBalances(response.data);
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        try {
+          await refresh();
+          await fetchBalances();
+        } catch (refreshError) {
+          console.error(`Error: Unable to refresh token. Please log in again.`);
+        }
+      }
+      console.error('There was an error loading the data:', error);
+    }
+  };
+
   useEffect(() => {
     fetchData();
+    fetchBalances();
   }, []);
 
 
@@ -105,7 +141,7 @@ const StatusRelayer: React.FC = () => {
     <Section>
       {statusData ? (
         <>{statusData.nonces && Object.entries(statusData.nonces).map(([key, value]) => (
-        <NoncesTable name={key} nonceData={value} />
+        <NoncesTable name={key} nonceData={value} balances={(balances && key in balances) ? balances[key] : null} />
       ))}</>
       ) : (
         <p>Loading...</p>
@@ -113,6 +149,7 @@ const StatusRelayer: React.FC = () => {
     </Section>
   );
 };
+
 
 const Section = styled.div`
   margin: 0px auto;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import deleteIcon from '../assets/delete.png';
@@ -11,11 +11,12 @@ interface Status {
   suspend: boolean;
   schedule: string;
   name: string;
-  lastScheduleTime: any;
-  nextScheduleTime: any;
   lastCompletionTime: any;
   lastStartTime: any;
+  lastScheduleTime: any;
+  nextScheduleTime: any;
   _id: string;
+  active: boolean;
 }
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
@@ -60,7 +61,7 @@ const StatusRelayer: React.FC = () => {
   }, []);
 
   const filteredData = statusRelayerData ? statusRelayerData.filter(obj => !obj.name.startsWith("relayer-executor-cron")) : null;
-
+  console.log(filteredData)
   const formatDuration = (duration:any) => {
     const hours = duration.hours();
     const minutes = duration.minutes();
@@ -79,7 +80,6 @@ const StatusRelayer: React.FC = () => {
 
     return formattedDuration.trim();
   };
-  
   return (
     <Section>
       {statusRelayerData ? (
@@ -88,45 +88,48 @@ const StatusRelayer: React.FC = () => {
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Schedule</th>
-                <th>Next Schedule Time</th>
+                <th>Duration</th>
+                <th>Last Start Time</th>
+                <th>Last Completion Time</th>
                 <th>Last Schedule Time</th>
+                <th>Next Schedule Time</th>
+                <th>Schedule</th>
                 <th>Suspended</th>
               </tr>
             </thead>
             <tbody>
-            {filteredData?.map((item, index) => (
-              <tr key={index}>
-                <td>{item.name}</td>
-                <td>
-                  {formatDuration(moment.duration(moment(item.lastCompletionTime).diff(moment(item.lastStartTime))))}
-                  {moment.duration(moment(item.lastCompletionTime).diff(moment(item.lastStartTime))).asMinutes() < 2 ? (
-                      <> 🚨</>
-                    ) : ''
-                  }
-                </td>
-                <td>
-                  {moment(item.lastStartTime).format('DD/MM/YY HH:mm[hs]')}
-                </td>
-                <td>
-                  {moment(item.lastCompletionTime).format('DD/MM/YY HH:mm[hs]')}
-                </td>
-                <td>
-                  {moment(item.lastScheduleTime).format('DD/MM/YY HH:mm[hs]')}
-                </td>
+              {filteredData?.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.name}</td>
+                  <td>
+                    {formatDuration(moment.duration(moment(item.lastCompletionTime).diff(moment(item.lastStartTime))))}
+                    {moment.duration(moment(item.lastCompletionTime).diff(moment(item.lastStartTime))).asMinutes() < 2 && item.active !== true ? (
+                        <> 🚨</>
+                      ) : ''
+                    }
+                  </td>
+                  <td>
+                    {moment(item.lastStartTime).format('DD/MM/YY HH:mm[hs]')}
+                  </td>
+                  <td>
+                    {item.active === true ? 'Running' : moment(item.lastCompletionTime).format('DD/MM/YY HH:mm[hs]')}
+                  </td>
+                  <td>
+                    {moment(item.lastScheduleTime).format('DD/MM/YY HH:mm[hs]')}
+                  </td>
 
-                <td>
-                  {moment(item.nextScheduleTime).format('DD/MM/YY HH:mm[hs]')}
-                </td>
-                <td>
-                  {item.schedule}
-                </td>
-                <td>
-                  {item.suspend ? '🚨' : '🟢'}
-                </td>
+                  <td>
+                    {moment(item.nextScheduleTime).format('DD/MM/YY HH:mm[hs]')}
+                  </td>
+                  <td>
+                    {item.schedule}
+                  </td>
+                  <td>
+                    {item.suspend ? '🚨' : '🟢'}
+                  </td>
 
-              </tr>
-            ))}
+                </tr>
+              ))}
             </tbody>
           </ContainerTable>
         </>
