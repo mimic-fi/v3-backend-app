@@ -32,7 +32,7 @@ const PricesSearch: React.FC = () => {
     try {
       const token = localStorage.getItem('token')
       const response = await axios.get(
-        `${URL}/price-oracle/prices`,
+        `${URL}/price-oracle/prices/last`,
         { params: {
             addresses: [address],
             chainId,

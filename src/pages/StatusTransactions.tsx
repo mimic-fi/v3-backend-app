@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import deleteIcon from '../assets/delete.png';
 import { toast } from 'react-toastify';
 import { ContainerTable } from '../utils/styles';
+import Network from '../utils/Network';
 import moment from 'moment';
 import { refresh } from '../utils/web3-utils';
 
@@ -22,14 +23,14 @@ const StatusRelayer: React.FC = () => {
   const [
     statusData,
     setData,
-  ] = useState<Status[] | null>(null);
+  ] = useState<Status | null>(null);
   const [customModalOpen, setCustomModalOpen] = useState(false);
   const [deleteParams, setDeleteParams] = useState<string>('');
 
   const fetchData = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get<Status[]>(
+      const response = await axios.get<Status>(
         `${URL}/relayer-executor/transactions/report`,
         {
           headers: {
@@ -57,14 +58,32 @@ const StatusRelayer: React.FC = () => {
     fetchData();
   }, []);
 
-
-
   return (
     <Section>
       {statusData ? (
-        <p>
+        <ContainerTable>
+          <thead>
+            <tr>
+              <th>Chain</th>
+              <th>Success</th>
+              <th>Pending</th>
+              <th>Missing</th>
+              <th>Failed</th>
 
-        </p>
+            </tr>
+          </thead>
+          <tbody>
+            {Object.entries<any>(statusData?.transactions).map(([key, value], index) => (
+              <tr key={index}>
+                <td><Network network={key} width={1200} /></td>
+                <td className="green">{value.success}</td>
+                <td className="yellow">{value.pending}</td>
+                <td className="orange">{value.missing}</td>
+                <td className="red">{value.failed}</td>
+              </tr>
+            ))}
+          </tbody>
+        </ContainerTable>
       ) : (
         <p>Loading...</p>
       )}
@@ -79,6 +98,21 @@ const Section = styled.div`
   align-items: center;
   min-width: 874px;
   max-width: 90%;
+
+  td.green {
+    color:   #33C2B0;
+  }
+  td.yellow {
+    color: #FFCC33;
+  }
+  td.orange {
+    color: #ff8927;
+  }
+  td.red {
+    color: #DE0000;
+  }
 `;
+
+
 
 export default StatusRelayer;

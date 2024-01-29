@@ -61,7 +61,7 @@ const StatusRelayer: React.FC = () => {
   }, []);
 
   const filteredData = statusRelayerData ? statusRelayerData.filter(obj => !obj.name.startsWith("relayer-executor-cron")) : null;
-  console.log(filteredData)
+
   const formatDuration = (duration:any) => {
     const hours = duration.hours();
     const minutes = duration.minutes();
