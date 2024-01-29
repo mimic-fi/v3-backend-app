@@ -144,4 +144,17 @@ const DashboardContainer = styled.div<DashProps>`
     margin-top: 60px;
     margin-bottom: 20px;
   }
+
+  .green {
+    color:   #33C2B0;
+  }
+  .yellow {
+    color: #FFCC33;
+  }
+  .orange {
+    color: #ff8927;
+  }
+  .red {
+    color: #DE0000;
+  }
 `

@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { ContainerTable } from '../utils/styles';
 import Network from '../utils/Network';
 import moment from 'moment';
-import { refresh } from '../utils/web3-utils';
+import { refresh, formatTokenAmount } from '../utils/web3-utils';
 
 interface Status {
   transactions?: {
@@ -52,9 +52,11 @@ const NoncesTable: React.FC<{ name: string; nonceData: NoncesData; balances: Bal
             <tr key={index}>
               <td><Network network={key} width={1200} /></td>
               <td>{value.onChain}</td>
-              <td>{value.local}</td>
-              <td>{(balances && key in balances) ? balances[key] : ''}</td>
+              <td className={value.local > value.onChain ? "red" : ""}>{value.local}</td>
+              <td>{(balances && key in balances) ? formatTokenAmount(balances[key], 18, {digits: 2}) : ''}</td>
             </tr>
+
+
           ))}
         </tbody>
       </ContainerTable>
