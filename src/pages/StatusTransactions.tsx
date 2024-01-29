@@ -39,7 +39,6 @@ const StatusRelayer: React.FC = () => {
           },
         }
       );
-      console.log(response.data)
       setData(response.data);
     } catch (error: any) {
       if (error.response?.status === 401) {
@@ -64,7 +63,7 @@ const StatusRelayer: React.FC = () => {
     <Section>
       {statusData ? (
         <p>
-          
+
         </p>
       ) : (
         <p>Loading...</p>

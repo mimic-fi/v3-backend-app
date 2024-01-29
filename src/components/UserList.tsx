@@ -10,7 +10,7 @@ const URL = process.env.REACT_APP_SERVER_BASE_URL
 interface User {
   _id: number;
   email: string;
-  lastUpdate: string;
+  updatedAt: string;
 }
 
 const UserList: React.FC = () => {
@@ -47,7 +47,7 @@ const UserList: React.FC = () => {
 
     fetchUsers()
   }, [])
-
+  
   return (
     <Section>
       <SignUpForm/>
@@ -56,22 +56,20 @@ const UserList: React.FC = () => {
           <thead>
             <tr>
               <th>User</th>
-              <th>Last update</th>
+              <th>Updated At</th>
             </tr>
           </thead>
           <tbody>
           {users.map((user) => (
             <tr key={user._id}>
-              <td>{user.email}:</td>
-              <td>Last update{' '}
-                {new Date(user.lastUpdate).toLocaleDateString('en-US', {
+              <td>{user.email}</td>
+              <td>
+                {new Date(user.updatedAt).toLocaleDateString('en-US', {
                  year: 'numeric',
                  month: 'long',
                  day: 'numeric',
                  hour: 'numeric',
                  minute: 'numeric',
-                 second: 'numeric',
-                 timeZoneName: 'short',
                })}
              </td>
             </tr>
