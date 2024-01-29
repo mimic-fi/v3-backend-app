@@ -48,8 +48,8 @@ const NoncesTable: React.FC<{ name: string; nonceData: NoncesData; balances: Bal
           </tr>
         </thead>
         <tbody>
-          {Object.entries<any>(nonceData).map(([key, value]) => (
-            <tr key={key + value.onChain}>
+          {Object.entries<any>(nonceData).map(([key, value], index) => (
+            <tr key={index}>
               <td><Network network={key} width={1200} /></td>
               <td>{value.onChain}</td>
               <td>{value.local}</td>
