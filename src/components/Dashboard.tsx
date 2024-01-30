@@ -157,4 +157,7 @@ const DashboardContainer = styled.div<DashProps>`
   .red {
     color: #DE0000;
   }
+  .pointer {
+    cursor: pointer;
+  }
 `
