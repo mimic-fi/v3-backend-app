@@ -112,7 +112,7 @@ const StatusRelayer: React.FC = () => {
                     {moment(item.lastStartTime).format('DD/MM/YY HH:mm[hs]')}
                   </td>
                   <td>
-                    {item.active === true ? 'Running' : moment(item.lastCompletionTime).format('DD/MM/YY HH:mm[hs]')}
+                    {item.active === true ? 'Running 🏃‍♂️' : moment(item.lastCompletionTime).format('DD/MM/YY HH:mm[hs]')}
                   </td>
                   <td>
                     {moment(item.lastScheduleTime).format('DD/MM/YY HH:mm[hs]')}
@@ -125,7 +125,7 @@ const StatusRelayer: React.FC = () => {
                     {item.schedule}
                   </td>
                   <td>
-                    {item.suspend ? '🚨' : '🟢'}
+                    {item.suspend ? '🔴' : '🟢'}
                   </td>
 
                 </tr>

@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { ContainerTable } from '../utils/styles';
 import Network from '../utils/Network';
 import moment from 'moment';
-import { refresh } from '../utils/web3-utils';
+import { refresh, formatTokenAmount } from '../utils/web3-utils';
 
 interface Status {
   transactions?: {
@@ -45,6 +45,7 @@ const NoncesTable: React.FC<{ name: string; nonceData: NoncesData; balances: Bal
             <th>On Chain</th>
             <th>Local</th>
             <th>Balances</th>
+            <th>Balance USD</th>
           </tr>
         </thead>
         <tbody>
@@ -52,9 +53,18 @@ const NoncesTable: React.FC<{ name: string; nonceData: NoncesData; balances: Bal
             <tr key={index}>
               <td><Network network={key} width={1200} /></td>
               <td>{value.onChain}</td>
-              <td>{value.local}</td>
-              <td>{(balances && key in balances) ? balances[key] : ''}</td>
+              <td className={value.local > value.onChain ? "red" : ""}>{value.local}</td>
+              <td>{(balances && key in balances) ? formatTokenAmount(balances[key], 18, {digits: 2}) : ''}</td>
+              <td>
+              <PriceUsd
+                address="0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+                chainId={key}
+                balance={(balances && key in balances) ? parseFloat(formatTokenAmount(balances[key], 18, { digits: 7 }) || '') : 0}
+              />
+              </td>
             </tr>
+
+
           ))}
         </tbody>
       </ContainerTable>
@@ -149,6 +159,84 @@ const StatusRelayer: React.FC = () => {
     </Section>
   );
 };
+
+
+interface PriceProps {
+  address: string;
+  chainId?: any;
+  balance: any;
+}
+
+interface Data {
+  address: string;
+  chainId: string;
+  price: number;
+}
+
+const PriceUsd: React.FC<PriceProps> = ({
+  address = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+  chainId = '1',
+  balance,
+}) => {
+  const [
+    data,
+    setData,
+  ] = useState<Data[] | null>(null);
+
+  const fetchData = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const response = await axios.get(
+        `${URL}/price-oracle/prices/last`,
+        { params: {
+            addresses: [address],
+            chainId,
+          },
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json',
+            'x-auth-token': `${token}`,
+          },
+        }
+      )
+      setData(response.data)
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        if (error.response?.status === 401) {
+          try {
+            await refresh();
+            await fetchData();
+          } catch (refreshError) {
+            console.error(`Error: Unable to refresh token. Please log in again.`);
+          }
+        } else {
+          console.error(`Error: ${error.response.data.message}`)
+        }
+      } else {
+        console.error(`Error: An unexpected error occurred`)
+      }
+    }
+  }
+
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  console.log(data)
+
+  return (
+    <>
+      {data && (
+          <>
+            {data.map((item, index) => (
+              <>${' '}{balance ? (item.price * balance).toFixed(2) : ''}</>
+            ))}
+          </>
+      )}
+    </>
+  )
+}
 
 
 const Section = styled.div`

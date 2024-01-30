@@ -60,6 +60,7 @@ const TokenRegistry: React.FC = () => {
   const [symbolFilter, setSymbolFilter] = useState<string>('');
   const [addressFilter, setAddressFilter] = useState<string>('');
   const [isNativeFilter, setIsNativeFilter] = useState<boolean | null>(null);
+  const [isERC20Filter, setIsERC20Filter] = useState<boolean | null>(null);
   const [isWrappedNativeFilter, setIsWrappedNativeFilter] = useState<boolean | null>(null);
 
   const [tokenRegistryData, setTokenRegistry] = useState<TokenRegistryData[] | null>(null);
@@ -67,6 +68,8 @@ const TokenRegistry: React.FC = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [totalItems, setTotalItems] = useState(0);
   const [customModalOpen, setCustomModalOpen] = useState(false);
+  const [erc20ModalOpen, setERC20ModalOpen] = useState(false);
+  const [erc20Params, setERC20] = useState<any>('');
   const [deleteParams, setDeleteParams] = useState<any>('');
 
   const fetchTokenRegistry = async (page: number) => {
@@ -82,6 +85,7 @@ const TokenRegistry: React.FC = () => {
             ...(addressFilter !== '' && { addresses: [addressFilter] }),
             isNativeToken: isNativeFilter,
             isWrappedNativeToken: isWrappedNativeFilter,
+            isERC20: isERC20Filter,
           },
           headers: {
             'Access-Control-Allow-Origin': '*',
@@ -109,7 +113,7 @@ const TokenRegistry: React.FC = () => {
 
   useEffect(() => {
     fetchTokenRegistry(1);
-  }, [symbolFilter, addressFilter, isNativeFilter, isWrappedNativeFilter]);
+  }, [symbolFilter, addressFilter, isNativeFilter, isERC20Filter, isWrappedNativeFilter]);
 
   const handleSymbolFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSymbolFilter(event.target.value);
@@ -124,14 +128,26 @@ const TokenRegistry: React.FC = () => {
     setIsNativeFilter(value === 'yes' ? true : value === 'no' ? false : null);
   };
 
+  const handleIsERC20FilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = event.target.value;
+    setIsERC20Filter(value === 'yes' ? true : value === 'no' ? false : null);
+  };
+
   const handleIsWrappedNativeFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
     setIsWrappedNativeFilter(value === 'yes' ? true : value === 'no' ? false : null);
   };
 
+
+
   const handleDeleteClick = (item: any) => {
     setDeleteParams(item);
     setCustomModalOpen(true);
+  };
+
+  const handleERC20 = (item: any) => {
+    setERC20(item);
+    setERC20ModalOpen(true);
   };
 
   const handleConfirmDelete = async () => {
@@ -148,9 +164,7 @@ const TokenRegistry: React.FC = () => {
         },
       });
       console.log('Token registry item successfully deleted');
-
       fetchTokenRegistry(currentPage);
-      toast.success('Token registry item successfully deleted');
     } catch (error: any) {
       if (error.response?.status === 401) {
         try {
@@ -166,8 +180,47 @@ const TokenRegistry: React.FC = () => {
     setCustomModalOpen(false);
   };
 
+  const handleUpdateToken = async () => {
+    const updatedItem = {
+      ...erc20Params,
+      isERC20: !erc20Params.isERC20,
+    };
+
+    const token = localStorage.getItem('token');
+    const url = `${URL}/token-registry/tokens`;
+
+    try {
+      await axios.put(url, updatedItem, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json',
+          'x-auth-token': `${token}`,
+        },
+      });
+
+      console.log('Token registry item successfully updated');
+      fetchTokenRegistry(currentPage);
+
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        try {
+          await refresh();
+          await handleUpdateToken();
+        } catch (refreshError) {
+          console.error(`Error: Unable to refresh token. Please log in again.`);
+        }
+      }
+
+      console.error('There was an error updating the token list item:', error);
+    }
+    setERC20ModalOpen(false);
+  };
+
   const handleCancelDelete = () => {
     setCustomModalOpen(false);
+  };
+  const handleCancelERC20 = () => {
+    setERC20ModalOpen(false);
   };
 
   const handleNextPage = () => {
@@ -199,6 +252,14 @@ const TokenRegistry: React.FC = () => {
         <Filter>
           <label>Native</label>
           <select value={isNativeFilter === null ? 'all' : isNativeFilter ? 'yes' : 'no'} onChange={handleIsNativeFilterChange}>
+            <option value="all">All</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </Filter>
+        <Filter>
+          <label>ERC20</label>
+          <select value={isERC20Filter === null ? 'all' : isERC20Filter ? 'yes' : 'no'} onChange={handleIsERC20FilterChange}>
             <option value="all">All</option>
             <option value="yes">Yes</option>
             <option value="no">No</option>
@@ -237,7 +298,7 @@ const TokenRegistry: React.FC = () => {
                   <td>{item.name}</td>
                   <td>{item.chainId}</td>
                   <td>{item.decimals}</td>
-                  <td>{item.isERC20 ? '✅' : '❌'}</td>
+                  <td className="pointer" onClick={() => handleERC20(item)}>{item.isERC20 ? '✅' : '❌'}</td>
                   <td>{item.isNativeToken ? '✅' : '❌'}</td>
                   <td>{item.isWrappedNativeToken ? '✅' : '❌'}</td>
                   <td>
@@ -263,6 +324,13 @@ const TokenRegistry: React.FC = () => {
               message="Are you sure you want to delete this token list item?"
               onConfirm={handleConfirmDelete}
               onCancel={handleCancelDelete}
+            />
+          )}
+          {erc20ModalOpen && (
+            <CustomConfirmationModal
+              message="Are you sure you want to change ERC20 value on this item?"
+              onConfirm={handleUpdateToken}
+              onCancel={handleCancelERC20}
             />
           )}
         </>
