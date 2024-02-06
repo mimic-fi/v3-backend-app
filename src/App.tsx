@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes, Navigate, HashRouter } from 'react-router-dom'
 import Login from './components/Login'
 import Dashboard from './components/Dashboard'
 import ErrorAlert from './components/ErrorAlert'
@@ -17,13 +17,13 @@ export default function App() {
   }, [])
 
   return (
-    <Router>
-      {error && <ErrorAlert message={error} onClose={closeError} />}
-      <Routes>
-        <Route path='/' element={<Navigate to='/login' replace />} />
-        <Route path="/login" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login onLogin={() => setIsLoggedIn(true)} showError={showError} />}/>
-        <Route path="/dashboard/*" element={isLoggedIn ? <Dashboard onLogout={() => setIsLoggedIn(false)} showError={showError} /> : <Navigate to="/login" />}/>
-      </Routes>
-    </Router>
+    <HashRouter>
+        {error && <ErrorAlert message={error} onClose={closeError} />}
+        <Routes>
+          <Route path='/' element={<Navigate to='/login' replace />} />
+          <Route path="/login" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login onLogin={() => setIsLoggedIn(true)} showError={showError} />}/>
+          <Route path="/dashboard/*" element={isLoggedIn ? <Dashboard onLogout={() => setIsLoggedIn(false)} showError={showError} /> : <Navigate to="/login" />}/>
+        </Routes>
+    </HashRouter>
   )
 }
