@@ -5,6 +5,7 @@ import RelayerExecutorSmartVaults from './RelayerExecutorSmartVaults';
 import RelayerExecutorChains from './RelayerExecutorChains';
 import RelayerExecutorTasks from './RelayerExecutorTasks';
 import NetworkThresholds from './NetworkThresholds';
+import SubgraphsNetworks from './SubgraphsNetworks';
 import styled from 'styled-components';
 import { Tab } from '../utils/styles';
 
@@ -57,6 +58,12 @@ export default function RelayerExecutorSettings() {
         >
           Thresholds
         </button>
+        <button
+          onClick={() => handleTabClick('subgraphs')}
+          className={activeTab === 'subgraphs' ? 'active' : ''}
+        >
+          Subgraphs
+        </button>
       </Tab>
       <div>
         {activeTab === 'settings' && <RelayerExecutorForm />}
@@ -64,6 +71,7 @@ export default function RelayerExecutorSettings() {
         {activeTab === 'chains' && <RelayerExecutorChains />}
         {activeTab === 'tasks' && <RelayerExecutorTasks />}
         {activeTab === 'thresholds' && <NetworkThresholds />}
+        {activeTab === 'subgraphs' && <SubgraphsNetworks />}
       </div>
     </div>
   );
