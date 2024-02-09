@@ -16,12 +16,14 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "types": ["node", "webpack-env", "svg.d.ts"],
+    "types": ["node", "webpack-env"],
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx"
   },
   "include": [
-    "src"
-  ]
+    "src",
+    "types/svg.d.ts"
+  ],
+    "exclude": ["./scr/pages/Logs.tsx"]
 }

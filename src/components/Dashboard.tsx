@@ -11,6 +11,8 @@ import TokenMonitors from '../pages/TokenMonitors';
 import Web3Settings from '../pages/Web3Settings';
 import styled from 'styled-components';
 import bg from '../assets/background-dashboard.png';
+import Environments from '../pages/Environments';
+import Logs from '../pages/Logs';
 
 interface DashboardProps {
   onLogout: () => void;
@@ -63,6 +65,8 @@ export default function Dashboard({ onLogout, showError }: DashboardProps) {
             <Route path="/token-registry" element={<TokenRegistry />} />
             <Route path="/token-list" element={<TokenList />} />
             <Route path="/web3" element={<Web3Settings />} />
+            <Route path="/environments" element={<Environments />} />
+            <Route path="/environments/:id/logs" element={<Logs />} />
             <Route path="/" element={<Status />} />
           </Routes>
         </div>
@@ -116,7 +120,7 @@ const DashboardContainer = styled.div<DashProps>`
       font-size: 12px;
     }
   }
-  button {
+  /* button {
     display: inline-block;
     width: auto;
     padding: 10px 24px;
@@ -138,7 +142,7 @@ const DashboardContainer = styled.div<DashProps>`
   button.white {
     background: white;
     color: #582ea0;
-  }
+  } */
   h2 {
     font-size: 30px;
     margin-top: 60px;

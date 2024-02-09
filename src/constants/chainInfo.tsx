@@ -12,22 +12,45 @@ import baseLogoUrl from '../assets/chainLogos/base.svg'
 import auroraLogoUrl from '../assets/chainLogos/aurora.svg'
 import zkevmLogoUrl from '../assets/chainLogos/polygonzkevm.png'
 
+export interface NativeCurrency {
+  name: string;
+  symbol: string;
+  decimals: number;
+}
+
+export interface ChainInfoType {
+  explorer: string;
+  name: string;
+  logoUrl: string;
+  nativeCurrency: NativeCurrency;
+  color: string;
+  value: number;
+  shortName: string;
+  rpc?: string;
+  isTestnet?: boolean;
+  isDisabled?: boolean;
+}
+
+export type SupportedChainIdValue = typeof SupportedChainId[keyof typeof SupportedChainId];
+
 export const SupportedChainId = {
   MAINNET: 1,
-  GOERLI: 5,
+  // GOERLI: 5,
   OPTIMISM: 10,
   POLYGON: 137,
   GNOSIS: 100,
   ARBITRUM: 42161,
-  MUMBAI: 80001,
-  ZKSYNC: 324,
+  // MUMBAI: 80001,
+  // ZKSYNC: 324,
   ZKEVM: 1101,
   BSC: 56,
   BASE: 8453,
   AVALANCHE: 43114,
   FANTOM: 250,
   AURORA: 1313161554
-}
+} as const
+
+
 
 export const DEFAULT_CHAIN_ID = SupportedChainId.MAINNET
 
@@ -43,16 +66,16 @@ export const CHAIN_INFO = {
     rpc: process.env.REACT_APP_MAINNET_RPC_URL || 'https://eth.llamarpc.com',
   },
 
-  [SupportedChainId.MUMBAI]: {
-    explorer: 'https://mumbai.polygonscan.com/',
-    name: 'Mumbai',
-    logoUrl: polygonLogoUrl,
-    nativeCurrency: { name: 'Matic', symbol: 'MATIC', decimals: 18 },
-    color: '#de4437',
-    value: SupportedChainId.MUMBAI,
-    isTestnet: true,
-    shortName: 'mumbai',
-  },
+  // [SupportedChainId.MUMBAI]: {
+  //   explorer: 'https://mumbai.polygonscan.com/',
+  //   name: 'Mumbai',
+  //   logoUrl: polygonLogoUrl,
+  //   nativeCurrency: { name: 'Matic', symbol: 'MATIC', decimals: 18 },
+  //   color: '#de4437',
+  //   value: SupportedChainId.MUMBAI,
+  //   isTestnet: true,
+  //   shortName: 'mumbai',
+  // },
   [SupportedChainId.OPTIMISM]: {
     explorer: 'https://optimistic.etherscan.io/',
     name: 'Optimism',
@@ -96,28 +119,28 @@ export const CHAIN_INFO = {
     rpc:
       process.env.REACT_APP_ARBITRUM_RPC_URL || 'https://arb1.arbitrum.io/rpc',
   },
-  [SupportedChainId.ZKSYNC]: {
-    explorer: 'https://explorer.zksync.io/',
-    name: 'zkSync',
-    logoUrl: zksyncLogoUrl,
-    shortName: 'zksync',
-    nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
-    color: '#bb437e',
-    value: SupportedChainId.ZKSYNC,
-    isDisabled: true,
-  },
-  [SupportedChainId.GOERLI]: {
-    explorer: 'https://goerli.etherscan.io/',
-    name: 'Görli',
-    shortName: 'goerli',
-    logoUrl: goerliLogoUrl,
-    nativeCurrency: { name: 'Görli Ether', symbol: 'görETH', decimals: 18 },
-    color: '#bb437e',
-    value: SupportedChainId.GOERLI,
-    isTestnet: true,
-    rpc:
-      process.env.REACT_APP_GOERLI_RPC_URL || 'https://rpc.ankr.com/eth_goerli',
-  },
+  // [SupportedChainId.ZKSYNC]: {
+  //   explorer: 'https://explorer.zksync.io/',
+  //   name: 'zkSync',
+  //   logoUrl: zksyncLogoUrl,
+  //   shortName: 'zksync',
+  //   nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+  //   color: '#bb437e',
+  //   value: SupportedChainId.ZKSYNC,
+  //   isDisabled: true,
+  // },
+  // [SupportedChainId.GOERLI]: {
+  //   explorer: 'https://goerli.etherscan.io/',
+  //   name: 'Görli',
+  //   shortName: 'goerli',
+  //   logoUrl: goerliLogoUrl,
+  //   nativeCurrency: { name: 'Görli Ether', symbol: 'görETH', decimals: 18 },
+  //   color: '#bb437e',
+  //   value: SupportedChainId.GOERLI,
+  //   isTestnet: true,
+  //   rpc:
+  //     process.env.REACT_APP_GOERLI_RPC_URL || 'https://rpc.ankr.com/eth_goerli',
+  // },
   [SupportedChainId.BSC]: {
     explorer: 'https://bscscan.com/',
     name: 'BNB Smart Chain',

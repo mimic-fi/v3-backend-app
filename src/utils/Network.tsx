@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { CHAIN_INFO } from '../constants/chainInfo';
+import { CHAIN_INFO, ChainInfoType, SupportedChainIdValue } from '../constants/chainInfo';
 
 interface NetworkProps {
   network: any;
@@ -25,7 +25,8 @@ const Network: React.FC<NetworkProps> = ({
     };
   }, []);
 
-  const selectedChain: any = CHAIN_INFO[network || ''];
+  const networkId = network ?? 1; // Fallback to 1 if network is undefined
+  const selectedChain = CHAIN_INFO[networkId as SupportedChainIdValue];
   const medium = 700;
 
   if (selectedChain) {
