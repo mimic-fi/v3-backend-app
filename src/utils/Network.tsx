@@ -33,7 +33,7 @@ const Network: React.FC<NetworkProps> = ({
     return (
       <NetworkSection>
         {!noLogo && (
-          <ChainLogo src={selectedChain?.logoUrl} alt={`${selectedChain?.name} Logo`} />
+          <ChainLogo src={selectedChain?.logoUrl} alt={`${selectedChain?.shortName} Logo`} />
         )}
         {!small && (!totalWidth || totalWidth >= medium) && selectedChain?.name}
       </NetworkSection>

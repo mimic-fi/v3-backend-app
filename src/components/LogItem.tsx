@@ -148,7 +148,7 @@ const FlexNoWrap = styled.div`
 
 const Success = styled.div`
   padding-left: 10px;
-  color: ${(props) => props.theme.success};
+  color: ${(props) => props?.theme?.success};
 `
 
 const ActionIcon = styled.img`
@@ -302,7 +302,7 @@ function TableCell({ children, align, lite, ...props }) {
     return (
       <StatusContainer status={status}>
         {width && width >= medium && <StatusText>{text ? text : status}</StatusText>}
-        <Logo src={getStatusIcon(status)} />
+        {/* <Logo src={getStatusIcon(status)} /> */}
       </StatusContainer>
     )
   }

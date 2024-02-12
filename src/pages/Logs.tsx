@@ -15,6 +15,7 @@ import { ContainerTable } from "../utils/styles";
 import Select, { OptionProps } from "react-select";
 import LogsItem from "../components/LogItem";
 import { shortenAddress } from "../utils/web3-utils";
+import useEnviromenmentList from "../hooks/useEnviromenmentList";
 
 interface LogsProps {}
 
@@ -110,19 +111,28 @@ const Logs: FC<LogsProps> = () => {
   );
   const navigate = useNavigate();
   const location = useLocation();
-  const updateURL = (newFilters: NewFilterType) => {
+
+  const updateURL = (newFilters) => {
     const searchParams = new URLSearchParams();
-    // Add filter parameters to the URL search params
+  
     Object.keys(newFilters).forEach((key) => {
       const value = newFilters[key];
       if (value !== undefined) {
-        // Check if value is not undefined
-        searchParams.set(key, String(value)); // Convert numbers/booleans to strings
+        if(Array.isArray(value)) {
+          // Correctly handle array values
+          value.forEach(v => {
+            searchParams.append(`${key}[]`, String(v)); // Use append for arrays
+          });
+        } else {
+          // Handle non-array values
+          searchParams.set(key, String(value)); // Convert numbers/booleans to strings
+        }
       } else {
         // Remove the parameter if the value is undefined
         searchParams.delete(key);
       }
     });
+  
     // For React Router v6
     navigate(`${location.pathname}?${searchParams.toString()}`, {
       replace: true,
@@ -137,23 +147,23 @@ const Logs: FC<LogsProps> = () => {
     const searchParams = new URLSearchParams(location.search);
     const token = searchParams.get("token") || "";
     // Ensure chainId is of the correct type, especially if it's not a string:
-    const chainIdString = searchParams.get("chainIds");
-    const chainIds = chainIdString ? Number(chainIdString) : selectedNetwork; // Convert to number
-    const status = searchParams.get("status") || "";
+    const chainIdString = searchParams.get("chainId");
+    const chainId = chainIdString ? Number(chainIdString) : selectedNetwork; // Convert to number
+    const statusValues = searchParams.getAll("status[]"); // This will be an array of values
     const realtimeString = searchParams.get("realtime");
     const coloredString = searchParams.get("colored") || true;
     const executionPlanId = searchParams.get("executionPlanId") || "";
 
     // Assuming setSelectedNetwork and others correctly handle their types:
-    setSelectedNetwork(chainIds);
+    setSelectedNetwork(chainId);
     setSelectedToken(token);
-    setSelectedStatus(status);
-    setFilters({ token, status, executionPlanId, chainIds });
+    setSelectedStatus(statusValues);
+    setFilters({ token, status: statusValues, executionPlanId, chainId });
     setSelectedColored(coloredString); // Convert to boolean
     setIntervalMs(convertToBoolean(realtimeString)); // Convert to boolean
     setSelectedPlanId(executionPlanId);
     // Call API or other actions needed with the filters
-    updateURL({ token, status, executionPlanId, chainIds });
+    updateURL({ token, status: statusValues, executionPlanId, chainId });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -176,11 +186,12 @@ const Logs: FC<LogsProps> = () => {
   };
 
   const handleSelectMultiStatus = (e) => {
-    setSelectedStatus(e);
+    const statuses = e?.map( s => s.value)
+    setSelectedStatus(statuses);
     setPage(1);
     if (e) {
-      setFilters({ ...filters, status: e });
-      updateURL({ ...filters, status: e });
+      setFilters({ ...filters, status: statuses });
+      updateURL({ ...filters, status: statuses});
     } else {
       const { status, ...otherFilters } = filters;
       setFilters({ ...otherFilters });
@@ -230,15 +241,15 @@ const Logs: FC<LogsProps> = () => {
   };
 
   const handleMultiNetwork = (networks) => {
-    const chainIds = networks.map((n) => n.value);
-    console.log("adding networks", chainIds);
-    setSelectedNetwork(chainIds);
+    const chainId = networks.map((n) => n.value);
+    console.log("adding networks", chainId);
+    setSelectedNetwork(chainId);
     setPage(1);
-    if (chainIds) {
-      setFilters({ ...filters, chainIds: chainIds });
-      console.log("addinged!!", { ...filters, chainIds: chainIds });
+    if (chainId) {
+      setFilters({ ...filters, chainId: chainId });
+      console.log("addinged!!", { ...filters, chainId: chainId });
     } else {
-      const { chainIds, ...otherFilters } = filters;
+      const { chainId, ...otherFilters } = filters;
       setFilters({ ...otherFilters });
     }
   };
@@ -259,10 +270,17 @@ const Logs: FC<LogsProps> = () => {
     { value: "reverted", label: "reverted" },
     { value: "success", label: "success" },
   ];
-
+  
+  const showOptions = (list) => {
+    if (!list) return []
+    return list.map(o => ({ value: o, label: o }));
+  }
+   
+  const {data: envData} = useEnviromenmentList(params.id)
+console.log( 'env', envData)
   return (
     <div>
-      <Tab>{params.id}</Tab>
+      <Tab>{envData?.namespace || params.id}</Tab>
       <Section>
         <FlexMenu>
           <Details
@@ -320,7 +338,7 @@ const Logs: FC<LogsProps> = () => {
               <Switch mode={intervalMs}>{intervalMs ? "ON" : "OFF"}</Switch>
             </Flex>
           </Details>
-          {(isRefetching || true) && <Loader />}
+          {(isRefetching || isLoading) && <Loader />}
         </FlexMenu>
         <ExpandableComponent isOpen={openMenu}>
           <FilterContainer>
@@ -336,6 +354,7 @@ const Logs: FC<LogsProps> = () => {
               <StyledSelect
                 classNamePrefix="Select"
                 isMulti
+                value={showOptions(selectedStatus)}
                 onChange={handleSelectMultiStatus}
                 options={statusList}
               />
@@ -359,7 +378,7 @@ const Logs: FC<LogsProps> = () => {
           </FilterContainer>
         </ExpandableComponent>
       {isLoading ? (
-        <>Loading</>
+        <></>
       ) : data ? (
         <>
           <Table>

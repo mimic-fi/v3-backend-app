@@ -62,7 +62,7 @@ export const CHAIN_INFO = {
     nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
     color: '#fff',
     value: SupportedChainId.MAINNET,
-    shortName: 'eth',
+    shortName: 'ETH',
     rpc: process.env.REACT_APP_MAINNET_RPC_URL || 'https://eth.llamarpc.com',
   },
 
@@ -83,7 +83,7 @@ export const CHAIN_INFO = {
     nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
     color: '#bb437e',
     value: SupportedChainId.OPTIMISM,
-    shortName: 'opt',
+    shortName: 'OPT',
     rpc:
       process.env.REACT_APP_OPTIMISM_RPC_URL ||
       'https://endpoints.omniatech.io/v1/op/mainnet/public',
@@ -105,7 +105,7 @@ export const CHAIN_INFO = {
     nativeCurrency: { name: 'xDAI', symbol: 'xDAI', decimals: 18 },
     color: '#bb437e',
     value: SupportedChainId.GNOSIS,
-    shortName: 'gnosis',
+    shortName: 'GNO',
     rpc: process.env.REACT_APP_GNOSIS_RPC_URL || 'https://rpc.gnosischain.com',
   },
   [SupportedChainId.ARBITRUM]: {
@@ -115,7 +115,7 @@ export const CHAIN_INFO = {
     nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
     color: '#bb437e',
     value: SupportedChainId.ARBITRUM,
-    shortName: 'arbitrum',
+    shortName: 'ARB',
     rpc:
       process.env.REACT_APP_ARBITRUM_RPC_URL || 'https://arb1.arbitrum.io/rpc',
   },
@@ -144,7 +144,7 @@ export const CHAIN_INFO = {
   [SupportedChainId.BSC]: {
     explorer: 'https://bscscan.com/',
     name: 'BNB Smart Chain',
-    shortName: 'bnb',
+    shortName: 'BNB',
     logoUrl: bscLogoUrl,
     nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
     color: '#bb437e',
@@ -157,7 +157,7 @@ export const CHAIN_INFO = {
   [SupportedChainId.FANTOM]: {
     explorer: 'https://ftmscan.com/',
     name: 'Fantom',
-    shortName: 'fantom',
+    shortName: 'FTM',
     logoUrl: fantomLogoUrl,
     nativeCurrency: { name: 'FTM', symbol: 'FTM', decimals: 18 },
     color: '#bb437e',
@@ -168,7 +168,7 @@ export const CHAIN_INFO = {
   [SupportedChainId.AVALANCHE]: {
     explorer: 'https://snowtrace.io/',
     name: 'Avalanche',
-    shortName: 'avalanche',
+    shortName: 'AVAX',
     logoUrl: avalancheLogoUrl,
     nativeCurrency: { name: 'Avax', symbol: 'AVAX', decimals: 18 },
     color: '#bb437e',
@@ -181,7 +181,7 @@ export const CHAIN_INFO = {
   [SupportedChainId.AURORA]: {
     explorer: 'https://explorer.aurora.dev/',
     name: 'Aurora',
-    shortName: 'aurora',
+    shortName: 'Aurora',
     logoUrl: auroraLogoUrl,
     nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
     color: '#bb437e',
@@ -194,7 +194,7 @@ export const CHAIN_INFO = {
   [SupportedChainId.ZKEVM]: {
     explorer: 'https://zkevm.polygonscan.com/',
     name: 'zkEVM',
-    shortName: 'zkevm',
+    shortName: 'zkEVM',
     logoUrl: zkevmLogoUrl,
     nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
     color: '#bb437e',
@@ -207,7 +207,7 @@ export const CHAIN_INFO = {
   [SupportedChainId.BASE]: {
     explorer: 'https://basescan.org/',
     name: 'Base',
-    shortName: 'base',
+    shortName: 'BASE',
     logoUrl: baseLogoUrl,
     nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
     color: '#bb437e',
