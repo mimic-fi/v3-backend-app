@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import React, { useState } from 'react'
+import { useState } from 'react'
 import moment from 'moment'
 import styled from 'styled-components'
 // import defaultAction from '../assets/logs/Flow.svg'
@@ -16,6 +16,7 @@ import Network from '../utils/Network'
 import { TasksDictionary } from '../constants/taskDictionary'
 import LogsDetail from './LogDetails'
 import { shortenAddress } from '../utils/web3-utils'
+import LogPanel from './LogPanel'
 
 const LogsItem = ({
   item,
@@ -38,11 +39,11 @@ const LogsItem = ({
               text={moment.unix(item?.executedAt).fromNow()}
             />
           </Success>
-          {/* <LogsPanel
+          <LogPanel
             open={isOpen}
             item={item}
             onClose={() => setOpen(!isOpen)}
-          /> */}
+          />
         </TableCell>
           <TableCell align="left">
             <FlexNoWrap>

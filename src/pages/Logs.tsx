@@ -3,16 +3,13 @@
 import React, { useState, useRef, useEffect, FC } from "react";
 import styled from "styled-components";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-// import LogsItem from '../sections/LogsItem';
 import useLogs from "../hooks/useLogs";
-// import ArrowDown from '../assets/arrow-down.svg';
 import {
   CHAIN_INFO,
-  SupportedChainId,
   SupportedChainIdValue,
 } from "../constants/chainInfo";
 import { ContainerTable } from "../utils/styles";
-import Select, { OptionProps } from "react-select";
+import Select from "react-select";
 import LogsItem from "../components/LogItem";
 import { shortenAddress } from "../utils/web3-utils";
 import useEnviromenmentList from "../hooks/useEnviromenmentList";
@@ -25,18 +22,6 @@ interface Filter {
   executionPlanId?: string;
   chainId?: SupportedChainIdValue | number;
 }
-
-type NewFilterType = {
-  [key: string]: string | number | boolean | number;
-};
-
-type FilterType = {
-  token?: string;
-  status?: string;
-  executionPlanId?: string;
-  chainId?: SupportedChainIdValue;
-};
-//   type NewFilterType = FilterType; // Assuming updateURL uses this type
 
 interface TaskStatus {
   type: string; // Assuming type is a string, adjust as necessary
@@ -63,28 +48,6 @@ interface PaginationControlsProps {
   onPageChange: (newPage: number) => void; // Function that takes a new page number
 }
 
-interface TableProps extends React.TableHTMLAttributes<HTMLTableElement> {
-  header?: React.ReactNode; // Use ReactNode for elements that can render anything React can render.
-  children: React.ReactNode;
-}
-
-interface TableHeaderProps
-  extends React.ThHTMLAttributes<HTMLTableHeaderCellElement> {
-  title: string; // Assuming title can be anything renderable by React
-  align?: "left" | "center" | "right"; // Define align as optional with specific string literals
-}
-
-interface CustomOptionProps extends OptionProps<any, false> {
-  value: number;
-  // Extend with any additional props you need, like `isTestnet` or `logoUrl`
-  // If you're using TypeScript, ensure you're importing OptionProps correctly
-}
-
-// interface OptionProps {
-//   innerRef?: React.Ref<HTMLDivElement>; // Adjust based on what ref expects
-//   innerProps: object; // Specify more detailed type if possible
-//   value: keyof typeof CHAIN_INFO; // Use specific type if known
-// }
 
 const Logs: FC<LogsProps> = () => {
   const params = useParams<{ id: string }>(); // Specify the type of useParams
@@ -109,6 +72,7 @@ const Logs: FC<LogsProps> = () => {
     filters,
     intervalMs ? 5000 : 0
   );
+  const {data: envData} = useEnviromenmentList(params.id)
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -171,9 +135,6 @@ const Logs: FC<LogsProps> = () => {
     setPage(newPage);
   };
 
-  // const handleImageClick = () => {
-  //   buttonRef?.current?.dispatchEvent(new Event("click", { bubbles: true }));
-  // };
 
   const handleRealTimeChange = () => {
     setIntervalMs(!intervalMs);
@@ -276,8 +237,6 @@ const Logs: FC<LogsProps> = () => {
     return list.map(o => ({ value: o, label: o }));
   }
    
-  const {data: envData} = useEnviromenmentList(params.id)
-console.log( 'env', envData)
   return (
     <div>
       <Tab>{envData?.namespace || params.id}</Tab>
