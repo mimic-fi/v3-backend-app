@@ -39,6 +39,7 @@ export default function NavBar({ onLogout }: NavBarProps) {
           <NavItem to="/dashboard/token-registry" label="Token Registry" />
           <NavItem to="/dashboard/web3" label="Web3" />
           <NavItem to="/dashboard/jobs" label="Jobs" />
+          <NavItem to="/dashboard/environments" label="Environments" />
         </div>
         <NavbarLink>
           <ButtonColor onClick={handleLogout}>Logout</ButtonColor>

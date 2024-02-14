@@ -65,6 +65,35 @@ export const Button = styled.button`
   }
 `;
 
+export const LoadingTable = styled.div`
+  margin-top: 50px;
+  `
+
+export const FlexButtons = styled.div`
+  display: flex;
+  gap: 40px;
+  width: 100%;
+  justify-content: center;
+  margin-top: 30px;
+  button {
+    background: #6f5ce6;
+    color: white;
+    border: 0px solid;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    &.active, &:hover {
+      background: #582ea0;
+    }
+
+
+  }
+`;
+
 export const LittleButton = styled(Button)`
   padding: 3px 7px;
   font-size: 12px;

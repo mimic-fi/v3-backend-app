@@ -10,6 +10,7 @@ import TokenList from '../pages/TokenList';
 import TokenMonitors from '../pages/TokenMonitors';
 import Web3Settings from '../pages/Web3Settings';
 import Jobs from '../pages/Jobs';
+import Environments from '../pages/Environments';
 import styled from 'styled-components';
 import bg from '../assets/background-dashboard.png';
 
@@ -66,6 +67,8 @@ export default function Dashboard({ onLogout, showError }: DashboardProps) {
             <Route path="/web3" element={<Web3Settings />} />
             <Route path="/jobs" element={<Jobs />} />
             <Route path="/jobs/:id" element={<Jobs />} />
+            <Route path="/environments" element={<Environments />} />
+            <Route path="/environments/:id" element={<Environments />} />
             <Route path="/" element={<Status />} />
           </Routes>
         </div>
