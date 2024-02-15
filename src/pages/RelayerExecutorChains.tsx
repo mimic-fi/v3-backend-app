@@ -10,7 +10,8 @@ import { refresh } from '../utils/web3-utils';
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
 interface DeniedChainsSetting {
-  chainId: number
+  chainId: number,
+  comment: string
 }
 
 const RelayerExecutorChains: React.FC = () => {
@@ -90,7 +91,7 @@ const RelayerExecutorChains: React.FC = () => {
   const handleCancelDelete = () => {
     setCustomModalOpen(false);
   };
-
+  
   return (
     <Section>
       <DeniedChainsForm onSuccess={fetchDeniedChainsSettings}/>
@@ -101,6 +102,7 @@ const RelayerExecutorChains: React.FC = () => {
             <thead>
               <tr>
                 <th>Network</th>
+                <th>Comment</th>
                 <th></th>
               </tr>
             </thead>
@@ -108,6 +110,7 @@ const RelayerExecutorChains: React.FC = () => {
               {deniedChainsSettings.map((item, index) => (
                 <tr key={index}>
                   <td>{item.chainId}</td>
+                  <td>{item.comment}</td>
                   <td>
                     <img
                       onClick={() =>

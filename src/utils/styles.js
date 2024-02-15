@@ -139,3 +139,26 @@ export const Tab = styled.div`
     }
   }
 `;
+
+export const Filters = styled.div`
+  display: flex;
+  margin-top: 70px;
+`;
+
+export const Filter = styled.div`
+  margin-right: 20px;
+
+  label {
+    margin-right: 5px;
+  }
+
+  select,
+  input {
+    padding: 5px;
+  }
+  select {
+    display: block;
+    height: 50px;
+    border-radius: 7px;
+  }
+`;

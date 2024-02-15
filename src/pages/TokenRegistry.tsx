@@ -6,7 +6,7 @@ import TokenRegistryForm from '../components/TokenRegistryForm';
 import CustomConfirmationModal from '../components/CustomConfirmationModal';
 import deleteIcon from '../assets/delete.png';
 import { toast } from 'react-toastify';
-import { ContainerTable, LittleButton } from '../utils/styles';
+import { ContainerTable, LittleButton, Filter, Filters } from '../utils/styles';
 import { refresh } from '../utils/web3-utils';
 import { Tab } from '../utils/styles';
 
@@ -352,28 +352,6 @@ const TokenRegistrySection = styled.div`
   max-width: 90%;
 `;
 
-const Filters = styled.div`
-  display: flex;
-  margin-top: 70px;
-`;
-
-const Filter = styled.div`
-  margin-right: 20px;
-
-  label {
-    margin-right: 5px;
-  }
-
-  select,
-  input {
-    padding: 5px;
-  }
-  select {
-    display: block;
-    height: 50px;
-    border-radius: 7px;
-  }
-`;
 
 const Pagination = styled.div`
   display: flex;

@@ -6,7 +6,7 @@ import Address from '../utils/Address';
 import Token from '../components/Token';
 import TokenMonitorForm from '../components/TokenMonitorForm';
 import CustomConfirmationModal from '../components/CustomConfirmationModal';
-import { ContainerTable } from '../utils/styles';
+import { ContainerTable, Filter, Filters } from '../utils/styles';
 import deleteIcon from '../assets/delete.png';
 import { toast } from 'react-toastify';
 import { refresh } from '../utils/web3-utils';
@@ -30,6 +30,8 @@ const TokenMonitors: React.FC = () => {
     address: '',
     chainId: 0,
   });
+  const [chainFilter, setChainFilter] = useState<string>('');
+  const [environmentFilter, setEnvironmentFilter] = useState<string>('');
 
   const fetchTokenMonitors = async () => {
     try {
@@ -37,6 +39,10 @@ const TokenMonitors: React.FC = () => {
       const response = await axios.get<TokenMonitorSetting[]>(
         `${URL}/token-monitor/monitors`,
         {
+          params: {
+            ...(chainFilter !== '' && { chainId: chainFilter }),
+            ...(environmentFilter !== '' && { environment: environmentFilter }),
+          },
           headers: {
             'Access-Control-Allow-Origin': '*',
             'Content-type': 'application/json',
@@ -63,7 +69,7 @@ const TokenMonitors: React.FC = () => {
 
   useEffect(() => {
     fetchTokenMonitors();
-  }, []);
+  }, [environmentFilter, chainFilter]);
 
   const handleDeleteClick = (address: string, chainId: number) => {
     setDeleteParams({ address, chainId });
@@ -106,6 +112,14 @@ const TokenMonitors: React.FC = () => {
     setCustomModalOpen(false);
   };
 
+  const handleChainFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChainFilter(event.target.value);
+  };
+
+  const handleEnvironmentFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEnvironmentFilter(event.target.value);
+  };
+
   function compare(a: TokenMonitorSetting, b: TokenMonitorSetting): number {
     return a.environment.localeCompare(b.environment);
   }
@@ -117,6 +131,16 @@ const TokenMonitors: React.FC = () => {
   return (
     <TokenMonitorSection>
       <TokenMonitorForm onSuccess={fetchTokenMonitors} />
+      <Filters>
+        <Filter>
+          <label>Chain</label>
+          <input type="number" placeholder="Filter by Chain" value={chainFilter} onChange={handleChainFilterChange} />
+        </Filter>
+        <Filter>
+          <label>Environment</label>
+          <input type="text" placeholder="Filter by Environment" value={environmentFilter} onChange={handleEnvironmentFilterChange} />
+        </Filter>
+      </Filters>
       {tokenMonitorsData ? (
         <>
           <ContainerTable>

@@ -12,6 +12,7 @@ interface DeniedChainsFormProps {
 
 const DeniedChainsForm: React.FC<DeniedChainsFormProps> = ({  onSuccess = () => {} }) => {
   const [chainId, setChainId] = useState(0);
+  const [comment, setComment] = useState('');
   const [message, setMessage] = useState('');
 
   const handleFormSubmit = async (e: React.FormEvent) => {
@@ -23,6 +24,7 @@ const DeniedChainsForm: React.FC<DeniedChainsFormProps> = ({  onSuccess = () => 
         `${URL}/relayer-executor/denied-chains`,
         {
           chainId,
+          comment,
         },
         {
           headers: {
@@ -72,6 +74,15 @@ const DeniedChainsForm: React.FC<DeniedChainsFormProps> = ({  onSuccess = () => 
               required
             />
           </div>
+          <div>
+            <label>Comment</label>
+            <input
+              type="text"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              required
+            />
+          </div>
           <button type="submit">New</button>
         </>
       )}
@@ -84,7 +95,7 @@ interface FormProps {
 }
 
 const Form = styled.form<FormProps>`
-  width: 874px;
+  width: 1200px;
   margin-top: 50px;
   display: flex;
   align-items: center;
