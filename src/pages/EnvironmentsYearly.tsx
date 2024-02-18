@@ -165,8 +165,8 @@ const Environments: React.FC<EnvironmentsProps> = ({ onSuccess = () => { } }) =>
                           }
                           {activeTab === 'gas' &&
                             <>
-                              Gas Charged: {value.gasCharged.toFixed(2)}<br />
-                              Gas Used: {value.gasUsed.toFixed(2)}
+                              Charged: $ {value.gasCharged.toFixed(2)}<br />
+                              Used: $ {value.gasUsed.toFixed(2)}
                             </>
                           }
                           {activeTab === 'accounting' &&

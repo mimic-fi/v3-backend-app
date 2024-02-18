@@ -123,8 +123,8 @@ const Environments: React.FC<EnvironmentsProps> = ({ onSuccess = () => { } }) =>
                             }
                             {activeTab === 'gas' &&
                               <>
-                                Gas Charged: {internalData[network] ?.gasCharged ? <span className="accent-2">{internalData[network] ?.gasCharged ?.toFixed(2)}</span> : '0'}<br />
-                                Gas Used: {internalData[network] ?.gasUsed ? <span className="accent-2">{internalData[network] ?.gasUsed ?.toFixed(2)}</span> : '0'}<br />
+                                Charged: {internalData[network] ?.gasCharged ? <span className="accent-2">$ {internalData[network] ?.gasCharged ?.toFixed(2)}</span> : '$ 0'}<br />
+                                Used: {internalData[network] ?.gasUsed ? <span className="accent-2">$ {internalData[network] ?.gasUsed ?.toFixed(2)}</span> : '$ 0'}<br />
                               </>
                             }
                             {activeTab === 'accounting' &&
