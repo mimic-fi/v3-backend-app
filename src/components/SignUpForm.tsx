@@ -17,7 +17,7 @@ const SignUpForm: React.FC = () => {
     try {
       const token = localStorage.getItem('token')
       const response = await axios.post(
-        `${URL}/user`,
+        `${URL}/users`,
         {
           email,
           password,
