@@ -122,7 +122,7 @@ const Web3Settings: React.FC = () => {
                         handleDeleteClick(index)
                       }
                       src={deleteIcon}
-                      alt="Eliminar"
+                      alt="Delete"
                     />
                   </td>
                 </tr>

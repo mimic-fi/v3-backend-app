@@ -35,7 +35,7 @@ const SubgraphsNetworksForm: React.FC<SubgraphsNetworksFormProps> = ({  onSucces
         }
       );
 
-      setMessage(`The subgraph item was succesfully created`);
+      setMessage(`The subgraph was succesfully created`);
       onSuccess();
     } catch (error: any) {
       if (axios.isAxiosError(error) && error.response) {

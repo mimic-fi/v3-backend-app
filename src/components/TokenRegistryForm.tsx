@@ -56,7 +56,7 @@ const TokenListForm: React.FC<TokenListFormProps> = ({ onSuccess = () => {} }) =
         }
       );
 
-      setMessage(`New token registry item has been successfully created`);
+      setMessage(`New token has been created`);
 
       onSuccess();
     } catch (error) {
