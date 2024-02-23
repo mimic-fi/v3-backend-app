@@ -8,8 +8,8 @@ const useLogs = (id, page = 1, limit = 50, filter, refetchInterval = 0, enabled 
     {
       queryKey: ['logs', id, page, filter],
       queryFn: () => fetchLogs(id, limit, page, filter),
-      // keepPreviousData: true,
-      staleTime: 1000,
+      keepPreviousData: true,
+    //   staleTime: 10000,
       refetchInterval: refetchInterval,
       enabled: enabled
     }

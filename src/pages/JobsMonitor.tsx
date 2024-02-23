@@ -6,13 +6,13 @@ import { refresh } from '../utils/web3-utils';
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
-interface SubgraphsNetworksFormProps {
+interface ExecutorProps {
   onSuccess?: () => void;
 }
 
-const SubgraphsNetworksForm: React.FC<SubgraphsNetworksFormProps> = ({  onSuccess = () => {} }) => {
-  const [chainId, setChainId] = useState(0);
-  const [url, setUrl] = useState('');
+const Executor: React.FC<ExecutorProps> = ({  onSuccess = () => {} }) => {
+  const [chainId, setChainId] = useState('');
+  const [monitor, setMonitor] = useState('');
   const [message, setMessage] = useState('');
 
   const handleFormSubmit = async (e: React.FormEvent) => {
@@ -21,10 +21,10 @@ const SubgraphsNetworksForm: React.FC<SubgraphsNetworksFormProps> = ({  onSucces
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        `${URL}/relayer-executor/subgraph-networks`,
+        `${URL}/jobs/monitor`,
         {
           chainId,
-          url
+          monitor,
         },
         {
           headers: {
@@ -35,11 +35,11 @@ const SubgraphsNetworksForm: React.FC<SubgraphsNetworksFormProps> = ({  onSucces
         }
       );
 
-      setMessage(`The subgraph was succesfully created`);
+      setMessage(`The monitor job was succesfully triggered`);
       onSuccess();
     } catch (error: any) {
       if (axios.isAxiosError(error) && error.response) {
-        if (error.response.status === 401) {
+        if (error.response?.status === 401) {
           try {
             await refresh();
             await handleFormSubmit(e);
@@ -70,20 +70,19 @@ const SubgraphsNetworksForm: React.FC<SubgraphsNetworksFormProps> = ({  onSucces
             <input
               type="number"
               value={chainId}
-              onChange={(e) => setChainId(parseFloat(e.target.value))}
+              onChange={(e) => setChainId((e.target.value).toString())}
               required
             />
           </div>
           <div>
-            <label>Url</label>
+            <label>Monitor</label>
             <input
               type="text"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              required
+              value={monitor}
+              onChange={(e) => setMonitor(e.target.value)}
             />
           </div>
-          <button type="submit">New</button>
+          <button type="submit">Trigger</button>
         </>
       )}
     </Form>
@@ -96,7 +95,7 @@ interface FormProps {
 
 const Form = styled.form<FormProps>`
   width: 874px;
-  margin-top: 50px;
+  margin: 50px auto 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -124,4 +123,4 @@ const Message = styled.div`
   }
 `;
 
-export default SubgraphsNetworksForm;
+export default Executor;

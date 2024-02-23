@@ -6,13 +6,14 @@ import { refresh } from '../utils/web3-utils';
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
-interface DeniedChainsFormProps {
+interface ExecutorProps {
   onSuccess?: () => void;
 }
 
-const DeniedChainsForm: React.FC<DeniedChainsFormProps> = ({  onSuccess = () => {} }) => {
-  const [chainId, setChainId] = useState(0);
-  const [address, setAddress] = useState('');
+const Executor: React.FC<ExecutorProps> = ({  onSuccess = () => {} }) => {
+  const [chainId, setChainId] = useState('');
+  const [smartVault, setSmartVault] = useState('');
+  const [tokens, setTokens] = useState('');
   const [message, setMessage] = useState('');
 
   const handleFormSubmit = async (e: React.FormEvent) => {
@@ -21,10 +22,11 @@ const DeniedChainsForm: React.FC<DeniedChainsFormProps> = ({  onSuccess = () => 
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        `${URL}/relayer-executor/denied-tasks`,
+        `${URL}/jobs/executor`,
         {
           chainId,
-          address
+          smartVault,
+          tokens
         },
         {
           headers: {
@@ -35,7 +37,7 @@ const DeniedChainsForm: React.FC<DeniedChainsFormProps> = ({  onSuccess = () => 
         }
       );
 
-      setMessage(`The task was succesfully created in the denied list`);
+      setMessage(`The executor job was succesfully triggered`);
       onSuccess();
     } catch (error: any) {
       if (axios.isAxiosError(error) && error.response) {
@@ -70,20 +72,27 @@ const DeniedChainsForm: React.FC<DeniedChainsFormProps> = ({  onSuccess = () => 
             <input
               type="number"
               value={chainId}
-              onChange={(e) => setChainId(parseFloat(e.target.value))}
+              onChange={(e) => setChainId((e.target.value).toString())}
               required
             />
           </div>
           <div>
-            <label>Address</label>
+            <label>Smart Vault</label>
             <input
               type="text"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              required
+              value={smartVault}
+              onChange={(e) => setSmartVault(e.target.value)}
             />
           </div>
-          <button type="submit">New</button>
+          <div>
+            <label>Tokens</label>
+            <input
+              type="text"
+              value={tokens}
+              onChange={(e) => setTokens(e.target.value)}
+            />
+          </div>
+          <button type="submit">Trigger</button>
         </>
       )}
     </Form>
@@ -95,8 +104,8 @@ interface FormProps {
 }
 
 const Form = styled.form<FormProps>`
-  width: 874px;
-  margin-top: 50px;
+  width: 1200px;
+  margin: 50px auto 0 auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -124,4 +133,4 @@ const Message = styled.div`
   }
 `;
 
-export default DeniedChainsForm;
+export default Executor;

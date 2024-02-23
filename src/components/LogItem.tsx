@@ -36,7 +36,7 @@ const LogsItem = ({
             <Status
               status={item?.status?.type}
               width={width}
-              text={moment.unix(item?.executedAt).fromNow()}
+              text={moment(item?.executedAt).fromNow()}
             />
           </Success>
           <LogPanel

@@ -10,7 +10,9 @@ import { refresh } from '../utils/web3-utils';
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
 interface DeniedChainsSetting {
-  chainId: number
+  _id: string,
+  chainId: number,
+  comment: string
 }
 
 const RelayerExecutorChains: React.FC = () => {
@@ -71,7 +73,7 @@ const RelayerExecutorChains: React.FC = () => {
         },
       });
       fetchDeniedChainsSettings();
-      toast.success('Denied chain item successfully deleted');
+      toast.success('Denied chain successfully deleted');
     } catch (error: any) {
       if (error.response?.status === 401) {
         try {
@@ -90,7 +92,7 @@ const RelayerExecutorChains: React.FC = () => {
   const handleCancelDelete = () => {
     setCustomModalOpen(false);
   };
-
+  
   return (
     <Section>
       <DeniedChainsForm onSuccess={fetchDeniedChainsSettings}/>
@@ -101,6 +103,7 @@ const RelayerExecutorChains: React.FC = () => {
             <thead>
               <tr>
                 <th>Network</th>
+                <th>Comment</th>
                 <th></th>
               </tr>
             </thead>
@@ -108,13 +111,14 @@ const RelayerExecutorChains: React.FC = () => {
               {deniedChainsSettings.map((item, index) => (
                 <tr key={index}>
                   <td>{item.chainId}</td>
+                  <td>{item.comment}</td>
                   <td>
                     <img
                       onClick={() =>
-                        handleDeleteClick(item.chainId.toString())
+                        handleDeleteClick(item._id.toString())
                       }
                       src={deleteIcon}
-                      alt="Eliminar"
+                      alt="Delete"
                     />
                   </td>
                 </tr>
@@ -123,7 +127,7 @@ const RelayerExecutorChains: React.FC = () => {
           </ContainerTable> :  'There are no denied chains yet'}
           {customModalOpen && (
             <CustomConfirmationModal
-              message="Are you sure you want to delete this denied chain item?"
+              message="Are you sure you want to delete this denied chain?"
               onConfirm={handleConfirmDelete}
               onCancel={handleCancelDelete}
             />

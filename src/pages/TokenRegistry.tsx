@@ -6,7 +6,7 @@ import TokenRegistryForm from '../components/TokenRegistryForm';
 import CustomConfirmationModal from '../components/CustomConfirmationModal';
 import deleteIcon from '../assets/delete.png';
 import { toast } from 'react-toastify';
-import { ContainerTable, LittleButton } from '../utils/styles';
+import { ContainerTable, LittleButton, Filter, Filters } from '../utils/styles';
 import { refresh } from '../utils/web3-utils';
 import { Tab } from '../utils/styles';
 
@@ -163,7 +163,7 @@ const TokenRegistry: React.FC = () => {
           'x-auth-token': `${token}`,
         },
       });
-      console.log('Token registry item successfully deleted');
+      console.log('Token successfully deleted');
       fetchTokenRegistry(currentPage);
     } catch (error: any) {
       if (error.response?.status === 401) {
@@ -198,7 +198,7 @@ const TokenRegistry: React.FC = () => {
         },
       });
 
-      console.log('Token registry item successfully updated');
+      console.log('Token successfully updated');
       fetchTokenRegistry(currentPage);
 
     } catch (error: any) {
@@ -302,7 +302,7 @@ const TokenRegistry: React.FC = () => {
                   <td>{item.isNativeToken ? '✅' : '❌'}</td>
                   <td>{item.isWrappedNativeToken ? '✅' : '❌'}</td>
                   <td>
-                    <img onClick={() => handleDeleteClick(item)} src={deleteIcon} alt="Eliminar" />
+                    <img onClick={() => handleDeleteClick(item)} src={deleteIcon} alt="Delete" />
                   </td>
                 </tr>
               ))}
@@ -352,28 +352,6 @@ const TokenRegistrySection = styled.div`
   max-width: 90%;
 `;
 
-const Filters = styled.div`
-  display: flex;
-  margin-top: 70px;
-`;
-
-const Filter = styled.div`
-  margin-right: 20px;
-
-  label {
-    margin-right: 5px;
-  }
-
-  select,
-  input {
-    padding: 5px;
-  }
-  select {
-    display: block;
-    height: 50px;
-    border-radius: 7px;
-  }
-`;
 
 const Pagination = styled.div`
   display: flex;

@@ -48,6 +48,13 @@ interface PaginationControlsProps {
   onPageChange: (newPage: number) => void; // Function that takes a new page number
 }
 
+const defaultStatus = [
+  'success',
+  'reverted',
+  'simulatedOk',
+  'simulatedFail'
+]
+
 
 const Logs: FC<LogsProps> = () => {
   const params = useParams<{ id: string }>(); // Specify the type of useParams
@@ -55,7 +62,7 @@ const Logs: FC<LogsProps> = () => {
   const defaultChain: SupportedChainIdValue = 1;
   const [selectedNetwork, setSelectedNetwork] =
     useState<SupportedChainIdValue>(defaultChain);
-  const [selectedStatus, setSelectedStatus] = useState<string>("");
+  const [selectedStatus, setSelectedStatus] = useState<string>(defaultStatus);
   const [selectedToken, setSelectedToken] = useState<string>("");
   const [selectedColored, setSelectedColored] = useState<boolean>(true);
   const [openMenu, setOpenMenu] = useState<boolean>(false);
@@ -113,11 +120,10 @@ const Logs: FC<LogsProps> = () => {
     // Ensure chainId is of the correct type, especially if it's not a string:
     const chainIdString = searchParams.get("chainId");
     const chainId = chainIdString ? Number(chainIdString) : selectedNetwork; // Convert to number
-    const statusValues = searchParams.getAll("status[]"); // This will be an array of values
+    const statusValues = searchParams.getAll("status[]").length > 0 ? searchParams.getAll("status[]") : defaultStatus;
     const realtimeString = searchParams.get("realtime");
     const coloredString = searchParams.get("colored") || true;
     const executionPlanId = searchParams.get("executionPlanId") || "";
-
     // Assuming setSelectedNetwork and others correctly handle their types:
     setSelectedNetwork(chainId);
     setSelectedToken(token);
@@ -178,6 +184,7 @@ const Logs: FC<LogsProps> = () => {
 
   const handleSelectPlanId = (newPlanId: string) => {
     setSelectedPlanId(newPlanId);
+    setSelectedStatus('') //remove status
     setPage(1);
     setTimeout(() => {
       if (newPlanId !== "") {
@@ -195,6 +202,7 @@ const Logs: FC<LogsProps> = () => {
   const handleReset = () => {
     setSelectedToken("");
     setSelectedPlanId("");
+    setSelectedStatus(defaultStatus);
     setPage(1);
     const { executionPlanId, ...otherFilters } = filters;
     setFilters({ ...otherFilters });

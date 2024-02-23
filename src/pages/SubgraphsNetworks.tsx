@@ -75,7 +75,7 @@ const RelayerExecutorSubgraphs: React.FC = () => {
         },
       });
       fetchSubgraphsNetworks();
-      toast.success('Subgraph item was successfully deleted');
+      toast.success('Subgraph network was successfully deleted');
     } catch (error: any) {
       if (error.response?.status === 401) {
         try {
@@ -120,7 +120,7 @@ const RelayerExecutorSubgraphs: React.FC = () => {
                         handleDeleteClick(item._id.toString())
                       }
                       src={deleteIcon}
-                      alt="Eliminar"
+                      alt="Delete"
                     />
                   </td>
                 </tr>

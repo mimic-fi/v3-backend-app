@@ -1,92 +1,53 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import styled from "styled-components";
-import { ContainerTable } from "../utils/styles";
-import Network from "../utils/Network";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import EnvironmentsMonthly from './EnvironmentsMonthly';
+import EnvironmentsYearly from './EnvironmentsYearly';
+import { Tab } from '../utils/styles';
+import EnvironmentsList from './EnvironmentsList';
 
-interface Environment {
-  namespace: string;
-  chainIds: number[];
-  mimicId: string;
-}
-
-const URL = process.env.REACT_APP_SERVER_BASE_URL;
-
-const Enviroments: React.FC = () => {
-  const [data, setData] = useState<Environment[] | null>(null);
-
-  async function fetchEnvironments(): Promise<Environment[]> {
-    const response = await axios.get<Environment[]>(
-      `${URL}/public/environments/`
-    );
-    setData(response.data);
-    return response.data;
-  }
+export default function Environments() {
+  const [activeTab, setActiveTab] = useState('list');
+  const navigate = useNavigate();
+  const { tab } = useParams();
 
   useEffect(() => {
-    fetchEnvironments();
-  }, []);
+    if (tab) {
+      setActiveTab(tab);
+    }
+  }, [tab]);
+
+  const handleTabClick = (tab: string) => {
+    setActiveTab(tab);
+    navigate(`/dashboard/environments/${tab}`);
+  };
 
   return (
-    <Section>
-      {data ? (
-        <>
-          <ContainerTable>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>id</th>
-                <th>actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data?.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.namespace}</td>
-                  <td>
-                    <Column>
-                    {item.mimicId}
-                    <Stack>
-                    {item.chainIds.map((c) => {
-                      return <Network network={c} width={1200} small />;
-                    })}
-                    </Stack>
-                    </Column>
-                    </td>
-                  <td>
-                    <Link to={`${item.mimicId}/logs`}> Logs</Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </ContainerTable>
-        </>
-      ) : (
-        <p>Loading...</p>
-      )}
-    </Section>
+    <div>
+      <Tab>
+      <button
+          onClick={() => handleTabClick('list')}
+          className={activeTab === 'list' ? 'active' : ''}
+        >
+          List
+        </button>
+        <button
+          onClick={() => handleTabClick('monthly')}
+          className={activeTab === 'monthly' ? 'active' : ''}
+        >
+          Monthly
+        </button>
+        <button
+          onClick={() => handleTabClick('yearly')}
+          className={activeTab === 'yearly' ? 'active' : ''}
+        >
+          Yearly
+        </button>
+      </Tab>
+      <div>
+        {activeTab === 'list' && <EnvironmentsList />}
+        {activeTab === 'monthly' && <EnvironmentsMonthly />}
+        {activeTab === 'yearly' && <EnvironmentsYearly />}
+      </div>
+    </div>
   );
-};
-
-const Column = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Stack = styled.div`
-  display: flex;
-  margin: 5px 0px;
-`;
-
-
-const Section = styled.div`
-  margin: 0px auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-width: 874px;
-  max-width: 90%;
-`;
-
-export default Enviroments;
+}
