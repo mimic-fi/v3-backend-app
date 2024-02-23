@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
@@ -5,6 +6,7 @@ import { ContainerTable } from "../utils/styles";
 import Network from "../utils/Network";
 import { Link } from "react-router-dom";
 import Address from "../utils/Address";
+import { filterByNamespace } from "../utils/web3-utils";
 
 interface Environment {
   namespace: string;
@@ -14,7 +16,7 @@ interface Environment {
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
-const EnvironmentsList: React.FC = () => {
+const EnvironmentsList: React.FC = ({searchTerm = ''}) => {
   const [data, setData] = useState<Environment[] | null>(null);
 
   async function fetchEnvironments(): Promise<Environment[]> {
@@ -29,6 +31,8 @@ const EnvironmentsList: React.FC = () => {
     fetchEnvironments();
   }, []);
 
+
+
   return (
     <Section>
       {data ? (
@@ -42,7 +46,7 @@ const EnvironmentsList: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {data?.map((item, index) => (
+              {filterByNamespace(data, searchTerm)?.map((item, index) => (
                 <tr key={index}>
                   <td  className="accent">{item.namespace}</td>
                   <td>

@@ -233,11 +233,14 @@ const Logs: FC<LogsProps> = () => {
   };
 
   const statusList = [
+    { value: "success", label: "success" },
+    { value: "reverted", label: "reverted" },
     { value: "notSimulated", label: "notSimulated" },
     { value: "simulatedOk", label: "simulatedOk" },
     { value: "simulatedFail", label: "simulatedFail" },
-    { value: "reverted", label: "reverted" },
-    { value: "success", label: "success" },
+    { value: "executionDelayed", label: "executionDelayed" },
+    { value: "failed", label: "failed" },
+    { value: "notExecuted", label: "notExecuted" },
   ];
   
   const showOptions = (list) => {

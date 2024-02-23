@@ -177,3 +177,12 @@ export function logout() {
   localStorage.removeItem('token');
   window.location.reload();
 }
+
+export function filterByNamespace(objects, searchTerm) {
+  const lowerCaseSearchTerm = searchTerm?.toLowerCase();
+  
+  // Filter the array based on the presence of the search term in the namespace property
+  return objects?.filter(obj => 
+      obj?.namespace?.toLowerCase()?.includes(lowerCaseSearchTerm)
+  );
+}
