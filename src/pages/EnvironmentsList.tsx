@@ -67,7 +67,8 @@ const EnvironmentsList: React.FC = ({searchTerm = ''}) => {
                     </td>
                   <td>
                     <Link to={`/dashboard/environments/${item.mimicId}/logs`} className="accent-2"> Logs</Link> | 
-                    <Link to={`https://app.mimic.fi/${item.mimicId}`} className="accent-2" target="_blank"> Explorer</Link>
+                    <Link to={`/dashboard/environments/${item.mimicId}/monitor`} className="accent-2"> Monitors</Link> |
+                    <Link to={`https://app.mimic.fi/${item.mimicId}/activity`} className="accent-2" target="_blank"> Activity</Link> 
                   </td>
                 </tr>
               ))}
@@ -118,7 +119,13 @@ const Table = styled(ContainerTable)`
     color: #ff975f;
     font-wight: bold;
     font-family: 'DMSansBold';
+ 
   }
+  a {
+        &:hover {
+            text-decoration: underline;
+        }
+    }
 
   th:first-child {
     min-width: 200px;

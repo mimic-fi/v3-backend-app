@@ -14,6 +14,7 @@ import styled from 'styled-components';
 import bg from '../assets/background-dashboard.png';
 import Environments from '../pages/Environments';
 import Logs from '../pages/Logs';
+import Monitor from '../pages/Monitor';
 
 interface DashboardProps {
   onLogout: () => void;
@@ -72,6 +73,7 @@ export default function Dashboard({ onLogout, showError }: DashboardProps) {
             <Route path="/environments/:id" element={<Environments />} />
             <Route path="/environments" element={<Environments />} />
             <Route path="/environments/:id/logs" element={<Logs />} />
+            <Route path="/environments/:id/monitor" element={<Monitor />} />
             <Route path="/" element={<Status />} />
           </Routes>
         </div>

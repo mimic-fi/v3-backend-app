@@ -244,7 +244,6 @@ const Linked = styled(Link)`
 `
 
 
-
 function TableCell({ children, align, lite, ...props }) {
     return (
       <Td {...props} align={align} lite={lite}>
