@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from 'react'
 import styled from 'styled-components'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import arrowDown from '../assets/arrow-down.svg'
-// import MonitorItem from '../sections/MonitorItem'
 import useSimpleMonitor from '../hooks/useSimpleMonitor'
 import useManyTokenInfo from '../hooks/useManyTokenInfo'
 import useTokenPrices from '../hooks/useTokenPrices'
@@ -11,7 +10,6 @@ import { ContainerTable } from '../utils/styles'
 import Network from '../utils/Network'
 import { CHAIN_INFO, SupportedChainId } from '../constants/chainInfo'
 import MonitorItem from '../components/MonitorItem'
-// import TableCell from '../structure/Table/TableCell'
 
 const Monitor = () => {
   const params = useParams()
@@ -144,7 +142,7 @@ const Monitor = () => {
 
   const handleRealTimeChange = (e) => {
     setUsingThreshold(!usingThreshold)
-    if (!filters?.threshold ) {
+    if (!filters?.threshold) {
       handleSelectThreshold('$100')
 
     }
@@ -238,7 +236,7 @@ const Monitor = () => {
     // eslint-disable-next-line
   }, [summary, dataTokenInfo, dataTokenPrices]); // Empty dependency array to run only on component mount
 
-  const changeView = (view) =>{
+  const changeView = (view) => {
     if (selectedView === view) {
       setSelectedView('TABLE')
     } else {
@@ -768,18 +766,13 @@ const Table = styled(ContainerTable)`
     left: 0;
     z-index: 1;
     padding: 0px 15px;
-    /* background-color: #2D2C44; */
   }
 
   tbody {
     tr {
       td:first-child {
-        /* position: sticky; */
-        /* left: 0; */
         padding: 0px 0px;
         min-width: 150px;
-        
-        /* background-color: #2D2C44; */
       }
     }
   }

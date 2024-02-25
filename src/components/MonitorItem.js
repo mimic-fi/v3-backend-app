@@ -35,7 +35,6 @@ const MonitorItem = ({ item, width, colored, environment, selectedOpenAll, selec
             <Network
               network={chainId}
               width={width}
-              
             />
           </FlexNoWrap>
         </TableCell>
@@ -47,10 +46,9 @@ const MonitorItem = ({ item, width, colored, environment, selectedOpenAll, selec
           </Column>
         </TableCell>
         <TableCell align="left">
-        <Flex>
-          
-          <Address address={address} chainId={chainId} showIdentity={false} />
-        </Flex>
+          <Flex>
+            <Address address={address} chainId={chainId} showIdentity={false} />
+          </Flex>
         </TableCell>
         <TableCell maxwidth="200px">
           <FlexNoWrap>
@@ -63,23 +61,19 @@ const MonitorItem = ({ item, width, colored, environment, selectedOpenAll, selec
           </FlexNoWrap>
         </TableCell>
         <TableCell align="left">
-        <Flex>
-
-          {formatPrices(amountUsd)} {isOutdated && <Out>⚠</Out>}
+          <Flex>
+            {formatPrices(amountUsd)} {isOutdated && <Out>⚠</Out>}
           </Flex>
-
         </TableCell>
         <TableCell>
-        <Flex>
-
-          <Space />
-          <Details onClick={() => setOpen(!isOpen)}>
-            {
-              !isOpen ? <span class="chevron right"></span> : <span class="chevron bottom"></span>
-            }
-          </Details>
+          <Flex>
+            <Space />
+            <Details onClick={() => setOpen(!isOpen)}>
+              {
+                !isOpen ? <span class="chevron right"></span> : <span class="chevron bottom"></span>
+              }
+            </Details>
           </Flex>
-
         </TableCell>
       </Row>
       <ExpandableComponent isOpen={isOpen} environment={environment} setOpen={setOpen} item={item}
@@ -95,7 +89,9 @@ const ExpandableComponent = ({ isOpen, item, width, selectedOpenAll, environment
     'success',
     'reverted',
     'simulatedOk',
-    'simulatedFail'
+    'simulatedFail',
+    'executionDelayed',
+    'failed'
   ]
   const { data, isLoading } = useLogs(environment, 1, 20, { chainId: item.chainId, token: item?.address, status: defaultStatus }, 0, isOpen)
   return (
@@ -108,8 +104,8 @@ const ExpandableComponent = ({ isOpen, item, width, selectedOpenAll, environment
                 <Extra>
                   <div>
 
-                    {item?.source.map(s => <Line><Address address={s.address} short chainId={item?.chainId} showIdentity={false} /> 
-                    - {s.balance} - <Link to={getEtherscanLink(item.chainId, `${item?.address}?a=${s.address}`, 'token')} style={{textDecoration: 'underline'}}>Check </Link></Line>)}
+                    {item?.source.map(s => <Line><Address address={s.address} short chainId={item?.chainId} showIdentity={false} />
+                      - {s.balance} - <Link to={getEtherscanLink(item.chainId, `${item?.address}?a=${s.address}`, 'token')} style={{ textDecoration: 'underline' }}>Check </Link></Line>)}
                   </div>
                   <ExtraInfo>
                     Price last updated: {moment(item?.priceUpdated).fromNow()}
@@ -275,7 +271,7 @@ const Column = styled.div`
 
 
 
- const Details = styled.button`
+const Details = styled.button`
 background: rgba(168, 154, 255, 0.10);
 transition: background-color 0.3s ease;
 color: white;

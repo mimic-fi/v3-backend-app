@@ -4,10 +4,7 @@ import React, { useState, useRef, useEffect, FC } from "react";
 import styled from "styled-components";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import useLogs from "../hooks/useLogs";
-import {
-  CHAIN_INFO,
-  SupportedChainIdValue,
-} from "../constants/chainInfo";
+import { CHAIN_INFO, SupportedChainIdValue } from "../constants/chainInfo";
 import { ContainerTable } from "../utils/styles";
 import Select from "react-select";
 import LogsItem from "../components/LogItem";
@@ -49,12 +46,13 @@ interface PaginationControlsProps {
 }
 
 const defaultStatus = [
-  'success',
-  'reverted',
-  'simulatedOk',
-  'simulatedFail'
-]
-
+  "success",
+  "reverted",
+  "simulatedOk",
+  "simulatedFail",
+  "executionDelayed",
+  "failed",
+];
 
 const Logs: FC<LogsProps> = () => {
   const params = useParams<{ id: string }>(); // Specify the type of useParams
@@ -79,19 +77,19 @@ const Logs: FC<LogsProps> = () => {
     filters,
     intervalMs ? 5000 : 0
   );
-  const {data: envData} = useEnviromenmentList(params.id)
+  const { data: envData } = useEnviromenmentList(params.id);
   const navigate = useNavigate();
   const location = useLocation();
 
   const updateURL = (newFilters) => {
     const searchParams = new URLSearchParams();
-  
+
     Object.keys(newFilters).forEach((key) => {
       const value = newFilters[key];
       if (value !== undefined) {
-        if(Array.isArray(value)) {
+        if (Array.isArray(value)) {
           // Correctly handle array values
-          value.forEach(v => {
+          value.forEach((v) => {
             searchParams.append(`${key}[]`, String(v)); // Use append for arrays
           });
         } else {
@@ -103,7 +101,7 @@ const Logs: FC<LogsProps> = () => {
         searchParams.delete(key);
       }
     });
-  
+
     // For React Router v6
     navigate(`${location.pathname}?${searchParams.toString()}`, {
       replace: true,
@@ -120,7 +118,10 @@ const Logs: FC<LogsProps> = () => {
     // Ensure chainId is of the correct type, especially if it's not a string:
     const chainIdString = searchParams.get("chainId");
     const chainId = chainIdString ? Number(chainIdString) : selectedNetwork; // Convert to number
-    const statusValues = searchParams.getAll("status[]").length > 0 ? searchParams.getAll("status[]") : defaultStatus;
+    const statusValues =
+      searchParams.getAll("status[]").length > 0
+        ? searchParams.getAll("status[]")
+        : defaultStatus;
     const realtimeString = searchParams.get("realtime");
     const coloredString = searchParams.get("colored") || true;
     const executionPlanId = searchParams.get("executionPlanId") || "";
@@ -141,7 +142,6 @@ const Logs: FC<LogsProps> = () => {
     setPage(newPage);
   };
 
-
   const handleRealTimeChange = () => {
     setIntervalMs(!intervalMs);
     updateURL({ ...filters, colored: selectedColored, realtime: !intervalMs });
@@ -153,12 +153,12 @@ const Logs: FC<LogsProps> = () => {
   };
 
   const handleSelectMultiStatus = (e) => {
-    const statuses = e?.map( s => s.value)
+    const statuses = e?.map((s) => s.value);
     setSelectedStatus(statuses);
     setPage(1);
     if (e) {
       setFilters({ ...filters, status: statuses });
-      updateURL({ ...filters, status: statuses});
+      updateURL({ ...filters, status: statuses });
     } else {
       const { status, ...otherFilters } = filters;
       setFilters({ ...otherFilters });
@@ -184,7 +184,7 @@ const Logs: FC<LogsProps> = () => {
 
   const handleSelectPlanId = (newPlanId: string) => {
     setSelectedPlanId(newPlanId);
-    setSelectedStatus('') //remove status
+    setSelectedStatus(""); //remove status
     setPage(1);
     setTimeout(() => {
       if (newPlanId !== "") {
@@ -216,7 +216,6 @@ const Logs: FC<LogsProps> = () => {
     setPage(1);
     if (chainId) {
       setFilters({ ...filters, chainId: chainId });
-      console.log("addinged!!", { ...filters, chainId: chainId });
     } else {
       const { chainId, ...otherFilters } = filters;
       setFilters({ ...otherFilters });
@@ -225,7 +224,6 @@ const Logs: FC<LogsProps> = () => {
   const value = Object.values(CHAIN_INFO).map((c) => {
     return { value: c.value, label: c.name };
   });
-  console.log("selectedNetwork", selectedNetwork);
 
   const handleTab = (index) => {
     setOpenMenu(!openMenu);
@@ -242,12 +240,12 @@ const Logs: FC<LogsProps> = () => {
     { value: "failed", label: "failed" },
     { value: "notExecuted", label: "notExecuted" },
   ];
-  
+
   const showOptions = (list) => {
-    if (!list) return []
-    return list.map(o => ({ value: o, label: o }));
-  }
-   
+    if (!list) return [];
+    return list.map((o) => ({ value: o, label: o }));
+  };
+
   return (
     <div>
       <Tab>{envData?.namespace || params.id}</Tab>
@@ -347,47 +345,46 @@ const Logs: FC<LogsProps> = () => {
             )}
           </FilterContainer>
         </ExpandableComponent>
-      {isLoading ? (
-        <></>
-      ) : data ? (
-        <>
-          <Table>
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Network</th>
-                <th>Task</th>
-                <th>Status</th>
-                <th>Details</th>
-                <th>PlanId #i</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {data?.data?.map((task: ItemTask, i: number) => (
-                <LogsItem
-                  key={i}
-                  item={task}
-                  index={i + 1}
-                  width={1200}
-                  colored={selectedColored}
-                  handleSelectPlanId={handleSelectPlanId}
-                />
-              ))}
-            </tbody>
-          </Table>
-          <PaginationControls
-            currentPage={page}
-            totalPages={data?.pages}
-            onPageChange={handlePageChange}
-          />
+        {isLoading ? (
+          <></>
+        ) : data ? (
+          <>
+            <Table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Network</th>
+                  <th>Task</th>
+                  <th>Status</th>
+                  <th>Details</th>
+                  <th>PlanId #i</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {data?.data?.map((task: ItemTask, i: number) => (
+                  <LogsItem
+                    key={i}
+                    item={task}
+                    index={i + 1}
+                    width={1200}
+                    colored={selectedColored}
+                    handleSelectPlanId={handleSelectPlanId}
+                  />
+                ))}
+              </tbody>
+            </Table>
+            <PaginationControls
+              currentPage={page}
+              totalPages={data?.pages}
+              onPageChange={handlePageChange}
+            />
           </>
-      ) : (
-        <>ups...</>
-      )}
-    </Section>
+        ) : (
+          <>ups...</>
+        )}
+      </Section>
     </div>
-
   );
 };
 
@@ -599,7 +596,8 @@ export const Details = styled.button`
   display: flex;
   justify-items: center;
   align-items: center;
-  background: ${(props) => (!props.selected ? " rgba(168, 154, 255, 0.10)" : "#6F5CE6")};
+  background: ${(props) =>
+    !props.selected ? " rgba(168, 154, 255, 0.10)" : "#6F5CE6"};
   transition: background-color 0.3s ease;
   color: white;
   border: 0px;
@@ -619,7 +617,6 @@ export const Details = styled.button`
   }
 `;
 
-
 export const Tab = styled.div`
   width: 100%;
   background: #6f5ce6;
@@ -631,8 +628,8 @@ export const Tab = styled.div`
   margin-bottom: 50px;
   height: 40px;
   button {
-    margin-top: 0!important;
-    border-radius: 0!important;
+    margin-top: 0 !important;
+    border-radius: 0 !important;
     padding: 10px 15px;
     cursor: pointer;
     border: none;
@@ -649,6 +646,5 @@ export const Tab = styled.div`
     }
   }
 `;
-
 
 export default Logs;

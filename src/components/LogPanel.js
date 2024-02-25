@@ -2,9 +2,6 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import moment from 'moment'
 import { getEtherscanLink, shortenHash } from '../utils/web3-utils'
-// import { parseActionName } from '../utils/general-utils'
-// import openImg from '../assets/panel/open.svg'
-// import { Heading1, LargeText, StandardText } from '../styles/texts'
 import Address from './Address'
 import useTaskData from '../hooks/useTaskData'
 import LongId from './LongId'
@@ -18,13 +15,13 @@ const LogPanel = ({
   onClose,
   item,
 }) => {
-  const [simulation, setSimulation] = useState({status: 'iddle', simulation: null})
+  const [simulation, setSimulation] = useState({ status: 'iddle', simulation: null })
 
   const { data: dataMeta } = useTaskMetadata(item?.id, open)
   const { data: dataPlan } = useTaskPlanId(item?.id, open)
 
-  useEffect( () => {
-    setSimulation({status: 'iddle', simulation: null})
+  useEffect(() => {
+    setSimulation({ status: 'iddle', simulation: null })
   }, [open]) //only to reset form
 
   return (
@@ -45,25 +42,25 @@ const LogPanel = ({
             <Label status={item?.status?.type}>{item?.status?.type}</Label>
           </StandardText>
         </DetailItem>
-        <TenderButton onClick={() => simulateTransaction(item?.chainId, dataPlan?.blockNumber, 
-          item?.calldata, item?.task?.address, setSimulation)} disabled={simulation.status !== 'iddle'}>{ simulation.status !== 'simulating' ? 'SIMULATE ON TENDERLY' : <span class="loader"></span>}</TenderButton>
-         { simulation.status === 'done' &&
+        <TenderButton onClick={() => simulateTransaction(item?.chainId, dataPlan?.blockNumber,
+          item?.calldata, item?.task?.address, setSimulation)} disabled={simulation.status !== 'iddle'}>{simulation.status !== 'simulating' ? 'SIMULATE ON TENDERLY' : <span class="loader"></span>}</TenderButton>
+        {simulation.status === 'done' &&
           <SimulationDetails>
             <div>
-            simulationStatus: {simulation?.simulation?.simulation?.status ? 'success' : 'failed'} {simulation.status ==='bad_simulation' && 'bad_simulation'}
+              simulationStatus: {simulation?.simulation?.simulation?.status ? 'success' : 'failed'} {simulation.status === 'bad_simulation' && 'bad_simulation'}
             </div>
             <div>
-            simulationError: {simulation?.simulation?.simulation?.error_message}  
+              simulationError: {simulation?.simulation?.simulation?.error_message}
             </div>
-          <Link
-          href={`https://www.tdly.co/shared/simulation/${simulation?.simulation?.simulation?.id}`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          Open Simulation
-          {/* <OpenLink alt="" src={openImg} /> */}
-        </Link>
-          </SimulationDetails> }
+            <Link
+              href={`https://www.tdly.co/shared/simulation/${simulation?.simulation?.simulation?.id}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Open Simulation
+              {/* <OpenLink alt="" src={openImg} /> */}
+            </Link>
+          </SimulationDetails>}
         <br></br><br></br>
         <DetailItem>
           <StandardText className="label">Date</StandardText>
@@ -107,7 +104,7 @@ const LogPanel = ({
 
         <DetailItem>
 
-        <StandardText className="label">Smart Vault</StandardText>
+          <StandardText className="label">Smart Vault</StandardText>
           <Address address={item?.smartVault} chainId={item?.chainId} short showIdentity={false} />
         </DetailItem>
 
@@ -133,7 +130,7 @@ const LogPanel = ({
             )
           })
         }
-     
+
         {item?.status?.type === ('success' || 'reverted') && <RenderTransactionInfo item={item} isOpen={open} />}
 
         <br />
@@ -142,14 +139,12 @@ const LogPanel = ({
           <LongId longId={item?.calldata} />
         </StandardText>
         <br />
-
         <StandardText className="label">Metadata</StandardText>
         <StandardText>
           <Flex>
             {JSON.stringify(dataMeta)}
           </Flex>
         </StandardText>
-
       </div>
     </Detail>
   )
@@ -161,7 +156,6 @@ const RenderTransactionInfo = ({ item }) => {
   return (
     <>
       <br />
-
       <LargeText>Transaction Info</LargeText>
       <StandardText className="label">Transaction Sender</StandardText>
       <StandardText>
@@ -388,8 +382,6 @@ const OpenLink = styled.img`
   height: 20px;
   padding-left: 7px;
 `
-
-
 export const LargeText = styled.p`
   font-feature-settings: 'clig' off, 'liga' off;
   font-family: 'DMSans';
