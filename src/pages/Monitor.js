@@ -238,7 +238,9 @@ const Monitor = () => {
   return (
     <ActivitySection>
         <div>Monitor {summary?.length ? `(${summary?.length})` : ''}</div>
-        <Flex>
+        {/* <Flex> */}
+        <FlexMenu>
+
           <div className="custom-select-container">
             <select
               value={selectedNetwork}
@@ -261,10 +263,46 @@ const Monitor = () => {
               <img src={arrowDown} alt="Arrow" />
             </div>
           </div>
-          
+          <Details onClick={() => setSelectedView('TABLE')} disabled={isLoading}>All</Details>
+          <Details onClick={() => setSelectedView('MONITOR')} disabled={isLoading}>Monitor</Details>
+          <Details onClick={() => setSelectedView('PRICES')} disabled={isLoadingTokenPrices}>Prices</Details>
+          <Details onClick={() => handleDownload()} disabled={isLoading}>CSV</Details>
+          <input
+              value={formatThreshold(selectedThreshold)}
+              placeholder="threshold"
+              onChange={(e) => handleSelectThreshold(e.target.value)}
+              className="custom-plan"
+            />
+                  <Details onClick={handleRealTimeChange}>
+            <Flex>
+              Use threshold{" "}
+              <Switch mode={usingThreshold}>{usingThreshold ? "ON" : "OFF"}</Switch>
+            </Flex>
+          </Details>
+          <Details onClick={handleColored}>
+            <Flex>
+              Open all{" "}
+              <Switch mode={selectedOpenAll}>{selectedOpenAll ? "ON" : "OFF"}</Switch>
+            </Flex>
+          </Details>
+      
+          <FlexRowRight>
+            <div className={'custom-load-container'}>
+              Monitor {`(${summary?.length})`} {isLoading ? <span className='loading'>Loading!</span> : <span className='done'>✓</span>}
+            </div>
+            <div className={'custom-load-container'}>
+              Tokens Data {`(${Object?.values(dataTokenInfo || {})?.length})`} {!isFetchedTokenInfo ? <span className='loading'>Loading! {`${loadPageData}/${totalPagesData}`}</span> : <span className='done'>✓</span>}
+
+            </div>
+            <div className={'custom-load-container'}>
+              Prices {`(${dataTokenPrices?.length || 0})`} {!isFetchedTokenPrices ? <span className='loading'>Loading! {`${loadPagePrice}/${totalPagesPrice}`}</span> : <span className='done'>✓</span>}
+            </div>
+
+          </FlexRowRight>
+          </FlexMenu>
+{/*           
 
           <div className="custom-plan-container">
-            <Details onClick={() => setSelectedView('TABLE')} disabled={isLoading}>All</Details>
           </div>
           <div className="custom-plan-container">
             <Details onClick={() => setSelectedView('MONITOR')} disabled={isLoading}>Monitor</Details>
@@ -285,18 +323,19 @@ const Monitor = () => {
               className="custom-plan"
             />
           </div>
-          <Details onClick={handleColored}>
-            <Flex>
-              Open all{" "}
-              <Switch mode={selectedOpenAll}>{selectedOpenAll ? "ON" : "OFF"}</Switch>
-            </Flex>
-          </Details>
           <Details onClick={handleRealTimeChange}>
             <Flex>
               Use threshold{" "}
               <Switch mode={usingThreshold}>{usingThreshold ? "ON" : "OFF"}</Switch>
             </Flex>
           </Details>
+          <Details onClick={handleColored}>
+            <Flex>
+              Open all{" "}
+              <Switch mode={selectedOpenAll}>{selectedOpenAll ? "ON" : "OFF"}</Switch>
+            </Flex>
+          </Details>
+      
           <FlexRowRight>
             <div className={'custom-load-container'}>
               Monitor {`(${summary?.length})`} {isLoading ? <span className='loading'>Loading!</span> : <span className='done'>✓</span>}
@@ -304,15 +343,14 @@ const Monitor = () => {
             <div className={'custom-load-container'}>
               Tokens Data {`(${Object?.values(dataTokenInfo || {})?.length})`} {!isFetchedTokenInfo ? <span className='loading'>Loading! {`${loadPageData}/${totalPagesData}`}</span> : <span className='done'>✓</span>}
 
-              {/* Tokens Data {!isFetchedTokenInfo ? <span className='loading'>Loading!</span> : <span className='done'>✓</span>} */}
             </div>
             <div className={'custom-load-container'}>
               Prices {`(${dataTokenPrices?.length || 0})`} {!isFetchedTokenPrices ? <span className='loading'>Loading! {`${loadPagePrice}/${totalPagesPrice}`}</span> : <span className='done'>✓</span>}
             </div>
 
-          </FlexRowRight>
+          </FlexRowRight> */}
 
-        </Flex>
+        {/* </Flex> */}
         <GenericTable
           selectedView={selectedView}
           index='MONITOR'
@@ -447,6 +485,17 @@ function TableCell({ children, align, lite, ...props }) {
   )
 }
 
+const FlexMenu = styled.div`
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0px auto;
+  min-width: 874px;
+  max-width: 100%;
+`;
+
 const Td = styled.td`
   padding: 10px 5px;
   color: ${props => props.theme.textWhite};
@@ -498,7 +547,7 @@ const ActivitySection = styled.section`
   .custom-plan-container {
     position: relative;
     display: inline-block;
-    margin-right: 20px;
+    /* margin-right: 20px; */
   }
 
   .custom-load-container {
@@ -556,7 +605,7 @@ const ActivitySection = styled.section`
 
   .custom-plan {
     padding: 6px 13px 6px 16px;
-    max-width: 100px;
+    min-width: 100px;
     border: 0px;
     background: rgba(168, 154, 255, 0.1);
     color: white;
@@ -565,11 +614,13 @@ const ActivitySection = styled.section`
     font-size: 17px;
     font-style: normal;
     font-weight: 400;
-    line-height: 32px;
+    margin-right: 20px;
+    /* line-height: 32px; */
     outline: none !important;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+    margin-bottom: 0px !important;
   }
 
   .arrow-container {
