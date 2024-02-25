@@ -10,6 +10,7 @@ import { ContainerTable } from '../utils/styles'
 import Network from '../utils/Network'
 import { CHAIN_INFO, SupportedChainId } from '../constants/chainInfo'
 import MonitorItem from '../components/MonitorItem'
+import useEnviromenmentList from "../hooks/useEnviromenmentList";
 
 const Monitor = () => {
   const params = useParams()
@@ -35,6 +36,7 @@ const Monitor = () => {
     filters,
     0
   )
+  const { data: envData } = useEnviromenmentList(params.id);
 
   const { data: dataTokenInfo, isFetched: isFetchedTokenInfo } =
     useManyTokenInfo(tokenList, filters, limit, setLoadPageData, setTotalPagesData)
@@ -245,8 +247,9 @@ const Monitor = () => {
   }
 
   return (
+    <div>
+    <Tab>Monitor {summary?.length ? `(${summary?.length})` : ''} {envData?.namespace || params.id}</Tab>
     <ActivitySection>
-      <Heading>Monitor {summary?.length ? `(${summary?.length})` : ''}</Heading>
       <FlexMenu>
 
         <div className="custom-select-container">
@@ -273,7 +276,7 @@ const Monitor = () => {
         </div>
         <Details selected={selectedView === 'MONITOR'} onClick={() => changeView('MONITOR')} disabled={isLoading}>Monitor</Details>
         <Details selected={selectedView === 'PRICES'} onClick={() => changeView('PRICES')} disabled={isLoadingTokenPrices}>Prices</Details>
-        <Details onClick={() => handleDownload()} disabled={isLoading}>CSV</Details>
+        <Details onClick={() => handleDownload()} disabled={isLoading}> <Flex>CSV <span>⇣</span></Flex></Details>
         <input
           value={formatThreshold(selectedThreshold)}
           placeholder="threshold"
@@ -385,6 +388,7 @@ const Monitor = () => {
       />
 
     </ActivitySection>
+    </div>
   )
 }
 
@@ -530,8 +534,6 @@ const Content = styled.div`
   align-items: center;
   justify-content: ${props => props.align === 'center' ? 'center' : 'flex-start'};
 `
-
-
 
 const ActivitySection = styled.section`
     margin: 0px auto;
@@ -777,5 +779,35 @@ const Table = styled(ContainerTable)`
     }
   }
 `
+
+export const Tab = styled.div`
+  width: 100%;
+  background: #6f5ce6;
+  padding: 0;
+  margin-top: -30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 50px;
+  height: 40px;
+  button {
+    margin-top: 0 !important;
+    border-radius: 0 !important;
+    padding: 10px 15px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: white;
+    font-size: 16px;
+
+    &.active {
+      border-bottom: 2px solid white;
+    }
+
+    &:not(:last-child) {
+      margin-right: 20px;
+    }
+  }
+`;
 
 export default Monitor

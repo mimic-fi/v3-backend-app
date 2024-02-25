@@ -112,7 +112,7 @@ const statusStyles = {
     color: "#FFF",
   },
   executionDelayed: {
-    backgroundColor: "#d75d0cf4",
+    backgroundColor: "#d75d0c4f",
     backgroundLabel: "#d3781662",
     colorLabel: "#fff",
     color: "#FFF",
