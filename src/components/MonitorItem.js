@@ -91,7 +91,13 @@ const MonitorItem = ({ item, width, colored, environment, selectedOpenAll, selec
 }
 
 const ExpandableComponent = ({ isOpen, item, width, selectedOpenAll, environment }) => {
-  const { data, isLoading } = useLogs(environment, 1, 5, { chainId: item.chainId, token: item?.address }, 50000, isOpen)
+  const defaultStatus = [
+    'success',
+    'reverted',
+    'simulatedOk',
+    'simulatedFail'
+  ]
+  const { data, isLoading } = useLogs(environment, 1, 20, { chainId: item.chainId, token: item?.address, status: defaultStatus }, 0, isOpen)
   return (
     <>
       <TableRowM>
@@ -109,7 +115,7 @@ const ExpandableComponent = ({ isOpen, item, width, selectedOpenAll, environment
                     Price last updated: {moment(item?.priceUpdated).fromNow()}
                   </ExtraInfo>
                   <FlexOptions>
-                    <Link to={`/${environment}/logs?chainId=${item?.chainId}&token=${item?.address}&colored=true`}>Open Logs</Link>
+                    <Link to={`/dashboard/environments/${environment}/logs?chainId=${item?.chainId}&token=${item?.address}&colored=true`}>Open Logs</Link>
                   </FlexOptions>
                 </Extra>
               </TableCellM>

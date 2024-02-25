@@ -16,7 +16,7 @@ import MonitorItem from '../components/MonitorItem'
 const Monitor = () => {
   const params = useParams()
   const buttonRef = useRef(null)
-  const defaultChain =  1
+  const defaultChain = 1
   const [selectedView, setSelectedView] = useState('TABLE')
   const [selectedNetwork, setSelectedNetwork] = useState(defaultChain)
   const [selectedOpenAll, setSelectedOpenAll] = useState(false)
@@ -144,6 +144,10 @@ const Monitor = () => {
 
   const handleRealTimeChange = (e) => {
     setUsingThreshold(!usingThreshold)
+    if (!filters?.threshold ) {
+      handleSelectThreshold('$100')
+
+    }
     updateURL({ ...filters, openAll: selectedOpenAll, usingThreshold: !usingThreshold })
   }
 
@@ -153,7 +157,7 @@ const Monitor = () => {
   }
 
   const handleSelectThreshold = (limit) => {
-    setSelectedThreshold(limit.replace('$', ''))
+    setSelectedThreshold(limit?.replace('$', ''))
     setPage(1)
     setTimeout(() => {
       if (limit !== '') {
@@ -173,7 +177,7 @@ const Monitor = () => {
       return [] // Return an empty array if obj.source is not an array
     }
     return obj.source.map(s => ({
-      sourceAddress: s.address, 
+      sourceAddress: s.address,
       address: obj.address,
       symbol: obj.symbol,
       decimals: obj.decimals,
@@ -189,12 +193,12 @@ const Monitor = () => {
     if (data.length === 0) {
       return '' // Return an empty string if there is no data
     }
-  
+
     // Assuming the structure of each object returned by convertData is the same
     // We use the first element to determine the headers
     const headers = Object.keys(convertData(data[0])[0])
     const csvRows = [headers.join(',')] // Add headers as the first row
-  
+
     for (const item of data) {
       const convertedData = convertData(item) // Convert each item
       for (const row of convertedData) {
@@ -205,7 +209,7 @@ const Monitor = () => {
         csvRows.push(values.join(',')) // Add the row to CSV rows
       }
     }
-  
+
     return csvRows.join('\n')
   }
 
@@ -231,76 +235,81 @@ const Monitor = () => {
 
   useEffect(() => {
     setDat(aggregateFull(summary, dataTokenInfo, dataTokenPrices))
-
     // eslint-disable-next-line
   }, [summary, dataTokenInfo, dataTokenPrices]); // Empty dependency array to run only on component mount
 
+  const changeView = (view) =>{
+    if (selectedView === view) {
+      setSelectedView('TABLE')
+    } else {
+      setSelectedView(view)
+    }
+  }
+
   return (
     <ActivitySection>
-        <div>Monitor {summary?.length ? `(${summary?.length})` : ''}</div>
-        {/* <Flex> */}
-        <FlexMenu>
+      <Heading>Monitor {summary?.length ? `(${summary?.length})` : ''}</Heading>
+      <FlexMenu>
 
-          <div className="custom-select-container">
-            <select
-              value={selectedNetwork}
-              onChange={handleSelectChange}
-              className="custom-select"
-              ref={buttonRef}
-            >
-              <option value="">All Networks</option>
-              {Object.values(SupportedChainId).map((chainId) => (
-                <option key={chainId} value={chainId}>
-                  <Network network={CHAIN_INFO[chainId].name} noLogo={true} />
-                </option>
-              ))}
-            </select>
-            <div
-              id="arrow-container"
-              className="arrow-container"
-              onClick={handleImageClick}
-            >
-              <img src={arrowDown} alt="Arrow" />
-            </div>
+        <div className="custom-select-container">
+          <select
+            value={selectedNetwork}
+            onChange={handleSelectChange}
+            className="custom-select"
+            ref={buttonRef}
+          >
+            <option value="">All Networks</option>
+            {Object.values(SupportedChainId).map((chainId) => (
+              <option key={chainId} value={chainId}>
+                <Network network={CHAIN_INFO[chainId].name} noLogo={true} />
+              </option>
+            ))}
+          </select>
+          <div
+            id="arrow-container"
+            className="arrow-container"
+            onClick={handleImageClick}
+          >
+            <img src={arrowDown} alt="Arrow" />
           </div>
-          <Details onClick={() => setSelectedView('TABLE')} disabled={isLoading}>All</Details>
-          <Details onClick={() => setSelectedView('MONITOR')} disabled={isLoading}>Monitor</Details>
-          <Details onClick={() => setSelectedView('PRICES')} disabled={isLoadingTokenPrices}>Prices</Details>
-          <Details onClick={() => handleDownload()} disabled={isLoading}>CSV</Details>
-          <input
-              value={formatThreshold(selectedThreshold)}
-              placeholder="threshold"
-              onChange={(e) => handleSelectThreshold(e.target.value)}
-              className="custom-plan"
-            />
-                  <Details onClick={handleRealTimeChange}>
-            <Flex>
-              Use threshold{" "}
-              <Switch mode={usingThreshold}>{usingThreshold ? "ON" : "OFF"}</Switch>
-            </Flex>
-          </Details>
-          <Details onClick={handleColored}>
-            <Flex>
-              Open all{" "}
-              <Switch mode={selectedOpenAll}>{selectedOpenAll ? "ON" : "OFF"}</Switch>
-            </Flex>
-          </Details>
-      
-          <FlexRowRight>
-            <div className={'custom-load-container'}>
-              Monitor {`(${summary?.length})`} {isLoading ? <span className='loading'>Loading!</span> : <span className='done'>✓</span>}
-            </div>
-            <div className={'custom-load-container'}>
-              Tokens Data {`(${Object?.values(dataTokenInfo || {})?.length})`} {!isFetchedTokenInfo ? <span className='loading'>Loading! {`${loadPageData}/${totalPagesData}`}</span> : <span className='done'>✓</span>}
+        </div>
+        <Details selected={selectedView === 'MONITOR'} onClick={() => changeView('MONITOR')} disabled={isLoading}>Monitor</Details>
+        <Details selected={selectedView === 'PRICES'} onClick={() => changeView('PRICES')} disabled={isLoadingTokenPrices}>Prices</Details>
+        <Details onClick={() => handleDownload()} disabled={isLoading}>CSV</Details>
+        <input
+          value={formatThreshold(selectedThreshold)}
+          placeholder="threshold"
+          onChange={(e) => handleSelectThreshold(e.target.value)}
+          className="custom-plan"
+        />
+        <Details onClick={handleRealTimeChange}>
+          <Flex>
+            Use threshold{" "}
+            <Switch mode={usingThreshold}>{usingThreshold ? "ON" : "OFF"}</Switch>
+          </Flex>
+        </Details>
+        <Details onClick={handleColored}>
+          <Flex>
+            Open all{" "}
+            <Switch mode={selectedOpenAll}>{selectedOpenAll ? "ON" : "OFF"}</Switch>
+          </Flex>
+        </Details>
 
-            </div>
-            <div className={'custom-load-container'}>
-              Prices {`(${dataTokenPrices?.length || 0})`} {!isFetchedTokenPrices ? <span className='loading'>Loading! {`${loadPagePrice}/${totalPagesPrice}`}</span> : <span className='done'>✓</span>}
-            </div>
+        <FlexRowRight>
+          <div className={'custom-load-container'}>
+            Monitor {`(${summary?.length})`} {isLoading ? <span className='loading'>Loading!</span> : <span className='done'>✓</span>}
+          </div>
+          <div className={'custom-load-container'}>
+            Tokens Data {`(${Object?.values(dataTokenInfo || {})?.length})`} {!isFetchedTokenInfo ? <span className='loading'>Loading! {`${loadPageData}/${totalPagesData}`}</span> : <span className='done'>✓</span>}
 
-          </FlexRowRight>
-          </FlexMenu>
-{/*           
+          </div>
+          <div className={'custom-load-container'}>
+            Prices {`(${dataTokenPrices?.length || 0})`} {!isFetchedTokenPrices ? <span className='loading'>Loading! {`${loadPagePrice}/${totalPagesPrice}`}</span> : <span className='done'>✓</span>}
+          </div>
+
+        </FlexRowRight>
+      </FlexMenu>
+      {/*           
 
           <div className="custom-plan-container">
           </div>
@@ -350,32 +359,32 @@ const Monitor = () => {
 
           </FlexRowRight> */}
 
-        {/* </Flex> */}
-        <GenericTable
-          selectedView={selectedView}
-          index='MONITOR'
-          data={summary}
-          isLoading={isLoading}
-        />
-        <GenericTable
-          selectedView={selectedView}
-          index='PRICES'
-          data={dataTokenPrices}
-          isLoading={isLoadingTokenPrices}
-        />
-        <ShowTable
-          selectedView={selectedView}
-          isLoading={isLoading}
-          summary={summary}
-          oa={dat}
-          width={1200}
-          selectedOpenAll={selectedOpenAll}
-          handleSelectThreshold={handleSelectThreshold}
-          selectedThreshold={selectedThreshold}
-          params={params}
-          threshold={selectedThreshold}
-          usingThreshold={usingThreshold}
-        />
+      {/* </Flex> */}
+      <GenericTable
+        selectedView={selectedView}
+        index='MONITOR'
+        data={summary}
+        isLoading={isLoading}
+      />
+      <GenericTable
+        selectedView={selectedView}
+        index='PRICES'
+        data={dataTokenPrices}
+        isLoading={isLoadingTokenPrices}
+      />
+      <ShowTable
+        selectedView={selectedView}
+        isLoading={isLoading}
+        summary={summary}
+        oa={dat}
+        width={1200}
+        selectedOpenAll={selectedOpenAll}
+        handleSelectThreshold={handleSelectThreshold}
+        selectedThreshold={selectedThreshold}
+        params={params}
+        threshold={selectedThreshold}
+        usingThreshold={usingThreshold}
+      />
 
     </ActivitySection>
   )
@@ -398,41 +407,41 @@ const ShowTable = ({ selectedView, isLoading, summary, oa, width, selectedOpenAl
       </>
     ) : summary?.length > 0 ? (
       <Table>
-            <thead>
-            <tr>
-              <th>Network</th>
-                <th>Symbol</th>
-                <th>Address</th>
-                <th>Amount</th>
-                <th>Price</th>
-                <th>USD</th>
-                <th></th>
-              </tr>
-            </thead>
+        <thead>
+          <tr>
+            <th>Network</th>
+            <th>Symbol</th>
+            <th>Address</th>
+            <th>Amount</th>
+            <th>Price</th>
+            <th>USD</th>
+            <th></th>
+          </tr>
+        </thead>
 
-            <tbody>
-    
+        <tbody>
 
-        {/* {summaryLastExecution ? 'loading executions...' : null} */}
-        {oa?.map((task, i) => (
-          <MonitorItem
-            key={i}
-            item={task}
-            index={i + 1}
-            width={width}
-            openAll={selectedOpenAll}
-            handleSelectThreshold={handleSelectThreshold}
-            selectedThreshold={selectedThreshold}
-            environment={params.id}
-            // tokenInfo={}
-            // tokenPrice={dataTokenPrices?.find(t => task?.address === t.address) || defaultPrice}
-            // isLoadingLastExecution={isLoadingLastExecution}
-            // dataLastExecution={dataLastExecution}
-            selectedOpenAll={selectedOpenAll}
-            withThreshold={usingThreshold}
-          />
-        ))}
-            </tbody>
+
+          {/* {summaryLastExecution ? 'loading executions...' : null} */}
+          {oa?.map((task, i) => (
+            <MonitorItem
+              key={i}
+              item={task}
+              index={i + 1}
+              width={width}
+              openAll={selectedOpenAll}
+              handleSelectThreshold={handleSelectThreshold}
+              selectedThreshold={selectedThreshold}
+              environment={params.id}
+              // tokenInfo={}
+              // tokenPrice={dataTokenPrices?.find(t => task?.address === t.address) || defaultPrice}
+              // isLoadingLastExecution={isLoadingLastExecution}
+              // dataLastExecution={dataLastExecution}
+              selectedOpenAll={selectedOpenAll}
+              withThreshold={usingThreshold}
+            />
+          ))}
+        </tbody>
 
       </Table>
     ) : (
@@ -484,6 +493,15 @@ function TableCell({ children, align, lite, ...props }) {
     </Td>
   )
 }
+
+
+
+const Heading = styled.div`
+
+font-size: 20px;
+font-weight: 600;
+padding: 25px;
+`;
 
 const FlexMenu = styled.div`
   width: 100%;
