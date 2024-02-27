@@ -163,7 +163,7 @@ const TokenRegistry: React.FC = () => {
           'x-auth-token': `${token}`,
         },
       });
-      console.log('Token registry item successfully deleted');
+      console.log('Token successfully deleted');
       fetchTokenRegistry(currentPage);
     } catch (error: any) {
       if (error.response?.status === 401) {
@@ -198,7 +198,7 @@ const TokenRegistry: React.FC = () => {
         },
       });
 
-      console.log('Token registry item successfully updated');
+      console.log('Token successfully updated');
       fetchTokenRegistry(currentPage);
 
     } catch (error: any) {
@@ -302,7 +302,7 @@ const TokenRegistry: React.FC = () => {
                   <td>{item.isNativeToken ? '✅' : '❌'}</td>
                   <td>{item.isWrappedNativeToken ? '✅' : '❌'}</td>
                   <td>
-                    <img onClick={() => handleDeleteClick(item)} src={deleteIcon} alt="Eliminar" />
+                    <img onClick={() => handleDeleteClick(item)} src={deleteIcon} alt="Delete" />
                   </td>
                 </tr>
               ))}

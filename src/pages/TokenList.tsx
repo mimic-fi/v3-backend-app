@@ -79,7 +79,7 @@ const TokenLists: React.FC = () => {
         },
       });
       fetchTokenList();
-      toast.success('Token list item successfully deleted');
+      toast.success('Token list successfully deleted');
 
     } catch (error: any) {
       if (error.response?.status === 401) {
@@ -135,7 +135,7 @@ const TokenLists: React.FC = () => {
                       handleDeleteClick(item._id)
                     }
                     src={deleteIcon}
-                    alt="Eliminar"
+                    alt="Delete"
                   />
                   </td>
                 </tr>

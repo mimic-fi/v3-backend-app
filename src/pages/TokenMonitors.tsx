@@ -187,7 +187,7 @@ const TokenMonitors: React.FC = () => {
                         handleDeleteClick(setting.address, setting.chainId)
                       }
                       src={deleteIcon}
-                      alt="Eliminar"
+                      alt="Delete"
                     />
                   </td>
                 </tr>

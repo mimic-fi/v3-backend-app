@@ -74,7 +74,7 @@ const NetworkThresholds: React.FC = () => {
         },
       });
       fetchThresholds();
-      toast.success('Threshold item successfully deleted');
+      toast.success('Threshold successfully deleted');
     } catch (error: any) {
       if (error.response?.status === 401) {
         try {
@@ -119,7 +119,7 @@ const NetworkThresholds: React.FC = () => {
                         handleDeleteClick(item._id.toString())
                       }
                       src={deleteIcon}
-                      alt="Eliminar"
+                      alt="Delete"
                     />
                   </td>
                 </tr>

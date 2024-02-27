@@ -74,7 +74,7 @@ const RelayerExecutorSmartVaults: React.FC = () => {
         },
       });
       fetchDeniedSmartVaults();
-      toast.success('Denied chain item successfully deleted');
+      toast.success('Denied chain successfully deleted');
     } catch (error: any) {
       if (error.response?.status === 401) {
         try {
@@ -121,7 +121,7 @@ const RelayerExecutorSmartVaults: React.FC = () => {
                         handleDeleteClick(item._id.toString())
                       }
                       src={deleteIcon}
-                      alt="Eliminar"
+                      alt="Delete"
                     />
                   </td>
                 </tr>
