@@ -19,7 +19,7 @@ interface ResponseData {
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
-const Environments: React.FC<EnvironmentsProps> = ({ onSuccess = () => { } }) => {
+const EnvironmentsYearly: React.FC<EnvironmentsProps> = ({ onSuccess = () => { } }) => {
   const [activeTab, setActiveTab] = useState('accounting');
   const [year, setYear] = useState<number>(new Date().getFullYear());
   const [data, setData] = useState<{ [key: string]: any[] }>({});
@@ -104,20 +104,21 @@ const Environments: React.FC<EnvironmentsProps> = ({ onSuccess = () => { } }) =>
   return (
     <Section>
       <FlexButtons>
-        <button
-          className={activeTab === 'accounting' ? 'active' : ''}
+      <Details
+          selected={activeTab === 'accounting'}
           onClick={() => handleTabClick('accounting')}>
           Accounting
-          </button>
-        <button
-          className={activeTab === 'gas' ? 'active' : ''}
+          </Details>
+        <Details
+          selected={activeTab === 'gas' }
           onClick={() => handleTabClick('gas')}>
           Gas
-        </button>
-        <button className={activeTab === 'executions' ? 'active' : ''}
+        </Details>
+        <Details 
+          selected={activeTab === 'executions' }
           onClick={() => handleTabClick('executions')}>
           Executions
-        </button>
+        </Details>
       </FlexButtons>
       {Object.keys(data).length === 0 ? <LoadingTable>Loading...</LoadingTable> :
         <Table>
@@ -246,4 +247,28 @@ const Table = styled(ContainerTable)`
   }
 `
 
-export default Environments;
+export const Details = styled.button`
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  background: ${(props) => (!props.selected ? " rgba(168, 154, 255, 0.10)" : "#6F5CE6")} !important;
+  transition: background-color 0.3s ease;
+  color: white;
+  border: 0px;
+  padding: 10px 15px;
+  border-radius: 10px;
+  margin-right: 20px;
+  height: 50px;
+  cursor: pointer;
+  font-weight: 600;
+  &:disabled {
+    background: rgba(239, 239, 239, 0.3);
+    color: rgba(16, 16, 16, 0.3);
+  }
+
+  &:hover {
+    background: ${(props) => props.theme.main};
+  }
+`;
+
+export default EnvironmentsYearly;

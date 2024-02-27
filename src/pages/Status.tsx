@@ -4,7 +4,6 @@ import StatusRelayer from './StatusRelayer';
 import StatusCrons from './StatusCrons';
 import StatusTransactions from './StatusTransactions'
 import StatusWallets from './StatusWallets'
-import styled from 'styled-components';
 import { Tab } from '../utils/styles';
 
 export default function Status() {

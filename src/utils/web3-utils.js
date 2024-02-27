@@ -20,6 +20,22 @@ export function shortenAddress(address, charsLength = 4) {
   )
 }
 
+export function shortenHash(address, charsLength = 4) {
+  const prefixLength = 0 // "0x"
+  if (!address) {
+    return ''
+  }
+
+  if (address?.length < charsLength * 2 + prefixLength) {
+    return address
+  }
+  return (
+    address.slice(0, charsLength + prefixLength) +
+    '…' +
+    address.slice(-charsLength)
+  )
+}
+
 export function convertWeiToGwei(wei) {
   if (!wei) return 0
   const gwei = wei / 1000000000
@@ -160,4 +176,13 @@ export const refresh = async () => {
 export function logout() {
   localStorage.removeItem('token');
   window.location.reload();
+}
+
+export function filterByNamespace(objects, searchTerm) {
+  const lowerCaseSearchTerm = searchTerm?.toLowerCase();
+  
+  // Filter the array based on the presence of the search term in the namespace property
+  return objects?.filter(obj => 
+      obj?.namespace?.toLowerCase()?.includes(lowerCaseSearchTerm)
+  );
 }
