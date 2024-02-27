@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { BrowserRouter as Router, Route, Routes, Navigate, HashRouter } from 'react-router-dom'
 import Login from './components/Login'
 import Dashboard from './components/Dashboard'
@@ -15,15 +16,18 @@ export default function App() {
     const token = localStorage.getItem('token')
     if (token) setIsLoggedIn(true)
   }, [])
+  const queryClient = new QueryClient()
 
   return (
     <HashRouter>
+      <QueryClientProvider client={queryClient} >
         {error && <ErrorAlert message={error} onClose={closeError} />}
         <Routes>
           <Route path='/' element={<Navigate to='/login' replace />} />
-          <Route path="/login" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login onLogin={() => setIsLoggedIn(true)} showError={showError} />}/>
-          <Route path="/dashboard/*" element={isLoggedIn ? <Dashboard onLogout={() => setIsLoggedIn(false)} showError={showError} /> : <Navigate to="/login" />}/>
+          <Route path="/login" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login onLogin={() => setIsLoggedIn(true)} showError={showError} />} />
+          <Route path="/dashboard/*" element={isLoggedIn ? <Dashboard onLogout={() => setIsLoggedIn(false)} showError={showError} /> : <Navigate to="/login" />} />
         </Routes>
+      </QueryClientProvider>
     </HashRouter>
   )
 }
