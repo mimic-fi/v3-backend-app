@@ -10,9 +10,11 @@ import TokenList from '../pages/TokenList';
 import TokenMonitors from '../pages/TokenMonitors';
 import Web3Settings from '../pages/Web3Settings';
 import Jobs from '../pages/Jobs';
-import Environments from '../pages/Environments';
 import styled from 'styled-components';
 import bg from '../assets/background-dashboard.png';
+import Environments from '../pages/Environments';
+import Logs from '../pages/Logs';
+import Monitor from '../pages/Monitor';
 
 interface DashboardProps {
   onLogout: () => void;
@@ -69,6 +71,9 @@ export default function Dashboard({ onLogout, showError }: DashboardProps) {
             <Route path="/jobs/:id" element={<Jobs />} />
             <Route path="/environments" element={<Environments />} />
             <Route path="/environments/:id" element={<Environments />} />
+            <Route path="/environments" element={<Environments />} />
+            <Route path="/environments/:id/logs" element={<Logs />} />
+            <Route path="/environments/:id/monitor" element={<Monitor />} />
             <Route path="/" element={<Status />} />
           </Routes>
         </div>
@@ -122,7 +127,7 @@ const DashboardContainer = styled.div<DashProps>`
       font-size: 12px;
     }
   }
-  button {
+  /* button {
     display: inline-block;
     width: auto;
     padding: 10px 24px;
@@ -144,7 +149,7 @@ const DashboardContainer = styled.div<DashProps>`
   button.white {
     background: white;
     color: #582ea0;
-  }
+  } */
   h2 {
     font-size: 30px;
     margin-top: 60px;

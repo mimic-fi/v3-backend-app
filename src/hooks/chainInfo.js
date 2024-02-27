@@ -196,6 +196,7 @@ export const CHAIN_INFO = {
   },
 }
 
+// TODO: Check other chains.
 export const CHAIN_SUBGRAPH_URL = {
   [SupportedChainId.ARBITRUM]:
     'https://api.thegraph.com/subgraphs/name/mimic-fi/v3-arbitrum',

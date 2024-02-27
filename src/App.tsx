@@ -1,9 +1,19 @@
 import { useState, useEffect } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { BrowserRouter as Router, Route, Routes, Navigate, HashRouter } from 'react-router-dom'
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
 import Login from './components/Login'
 import Dashboard from './components/Dashboard'
 import ErrorAlert from './components/ErrorAlert'
+
+const queryClient = new QueryClient()
+
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)

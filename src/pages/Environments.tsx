@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Monthly from './EnvironmentsMonthly';
-import Yearly from './EnvironmentsYearly';
-import styled from 'styled-components';
+import EnvironmentsMonthly from './EnvironmentsMonthly';
+import EnvironmentsYearly from './EnvironmentsYearly';
 import { Tab } from '../utils/styles';
+import EnvironmentsList from './EnvironmentsList';
 
 export default function Environments() {
-  const [activeTab, setActiveTab] = useState('monthly');
+  const [activeTab, setActiveTab] = useState('list');
   const navigate = useNavigate();
   const { tab } = useParams();
 
@@ -24,6 +24,12 @@ export default function Environments() {
   return (
     <div>
       <Tab>
+      <button
+          onClick={() => handleTabClick('list')}
+          className={activeTab === 'list' ? 'active' : ''}
+        >
+          List
+        </button>
         <button
           onClick={() => handleTabClick('monthly')}
           className={activeTab === 'monthly' ? 'active' : ''}
@@ -38,8 +44,9 @@ export default function Environments() {
         </button>
       </Tab>
       <div>
-        {activeTab === 'monthly' && <Monthly />}
-        {activeTab === 'yearly' && <Yearly />}
+        {activeTab === 'list' && <EnvironmentsList />}
+        {activeTab === 'monthly' && <EnvironmentsMonthly />}
+        {activeTab === 'yearly' && <EnvironmentsYearly />}
       </div>
     </div>
   );
