@@ -162,3 +162,53 @@ export const Filter = styled.div`
     border-radius: 7px;
   }
 `;
+
+export const Details = styled.button`
+  display: flex;
+  justify-items: center;
+  align-items: center;
+  background: ${(props) => (!props.selected ? " rgba(168, 154, 255, 0.10)" : "#6F5CE6")} !important;
+  transition: background-color 0.3s ease;
+  color: white;
+  border: 0px;
+  padding: 10px 15px;
+  border-radius: 10px;
+  margin-right: 20px;
+  height: 50px;
+  cursor: pointer;
+  font-weight: 600;
+  &:disabled {
+    background: rgba(239, 239, 239, 0.3);
+    color: rgba(16, 16, 16, 0.3);
+  }
+
+  &:hover {
+    background: ${(props) => props.theme.main};
+  }
+`;
+
+
+export const ButtonViolet = styled.button`
+  display: inline-block;
+  width: auto;
+  padding: 10px 24px;
+  border-radius: 16px;
+  border: 0px;
+  background: #6f5ce6;
+  font-family: 'DMSans';
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 150%;
+  text-align: center;
+  cursor: pointer;
+  color: #ffffff;
+  margin-top: 20px;
+  &:hover {
+    background: #582ea0;
+  }
+  `
+
+export const ButtonWhite = styled(ButtonViolet)`
+  background: white;
+  color: #582ea0;
+`

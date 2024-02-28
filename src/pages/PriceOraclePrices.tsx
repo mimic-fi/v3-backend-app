@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import styled from 'styled-components'
 import bg from '../assets/bg.png'
-import { ContainerTable, Section } from '../utils/styles';
+import { ContainerTable, Section, ButtonViolet } from '../utils/styles';
 import Network from '../utils/Network';
 import Token from '../components/Token';
 import { refresh } from '../utils/web3-utils';
@@ -93,7 +93,7 @@ const PricesSearch: React.FC = () => {
                 required
               />
             </div>
-            <button type="submit">Search</button>
+            <ButtonViolet type="submit">Search</ButtonViolet>
           </>
         )}
       </Form>

@@ -3,7 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import bg from '../assets/bg.png';
 import { refresh } from '../utils/web3-utils';
-import { Tab } from '../utils/styles';
+import { Tab, ButtonWhite, ButtonViolet } from '../utils/styles';
 import PriceOraclePrices from './PriceOraclePrices'
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
@@ -157,10 +157,10 @@ const PriceOracleSettings: React.FC<PriceOracleSettingsProps> = ({ onSuccess = (
         }
         </div>
         <div className="buttons">
-          <button type="submit">Guardar</button>
-          <button className="white" onClick={handleCancelEditClick}>
+          <ButtonViolet type="submit">Guardar</ButtonViolet>
+          <ButtonWhite onClick={handleCancelEditClick}>
             Cancelar
-          </button>
+          </ButtonWhite>
         </div>
         </>
       )}

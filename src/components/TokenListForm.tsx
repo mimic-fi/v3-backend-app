@@ -5,6 +5,7 @@ import bg from '../assets/bg.png';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 import { refresh } from '../utils/web3-utils';
+import { ButtonViolet } from '../utils/styles';
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
@@ -92,7 +93,7 @@ const TokenListForm: React.FC<TokenListFormProps> = ({  onSuccess = () => {} }) 
               required
             />
           </div>
-          <button type="submit">New</button>
+          <ButtonViolet type="submit">New</ButtonViolet>
         </>
       )}
     </Form>

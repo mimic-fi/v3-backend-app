@@ -4,7 +4,7 @@ import axios from 'axios'
 import styled from 'styled-components'
 import bg from '../assets/bg.png'
 import { refresh } from '../utils/web3-utils';
-import { Tab } from '../utils/styles';
+import { Tab, ButtonViolet, ButtonWhite } from '../utils/styles';
 
 function Tabs() {
   const [activeTab, setActiveTab] = useState('settings');
@@ -148,10 +148,10 @@ const ApiSettings: React.FC = () => {
               )}
             </div>
             <div className="buttons">
-              <button onClick={handleSaveClick}>Guardar</button>
-              <button className="white" onClick={handleCancelEditClick}>
+              <ButtonViolet onClick={handleSaveClick}>Guardar</ButtonViolet>
+              <ButtonWhite onClick={handleCancelEditClick}>
                 Cancelar
-              </button>
+              </ButtonWhite>
             </div>
           </Form>
         </>

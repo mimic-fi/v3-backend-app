@@ -3,6 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import bg from '../assets/bg.png';
 import { refresh } from '../utils/web3-utils';
+import { ButtonViolet, ButtonWhite } from '../utils/styles';
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
@@ -123,10 +124,10 @@ const RelayerExecutorForm: React.FC<RelayerExecutorFormProps> = ({ onSuccess = (
         }
         </div>
         <div className="buttons">
-          <button type="submit">Guardar</button>
-          <button className="white" onClick={handleCancelEditClick}>
+          <ButtonViolet type="submit">Guardar</ButtonViolet>
+          <ButtonWhite onClick={handleCancelEditClick}>
             Cancelar
-          </button>
+          </ButtonWhite>
         </div>
         </>
       )}

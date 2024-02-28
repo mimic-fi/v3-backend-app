@@ -3,6 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import bg from '../assets/bg.png';
 import { refresh } from '../utils/web3-utils';
+import { ButtonViolet } from '../utils/styles';
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
@@ -94,7 +95,7 @@ const DeniedChainsForm: React.FC<DeniedChainsFormProps> = ({ onSuccess = () => {
                 required
               />
             </div>
-            <button type="submit">New</button>
+            <ButtonViolet type="submit">New</ButtonViolet>
           </>
         )}
     </Form>

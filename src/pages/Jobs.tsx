@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { Tab } from '../utils/styles';
 
 export default function RelayerExecutorSettings() {
-  const [activeTab, setActiveTab] = useState('settings');
+  const [activeTab, setActiveTab] = useState('executor');
   const navigate = useNavigate();
   const { tab } = useParams();
 
