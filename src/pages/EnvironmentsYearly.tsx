@@ -192,8 +192,8 @@ const EnvironmentsYearly: React.FC<EnvironmentsProps> = ({ onSuccess = () => { }
                     }
                     {activeTab === 'gas' && (
                       <>
-                        Total Gas Charged:  <span className="accent">{Object.values(internalData).reduce((acc, cur) => acc + cur.gasCharged, 0).toFixed(2)}</span><br />
-                        Total Gas Used:  <span className="accent">{Object.values(internalData).reduce((acc, cur) => acc + cur.gasUsed, 0).toFixed(2)}</span>
+                        Total Charged: <span className="accent">$ {Object.values(internalData).reduce((acc, cur) => acc + cur.gasCharged, 0).toFixed(2)}</span><br />
+                        Total Used:  <span className="accent">$ {Object.values(internalData).reduce((acc, cur) => acc + cur.gasUsed, 0).toFixed(2)}</span>
                       </>
                     )}
                     {activeTab === 'accounting' && (
