@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { BrowserRouter as Router, Route, Routes, Navigate, HashRouter } from 'react-router-dom'
 import {
   useQuery,
