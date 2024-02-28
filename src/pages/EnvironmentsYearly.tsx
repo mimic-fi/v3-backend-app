@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { ContainerTable, Section, FlexButtons, LoadingTable } from '../utils/styles';
+import { ContainerTable, Section, FlexButtons, LoadingTable, Details } from '../utils/styles';
 import Address from '../utils/Address';
 import styled from 'styled-components'
 
@@ -114,7 +114,7 @@ const EnvironmentsYearly: React.FC<EnvironmentsProps> = ({ onSuccess = () => { }
           onClick={() => handleTabClick('gas')}>
           Gas
         </Details>
-        <Details 
+        <Details
           selected={activeTab === 'executions' }
           onClick={() => handleTabClick('executions')}>
           Executions
@@ -247,28 +247,5 @@ const Table = styled(ContainerTable)`
   }
 `
 
-export const Details = styled.button`
-  display: flex;
-  justify-items: center;
-  align-items: center;
-  background: ${(props) => (!props.selected ? " rgba(168, 154, 255, 0.10)" : "#6F5CE6")} !important;
-  transition: background-color 0.3s ease;
-  color: white;
-  border: 0px;
-  padding: 10px 15px;
-  border-radius: 10px;
-  margin-right: 20px;
-  height: 50px;
-  cursor: pointer;
-  font-weight: 600;
-  &:disabled {
-    background: rgba(239, 239, 239, 0.3);
-    color: rgba(16, 16, 16, 0.3);
-  }
-
-  &:hover {
-    background: ${(props) => props.theme.main};
-  }
-`;
 
 export default EnvironmentsYearly;

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import bg from '../assets/bg.png';
 import { toast } from 'react-toastify';
 import { refresh } from '../utils/web3-utils';
+import { ButtonViolet } from '../utils/styles';
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
@@ -145,7 +146,7 @@ const Web3Form: React.FC<Web3FormProps> = ({ onSuccess = () => {} }) => {
               />
             </div>
           </Group>
-          <button type="submit">New</button>
+          <ButtonViolet type="submit">New</ButtonViolet>
         </>
       )}
     </Form>

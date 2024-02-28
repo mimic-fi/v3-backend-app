@@ -47,7 +47,7 @@ const UserList: React.FC = () => {
 
     fetchUsers()
   }, [])
-  
+
   return (
     <Section>
       <SignUpForm/>

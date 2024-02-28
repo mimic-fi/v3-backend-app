@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import bg from '../assets/bg.png';
 import Switch from './Switch';
 import { refresh } from '../utils/web3-utils';
+import { ButtonViolet } from '../utils/styles';
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
@@ -181,7 +182,7 @@ const TokenListForm: React.FC<TokenListFormProps> = ({ onSuccess = () => {} }) =
             </div>
           </Group>
           <br/>
-          <Button type="submit">New</Button>
+          <ButtonViolet type="submit">New</ButtonViolet>
         </>
       )}
     </Form>

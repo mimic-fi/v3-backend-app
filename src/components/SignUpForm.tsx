@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import styled from 'styled-components'
 import bg from '../assets/bg.png'
+import { ButtonViolet } from '../utils/styles';
 
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL
@@ -72,7 +73,7 @@ const SignUpForm: React.FC = () => {
               title="Password must be min 8 chars, with at least a symbol, upper and lower case letters, and a number"
             />
           </div>
-          <button type="submit">New</button>
+          <ButtonViolet type="submit">New</ButtonViolet>
         </>
       )}
     </Form>

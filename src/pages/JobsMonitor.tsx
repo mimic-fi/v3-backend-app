@@ -3,6 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import bg from '../assets/bg.png';
 import { refresh } from '../utils/web3-utils';
+import { ButtonViolet } from '../utils/styles';
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
@@ -82,7 +83,7 @@ const Executor: React.FC<ExecutorProps> = ({  onSuccess = () => {} }) => {
               onChange={(e) => setMonitor(e.target.value)}
             />
           </div>
-          <button type="submit">Trigger</button>
+          <ButtonViolet type="submit">Trigger</ButtonViolet>
         </>
       )}
     </Form>

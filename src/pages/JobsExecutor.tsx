@@ -3,6 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import bg from '../assets/bg.png';
 import { refresh } from '../utils/web3-utils';
+import { ButtonViolet } from '../utils/styles';
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
@@ -13,7 +14,7 @@ interface ExecutorProps {
 const Executor: React.FC<ExecutorProps> = ({  onSuccess = () => {} }) => {
   const [chainId, setChainId] = useState('');
   const [smartVault, setSmartVault] = useState('');
-  const [tokens, setTokens] = useState('');
+  const [token, setTokens] = useState('');
   const [message, setMessage] = useState('');
 
   const handleFormSubmit = async (e: React.FormEvent) => {
@@ -26,7 +27,7 @@ const Executor: React.FC<ExecutorProps> = ({  onSuccess = () => {} }) => {
         {
           chainId,
           smartVault,
-          tokens
+          token
         },
         {
           headers: {
@@ -85,14 +86,14 @@ const Executor: React.FC<ExecutorProps> = ({  onSuccess = () => {} }) => {
             />
           </div>
           <div>
-            <label>Tokens</label>
+            <label>Token</label>
             <input
               type="text"
-              value={tokens}
+              value={token}
               onChange={(e) => setTokens(e.target.value)}
             />
           </div>
-          <button type="submit">Trigger</button>
+          <ButtonViolet type="submit">Trigger</ButtonViolet>
         </>
       )}
     </Form>
