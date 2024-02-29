@@ -146,7 +146,7 @@ const EnvironmentsYearly: React.FC<EnvironmentsProps> = ({ onSuccess = () => { }
               <>
                 <tr key={externalKey}>
                   <td className="accent">{Object.values(data[externalKey])[0].name}</td>
-                  <td rowSpan={Object.keys(internalData).length}>
+                  <td>
                     <Address
                       address={externalKey}
                       short={true}
@@ -155,25 +155,25 @@ const EnvironmentsYearly: React.FC<EnvironmentsProps> = ({ onSuccess = () => { }
                       chainId={1} />
                   </td>
                   {Object.entries(internalData).map(([internalKey, value], index) => (
-                    <React.Fragment key={`${externalKey}-${internalKey}`}>
+                    <React.Fragment key={externalKey + '-' + internalKey}>
                       <td className="months">
                         <div>
                           {activeTab === 'executions' &&
                             <>
-                              Simulations: {value.simulations}<br />
-                              Executions: {value.executions}
+                              Simulations: {value.simulations ? <span className="accent-2">{value.simulations}</span> : '0'}<br />
+                              Executions: {value.executions ? <span className="accent-2">{value.executions}</span> : '0'}
                             </>
                           }
                           {activeTab === 'gas' &&
                             <>
-                              Charged: $ {value.gasCharged.toFixed(2)}<br />
-                              Used: $ {value.gasUsed.toFixed(2)}
+                              Charged: {value.gasCharged ? <span className="accent-2">$ {value.gasCharged.toFixed(2)}</span> : '$ 0'}<br />
+                              Used: {value.gasUsed ? <span className="accent-2">$ {value.gasUsed.toFixed(2)}</span> : '$ 0'}
                             </>
                           }
                           {activeTab === 'accounting' &&
                             <>
-                              Volume: $ {value.volume.toFixed(2)}<br />
-                              Fees: $ {value.fees.toFixed(2)}
+                              Vol: {value.volume ? <span className="accent-2">$ {value.volume.toFixed(2)}</span> : '$ 0'}<br />
+                              Fees: {value.fees ? <span className="accent-2">$ {value.fees.toFixed(2)}</span> : '$ 0'}<br />
                             </>
                           }
                         </div>
@@ -186,7 +186,7 @@ const EnvironmentsYearly: React.FC<EnvironmentsProps> = ({ onSuccess = () => { }
                   <td className="months">
                     {activeTab === 'executions' &&
                       <>
-                        Total Simulations:  <span className="accent">{Object.values(internalData).reduce((acc, cur) => acc + cur.simulations, 0)}</span><br />
+                        Total Simulations: <span className="accent">{Object.values(internalData).reduce((acc, cur) => acc + cur.simulations, 0)}</span><br />
                         Total Executions:  <span className="accent">{Object.values(internalData).reduce((acc, cur) => acc + cur.executions, 0)}</span>
                       </>
                     }
@@ -223,6 +223,11 @@ const Table = styled(ContainerTable)`
   }
   .accent {
     color: #33C2B0;
+    font-wight: bold;
+    font-family: 'DMSansBold';
+  }
+  .accent-2 {
+    color: #ff975f;
     font-wight: bold;
     font-family: 'DMSansBold';
   }
