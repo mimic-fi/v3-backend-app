@@ -23,64 +23,48 @@ export function divideRoundBigInt(dividend, divisor) {
   ).toString()
 }
 
-// Llamada a toNumber() en formatTokenAmount() y formatNumber()
-
 export function formatTokenAmount(
   amount,
   decimals = 0,
   { digits = 2, symbol = '', displaySign = false }
 ) {
-  if (!amount) return 0
-  amount = JSBI.BigInt(String(amount))
-  decimals = JSBI.BigInt(String(decimals))
-  digits = JSBI.BigInt(String(digits))
+  if (!amount) return '0';
+  let amountDecimal = new Decimal(amount);
+  let decimalsDecimal = new Decimal(decimals);
+  digits = new Decimal(digits);
 
-  const _0 = JSBI.BigInt(0)
-  const _10 = JSBI.BigInt(10)
-
-  if (JSBI.lessThan(decimals, _0)) {
-    throw new Error('formatTokenAmount(): decimals cannot be negative')
+  if (decimalsDecimal.isNegative()) {
+    throw new Error('formatTokenAmount(): decimals cannot be negative');
   }
 
-  if (JSBI.lessThan(digits, _0)) {
-    throw new Error('formatTokenAmount(): digits cannot be negative')
+  if (digits.isNegative()) {
+    throw new Error('formatTokenAmount(): digits cannot be negative');
   }
 
-  if (JSBI.lessThan(decimals, digits)) {
-    digits = decimals
+  if (decimalsDecimal.lessThan(digits)) {
+    digits = decimalsDecimal;
   }
 
-  const negative = JSBI.lessThan(amount, _0)
+  const negative = amountDecimal.isNegative();
 
   if (negative) {
-    amount = JSBI.unaryMinus(amount)
+    amountDecimal = amountDecimal.neg();
   }
 
-  const amountConverted = JSBI.equal(decimals, _0)
-    ? amount
-    : JSBI.BigInt(
-        divideRoundBigInt(
-          amount,
-          JSBI.exponentiate(_10, JSBI.subtract(decimals, digits))
-        )
-      )
+  let divisor = Decimal.pow(10, decimalsDecimal.minus(digits));
+  let amountConverted = decimalsDecimal.equals(0) ? amountDecimal : amountDecimal.div(divisor).toFixed(digits.toNumber(), Decimal.ROUND_HALF_UP);
 
-  const leftPart = formatNumber(
-    JSBI.divide(amountConverted, JSBI.exponentiate(_10, digits))
-  )
+  let leftPart = amountConverted.split('.')[0];
 
-  const rightPart = String(
-    JSBI.remainder(amountConverted, JSBI.exponentiate(_10, digits))
-  )
-    .padStart(digits, '0')
-    .replace(/0+$/, '')
+  let rightPart = amountConverted.includes('.') ? amountConverted.split('.')[1] : '';
+  rightPart = rightPart.padEnd(digits, '0').substring(0, digits); // Ensure right part is correctly padded
 
   return [
-    displaySign ? (negative ? '-' : '+') : '',
+    displaySign && negative ? '-' : '',
     leftPart,
-    rightPart ? `.${rightPart}` : '',
-    symbol ? `${NO_BREAK_SPACE}${symbol}` : '',
-  ].join('')
+    rightPart.length > 0 ? `.${rightPart}` : '',
+    symbol ? ` ${symbol}` : '',
+  ].join('');
 }
 
 export function percent(num) {
