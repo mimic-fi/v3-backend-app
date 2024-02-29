@@ -13,6 +13,7 @@ import Jobs from '../pages/Jobs';
 import styled from 'styled-components';
 import bg from '../assets/background-dashboard.png';
 import Environments from '../pages/Environments';
+import EcoMode from '../pages/EcoMode';
 import Logs from '../pages/Logs';
 import Monitor from '../pages/Monitor';
 
@@ -74,6 +75,7 @@ export default function Dashboard({ onLogout, showError }: DashboardProps) {
             <Route path="/environments" element={<Environments />} />
             <Route path="/environments/:id/logs" element={<Logs />} />
             <Route path="/environments/:id/monitor" element={<Monitor />} />
+            <Route path="/eco-mode" element={<EcoMode />} />
             <Route path="/" element={<Status />} />
           </Routes>
         </div>
