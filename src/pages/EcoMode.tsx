@@ -120,6 +120,7 @@ const EcoModes: React.FC = () => {
                 <th>Active</th>
                 <th>Success Speed Smooth Factor</th>
                 <th>Safe Guard Period Pct</th>
+                <th>Max Executions Per Period</th>
                 <th>Last Update</th>
                 <th></th>
               </tr>
@@ -136,6 +137,7 @@ const EcoModes: React.FC = () => {
                     {item.averageSuccessSpeedSmoothFactor}
                   </td>
                   <td>{item.safeGuardPeriodPct}</td>
+                  <td>{item.maximumExecutionsPerPeriod}</td>
                   <td>
                     {moment(item.updatedAt).format('MMMM DD, YYYY [at] HH:mm:ss')}
                   </td>
