@@ -53,10 +53,11 @@ export function formatTokenAmount(
 
   let divisor = Decimal.pow(10, decimalsDecimal.minus(digits));
   let amountConverted = decimalsDecimal.equals(0) ? amountDecimal : amountDecimal.div(divisor).toFixed(digits.toNumber(), Decimal.ROUND_HALF_UP);
+  let amountConvertedStr = String(amountConverted);
 
-  let leftPart = amountConverted.split('.')[0];
+  let leftPart = amountConvertedStr?.split('.')[0];
 
-  let rightPart = amountConverted.includes('.') ? amountConverted.split('.')[1] : '';
+  let rightPart = amountConvertedStr.includes('.') ? amountConvertedStr?.split('.')[1] : '';
   rightPart = rightPart.padEnd(digits, '0').substring(0, digits); // Ensure right part is correctly padded
 
   return [
