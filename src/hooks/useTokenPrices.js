@@ -65,7 +65,6 @@ const fetchPrices = async (tokenList, filter, limit) => {
     const { data } = await axios.get(url, {
       params: { ...params }
     })
-    console.log('dataTokenPrices Data2', data)
     return data
   } catch (error) {
     if (error.response && error.response.status === 404) {

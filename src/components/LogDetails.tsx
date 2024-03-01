@@ -56,7 +56,7 @@ const Movement = ({ token, chain, added = false }) => {
       {tokenInfo.isLoading === false && (
         <>
           {added === true ? '+' : '-'}
-          {formatTokenAmount(token.amount, tokenInfo?.data?.decimals, {
+          {formatTokenAmount(token?.amount, tokenInfo?.data?.decimals, {
             digits: 4,
           })}{' '}
           {tokenInfo?.data?.symbol}
