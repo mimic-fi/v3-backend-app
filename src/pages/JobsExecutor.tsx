@@ -21,7 +21,7 @@ const Executor: React.FC<ExecutorProps> = ({  onSuccess = () => {} }) => {
     e.preventDefault();
 
     try {
-      const token = localStorage.getItem('token');
+      const tok = localStorage.getItem('token');
       const response = await axios.post(
         `${URL}/jobs/executor`,
         {
@@ -33,7 +33,7 @@ const Executor: React.FC<ExecutorProps> = ({  onSuccess = () => {} }) => {
           headers: {
             'Access-Control-Allow-Origin': '*',
             'Content-Type': 'application/json',
-            'x-auth-token': `${token}`,
+            'x-auth-token': `${tok}`,
           },
         }
       );
