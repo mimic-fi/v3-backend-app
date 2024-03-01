@@ -6,7 +6,8 @@ import { toast } from 'react-toastify';
 import { ContainerTable } from '../utils/styles';
 import Network from '../utils/Network';
 import moment from 'moment';
-import { refresh, formatTokenAmount } from '../utils/web3-utils';
+import { refresh } from '../utils/web3-utils';
+import { formatTokenAmount } from '../utils/math-utils';
 
 interface Status {
   transactions?: {
