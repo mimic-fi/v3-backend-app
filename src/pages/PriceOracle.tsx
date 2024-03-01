@@ -74,7 +74,7 @@ const PriceOracleSettings: React.FC<PriceOracleSettingsProps> = ({ onSuccess = (
         setEditedSettings(response.data)
 
       } catch (error: any) {
-        if (error.response.status === 401) {
+        if (error.response?.status === 401) {
           try {
             await refresh();
             await fetchApiSettings();

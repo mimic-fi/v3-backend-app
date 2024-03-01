@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import styled from 'styled-components'
 import bg from '../assets/bg.png'
+import refreshIcon from '../assets/refresh.png';
 import { ContainerTable, Section, ButtonViolet } from '../utils/styles';
 import Network from '../utils/Network';
 import Token from '../components/Token';
@@ -19,10 +20,15 @@ interface Data {
 const PricesSearch: React.FC = () => {
   const [address, setAddress] = useState('')
   const [chainId, setChainId] = useState('')
+  const [isLoading, setLoading] = useState(false)
   const [
     data,
     setData,
   ] = useState<Data[] | null>(null);
+  const [
+    refreshParams,
+    setRefreshParams,
+  ] = useState<Data | null>(null);
   const [message, setMessage] = useState('')
 
 
@@ -33,7 +39,8 @@ const PricesSearch: React.FC = () => {
       const token = localStorage.getItem('token')
       const response = await axios.get(
         `${URL}/price-oracle/prices/last`,
-        { params: {
+        {
+          params: {
             addresses: [address],
             chainId,
           },
@@ -47,7 +54,7 @@ const PricesSearch: React.FC = () => {
       setData(response.data)
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        if (error.response?.status === 401) {
+        if (error.response ?.status === 401) {
           try {
             await refresh();
             await handleFormSubmit(e);
@@ -63,6 +70,49 @@ const PricesSearch: React.FC = () => {
     }
   }
 
+  const handleRefreshClick = (item: Data) => {
+    setRefreshParams(item);
+    setLoading(true);
+    handleRefresh();
+  };
+
+  const handleRefresh = async () => {
+
+    try {
+      if(refreshParams) {
+        const token = localStorage.getItem('token')
+        const response = await axios.get(
+          `${URL}/price-oracle/prices/${refreshParams.chainId}/${refreshParams.address}`,
+          {
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Content-Type': 'application/json',
+              'x-auth-token': `${token}`,
+            },
+          }
+        )
+        setLoading(false)
+        setData([response.data])
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        if (error.response ?.status === 401) {
+          try {
+            await refresh();
+            handleRefresh();
+          } catch (refreshError) {
+            console.error(`Error: Unable to refresh token. Please log in again.`);
+          }
+        } else {
+          setMessage(`Error: ${error.response.data.message}`)
+        }
+      } else {
+        setMessage(`Error: An unexpected error occurred`)
+      }
+    }
+
+  };
+
   return (
     <Section>
       <Form bg={bg} onSubmit={handleFormSubmit}>
@@ -74,55 +124,66 @@ const PricesSearch: React.FC = () => {
             </span>
           </Message>
         ) : (
-          <>
-            <div>
-              <label>Address</label>
-              <input
-                type="text"
-                value={address}
-                onChange={e => setAddress(e.target.value)}
-                required
-              />
-            </div>
-            <div>
-              <label>ChainId</label>
-              <input
-                type="text"
-                value={chainId}
-                onChange={e => setChainId(e.target.value)}
-                required
-              />
-            </div>
-            <ButtonViolet type="submit">Search</ButtonViolet>
-          </>
-        )}
+            <>
+              <div>
+                <label>Address</label>
+                <input
+                  type="text"
+                  value={address}
+                  onChange={e => setAddress(e.target.value)}
+                  required
+                />
+              </div>
+              <div>
+                <label>ChainId</label>
+                <input
+                  type="text"
+                  value={chainId}
+                  onChange={e => setChainId(e.target.value)}
+                  required
+                />
+              </div>
+              <ButtonViolet type="submit">Search</ButtonViolet>
+            </>
+          )}
       </Form>
       {data && (
-          <ContainerTable>
-            <thead>
-              <tr>
-                <th>Symbol</th>
-                <th>Token Address</th>
-                <th>Chain</th>
-                <th>Price</th>
+        <ContainerTable>
+          <thead>
+            <tr>
+              <th>Symbol</th>
+              <th>Token Address</th>
+              <th>Chain</th>
+              <th>Price</th>
+              <th>Refresh</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((item, index) => (
+              <tr key={index}>
+                <td><Token tokens={[item ?.address]} chain={item.chainId} /></td>
+                <td>{item.address}</td>
+                <td>
+                  <Network network={item.chainId} width={1200} />
+                </td>
+                <td>
+                  {item.price}
+                </td>
+                <td>
+                  {isLoading ? '...' : <img
+                    onClick={() =>
+                      handleRefreshClick(item)
+                    }
+                    src={refreshIcon}
+                    alt="Refresh"
+                  />}
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {data.map((item, index) => (
-                <tr key={index}>
-                  <td><Token tokens={[item?.address]} chain={item.chainId} /></td>
-                  <td>{item.address}</td>
-                  <td>
-                    <Network network={item.chainId} width={1200} />
-                  </td>
-                  <td>
-                    {item.price}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </ContainerTable>
-      ) }
+            ))}
+          </tbody>
+        </ContainerTable>
+      )}
+      {!data && isLoading && <div>...Loading</div>}
     </Section>
   )
 }

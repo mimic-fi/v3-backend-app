@@ -5,6 +5,9 @@ export const ContainerTable = styled.table`
   border-radius: 24px;
   margin-top: 50px;
   min-width: 500px;
+  img {
+    cursor: pointer;
+  }
   tbody tr:hover {
     background: rgba(0, 0, 0, 0.24);
   }
