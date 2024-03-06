@@ -3,6 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import bg from '../assets/bg.png';
 import { refresh } from '../utils/web3-utils';
+import { ButtonViolet, ButtonWhite } from '../utils/styles';
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
@@ -29,7 +30,7 @@ const RelayerExecutorForm: React.FC<RelayerExecutorFormProps> = ({ onSuccess = (
     const fetchApiSettings = async () => {
       try {
         const token = localStorage.getItem('token')
-        const response = await axios.get(`${URL}/relayer-executor/settings`, {
+        const response = await axios.get(`${URL}/web3/settings`, {
           headers: {
             'Access-Control-Allow-Origin': '*',
             'Content-type': 'application/json',
@@ -63,7 +64,7 @@ const RelayerExecutorForm: React.FC<RelayerExecutorFormProps> = ({ onSuccess = (
     e.preventDefault()
     try {
       const token = localStorage.getItem('token')
-      await axios.put(`${URL}/relayer-executor/settings`, editedSettings, {
+      await axios.put(`${URL}/web3/settings`, editedSettings, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Content-type': 'application/json',
@@ -76,7 +77,7 @@ const RelayerExecutorForm: React.FC<RelayerExecutorFormProps> = ({ onSuccess = (
         setMessage(`There was an error`)
       });
     } catch (error) {
-      console.error('Error al guardar las configuraciones de la API:', error)
+      console.error('There was an error with the web3 form:', error)
     }
   }
 
@@ -123,10 +124,10 @@ const RelayerExecutorForm: React.FC<RelayerExecutorFormProps> = ({ onSuccess = (
         }
         </div>
         <div className="buttons">
-          <button type="submit">Guardar</button>
-          <button className="white" onClick={handleCancelEditClick}>
+          <ButtonViolet type="submit">Guardar</ButtonViolet>
+          <ButtonWhite className="white" onClick={handleCancelEditClick}>
             Cancelar
-          </button>
+          </ButtonWhite>
         </div>
         </>
       )}

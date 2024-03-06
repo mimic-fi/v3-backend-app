@@ -1,12 +1,45 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
-import { ContainerTable, LittleButton } from '../utils/styles';
+import { ContainerTable, LittleButton, Tab } from '../utils/styles';
 import moment from 'moment';
 import CustomConfirmationModal from '../components/CustomConfirmationModal';
 import Web3Form from '../components/Web3Form';
+import Web3Settings from '../components/Web3Settings';
 import deleteIcon from '../assets/delete.png';
 import { refresh } from '../utils/web3-utils';
+
+function Tabs() {
+  const [activeTab, setActiveTab] = useState('settings');
+
+
+  const handleTabClick = (tab: string) => {
+    setActiveTab(tab);
+  };
+
+  return (
+    <div>
+      <Tab>
+        <button
+          onClick={() => handleTabClick('settings')}
+          className={activeTab === 'settings' ? 'active' : ''}
+        >
+          Settings
+        </button>
+        <button
+          onClick={() => handleTabClick('rpcs')}
+          className={activeTab === 'rpcs' ? 'active' : ''}
+        >
+          RPCs
+        </button>
+      </Tab>
+      <div>
+        {activeTab === 'settings' && <Web3Settings />}
+        {activeTab === 'rpcs' && <Web3Rpcs /> }
+      </div>
+    </div>
+  );
+}
 
 interface Web3Data {
   name: string;
@@ -18,7 +51,7 @@ interface Web3Data {
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
-const Web3Settings: React.FC = () => {
+const Web3Rpcs: React.FC = () => {
   const [web3Data, setWeb3Data] = useState<Web3Data[] | null>(null);
   const [deleteParams, setDeleteParams] = useState<number | null>(null);
 
@@ -153,4 +186,4 @@ const Section = styled.div`
   max-width: 90%;
 `;
 
-export default Web3Settings;
+export default Tabs;

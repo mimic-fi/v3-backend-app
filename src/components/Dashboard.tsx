@@ -8,12 +8,14 @@ import RelayerExecutorSettings from '../pages/RelayerExecutorSettings';
 import TokenRegistry from '../pages/TokenRegistry';
 import TokenList from '../pages/TokenList';
 import TokenMonitors from '../pages/TokenMonitors';
-import Web3Settings from '../pages/Web3Settings';
+import Web3 from '../pages/Web3';
 import Jobs from '../pages/Jobs';
 import styled from 'styled-components';
 import bg from '../assets/background-dashboard.png';
 import Environments from '../pages/Environments';
 import EcoMode from '../pages/EcoMode';
+import LogsPage from '../pages/LogsPage';
+import LogsGroup from '../pages/LogsGroup';
 import Logs from '../pages/Logs';
 import Monitor from '../pages/Monitor';
 
@@ -67,7 +69,7 @@ export default function Dashboard({ onLogout, showError }: DashboardProps) {
             <Route path="/token-monitor" element={<TokenMonitors />} />
             <Route path="/token-registry" element={<TokenRegistry />} />
             <Route path="/token-list" element={<TokenList />} />
-            <Route path="/web3" element={<Web3Settings />} />
+            <Route path="/web3" element={<Web3 />} />
             <Route path="/jobs" element={<Jobs />} />
             <Route path="/jobs/:id" element={<Jobs />} />
             <Route path="/environments" element={<Environments />} />
@@ -76,6 +78,8 @@ export default function Dashboard({ onLogout, showError }: DashboardProps) {
             <Route path="/environments/:id/logs" element={<Logs />} />
             <Route path="/environments/:id/monitor" element={<Monitor />} />
             <Route path="/eco-mode" element={<EcoMode />} />
+            <Route path="/logs" element={<LogsPage />} />
+            <Route path="/logs/groups" element={<LogsGroup />} />
             <Route path="/" element={<Status />} />
           </Routes>
         </div>
