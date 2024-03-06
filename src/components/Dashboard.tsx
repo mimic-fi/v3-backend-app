@@ -16,6 +16,7 @@ import Environments from '../pages/Environments';
 import EcoMode from '../pages/EcoMode';
 import LogsPage from '../pages/LogsPage';
 import LogsGroup from '../pages/LogsGroup';
+import LogsItem from '../pages/LogsItem';
 import Logs from '../pages/Logs';
 import Monitor from '../pages/Monitor';
 
@@ -80,6 +81,7 @@ export default function Dashboard({ onLogout, showError }: DashboardProps) {
             <Route path="/eco-mode" element={<EcoMode />} />
             <Route path="/logs" element={<LogsPage />} />
             <Route path="/logs/groups" element={<LogsGroup />} />
+            <Route path="/logs/:id/groups" element={<LogsItem />} />
             <Route path="/" element={<Status />} />
           </Routes>
         </div>

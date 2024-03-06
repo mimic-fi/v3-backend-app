@@ -123,6 +123,7 @@ const EcoModes: React.FC = () => {
                 <th>Max Executions Per Period</th>
                 <th>Last Update</th>
                 <th></th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -142,13 +143,16 @@ const EcoModes: React.FC = () => {
                     {moment(item.updatedAt).format('MMMM DD, YYYY [at] HH:mm:ss')}
                   </td>
                   <td>
-                  <img
-                    onClick={() =>
-                      handleDeleteClick(item)
-                    }
-                    src={deleteIcon}
-                    alt="Delete"
-                  />
+                    <img
+                      onClick={() =>
+                        handleDeleteClick(item)
+                      }
+                      src={deleteIcon}
+                      alt="Delete"
+                    />
+                  </td>
+                  <td>
+                    view timelock
                   </td>
                 </tr>
               ))}

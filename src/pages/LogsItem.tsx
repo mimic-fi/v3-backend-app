@@ -7,18 +7,13 @@ import Network from "../utils/Network";
 import moment from 'moment';
 import { refresh } from '../utils/web3-utils';
 
-interface LogGroups {
-  creationTime: number;
-  arn: string;
-  firstEventTimestamp: number;
-  lastEventTimestamp: number;
-  lastIngestionTime: number;
-  logStreamName: string;
-  uploadSequenceToken: string;
-  storedBytes: number
+interface Logs {
+  ingestionTime: number;
+  timestamp: number;
+  message: string;
 }
 interface Data {
-  logStreams: LogGroups[];
+  events: Logs[];
 }
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
@@ -26,21 +21,23 @@ const URL = process.env.REACT_APP_SERVER_BASE_URL;
 const LogsStreams: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const name = window.location.href.split("/groups?name=")
+  const params = useParams();
+  const id = params.id
+  const name = window.location.href.split("/groups?name=")[1]
   const [
     ecoModesData,
     setLogsStreams,
-  ] = useState<LogGroups[] | null>(null);
+  ] = useState<Logs[] | null>(null);
 
   const fetchData = async () => {
     try {
       const token = localStorage.getItem('token');
 
       const response = await axios.get<Data>(
-        `${URL}/logs/streams`,
+        `${URL}/logs/streams/${id}`,
         {
           params: {
-            logGroupName: name[1]
+            logGroupName: name
           },
           headers: {
             'Access-Control-Allow-Origin': '*',
@@ -49,7 +46,7 @@ const LogsStreams: React.FC = () => {
           },
         }
       );
-      setLogsStreams(response.data?.logStreams);
+      setLogsStreams(response.data?.events);
     } catch (error: any) {
       if (error.response?.status === 401) {
         try {
@@ -67,12 +64,6 @@ const LogsStreams: React.FC = () => {
     fetchData();
   }, []);
 
-  const handleRowClick = (id: string) => {
-     navigate(`${location.pathname.split('logs/groups')[0]}logs/${id}/groups?name=${name[1]}`, {
-       replace: true,
-     });
-   };
-
   return (
     <EcoModeSection>
       {ecoModesData ? (
@@ -80,13 +71,17 @@ const LogsStreams: React.FC = () => {
           <ContainerTable>
             <thead>
               <tr>
-                <th>Name</th>
+                <th>Timestamp</th>
+                <th>Ingestion Time</th>
+                <th>Message</th>
               </tr>
             </thead>
             <tbody>
               {ecoModesData.map((item, index) => (
-                <tr key={index} onClick={() => handleRowClick(item.logStreamName)}>
-                  <td>{item.logStreamName}</td>
+                <tr key={index}>
+                  <td>{new Date(item.timestamp).toLocaleString()}</td>
+                  <td>{new Date(item.ingestionTime).toLocaleString()}</td>
+                  <td>{item.message}</td>
                 </tr>
               ))}
             </tbody>

@@ -42,7 +42,6 @@ const LogsStreams: React.FC = () => {
         }
       );
 
-      console.log('response', response.data)
       setLogsStreams(response.data?.logGroups);
     } catch (error: any) {
       if (error.response?.status === 401) {
@@ -87,7 +86,7 @@ const LogsStreams: React.FC = () => {
                 <tr key={index} onClick={() => handleRowClick(item.logGroupName)}>
                   <td>{item.logGroupName}</td>
                   <td>{item.arn}</td>
-                  <td>{item.creationTime}</td>
+                  <td>{new Date(item.creationTime).toLocaleString()}</td>
                   <td>{item.logGroupClass}</td>
                   <td>{item.metricFilterCount}</td>
                 </tr>
