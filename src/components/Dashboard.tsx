@@ -55,10 +55,6 @@ export default function Dashboard({ onLogout, showError }: DashboardProps) {
       <DashboardContainer background={bg}>
         <div className="dashboard-content">
           <Routes>
-            <Route path="/status" element={<Status />} />
-            <Route path="/status/:tab" element={<Status />} />
-            <Route path="/api" element={<ApiSettings />} />
-            <Route path="/price-oracle" element={<PriceOracle />} />
             <Route
               path="/relayer-executor"
               element={<RelayerExecutorSettings />}
@@ -67,6 +63,12 @@ export default function Dashboard({ onLogout, showError }: DashboardProps) {
               path="/relayer-executor/:tab"
               element={<RelayerExecutorSettings />}
             />
+            <Route path="/status" element={<Status />} />
+            <Route path="/status/logs/groups" element={<LogsGroup />} />
+            <Route path="/status/logs/:id/groups" element={<LogsItem />} />
+            <Route path="/status/:tab" element={<Status />} />
+            <Route path="/api" element={<ApiSettings />} />
+            <Route path="/price-oracle" element={<PriceOracle />} />
             <Route path="/token-monitor" element={<TokenMonitors />} />
             <Route path="/token-registry" element={<TokenRegistry />} />
             <Route path="/token-list" element={<TokenList />} />
@@ -79,9 +81,6 @@ export default function Dashboard({ onLogout, showError }: DashboardProps) {
             <Route path="/environments/:id/logs" element={<Logs />} />
             <Route path="/environments/:id/monitor" element={<Monitor />} />
             <Route path="/eco-mode" element={<EcoMode />} />
-            <Route path="/logs" element={<LogsPage />} />
-            <Route path="/logs/groups" element={<LogsGroup />} />
-            <Route path="/logs/:id/groups" element={<LogsItem />} />
             <Route path="/" element={<Status />} />
           </Routes>
         </div>
