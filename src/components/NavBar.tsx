@@ -41,6 +41,7 @@ export default function NavBar({ onLogout }: NavBarProps) {
           <NavItem to="/dashboard/jobs" label="Jobs" />
           <NavItem to="/dashboard/environments" label="Environments" />
           <NavItem to="/dashboard/eco-mode" label="Eco Mode" />
+          <NavItem to="/dashboard/logs" label="Logs" />
         </div>
         <NavbarLink>
           <ButtonColor onClick={handleLogout}>Logout</ButtonColor>

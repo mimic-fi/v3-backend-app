@@ -215,3 +215,65 @@ export const ButtonWhite = styled(ButtonViolet)`
   background: white;
   color: #582ea0;
 `
+
+export const BackButton = styled(ButtonWhite)`
+  padding: 3px 7px;
+  font-size: 33px;
+  align-self: flex-start;
+  &:hover {
+    background: #ccc;
+  }
+
+`
+
+export const TableDetails = styled.button`
+  background: rgba(168, 154, 255, 0.1);
+  transition: background-color 0.3s ease;
+  color: white;
+  border: 0px;
+  padding: 7px 15px;
+  border-radius: 10px;
+  min-height: 20px;
+  min-width: 45px;
+  cursor: pointer;
+  &:disabled {
+    background: rgba(239, 239, 239, 0.3);
+    color: rgba(16, 16, 16, 0.3);
+  }
+  .chevron::before {
+    border-style: solid;
+    border-width: 0.25em 0.25em 0 0;
+    content: "";
+    display: inline-block;
+    height: 5px;
+    left: 2.5px;
+    position: relative;
+    top: 2.5px;
+    transform: rotate(-45deg);
+    vertical-align: top;
+    width: 5px;
+  }
+  &.zeropadding {
+    padding: 0px !important;
+  }
+
+  .warning {
+    color: yellow;
+  }
+
+  .chevron.right:before {
+    left: 0;
+    transform: rotate(45deg);
+  }
+
+  .chevron.bottom:before {
+    top: 2.5px;
+    left: 0px;
+    transform: rotate(135deg);
+  }
+
+  .chevron.left:before {
+    left: 0.25em;
+    transform: rotate(-135deg);
+  }
+`;
