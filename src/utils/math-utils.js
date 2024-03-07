@@ -51,7 +51,7 @@ export function formatTokenAmount(
     amountDecimal = amountDecimal.neg();
   }
 
-  let divisor = Decimal.pow(10, decimalsDecimal.minus(digits));
+  let divisor = Decimal.pow(10, decimalsDecimal);
   let amountConverted = decimalsDecimal.equals(0) ? amountDecimal : amountDecimal.div(divisor).toFixed(digits.toNumber(), Decimal.ROUND_HALF_UP);
   let amountConvertedStr = String(amountConverted);
 
