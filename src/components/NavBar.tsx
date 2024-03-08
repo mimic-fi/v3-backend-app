@@ -32,6 +32,7 @@ export default function NavBar({ onLogout }: NavBarProps) {
         <img alt="logo" src={logo} />
         <div className="nav-bar">
           <NavItem to="/dashboard/status" label="Status" />
+          <NavItem to="/dashboard/environments" label="Environments" />
           <NavItem to="/dashboard/api" label="API" />
           <NavItem to="/dashboard/price-oracle" label="Price Oracle" />
           <NavItem to="/dashboard/relayer-executor/settings" label="Relayer Executor" />
@@ -39,9 +40,6 @@ export default function NavBar({ onLogout }: NavBarProps) {
           <NavItem to="/dashboard/token-registry" label="Token Registry" />
           <NavItem to="/dashboard/web3" label="Web3" />
           <NavItem to="/dashboard/jobs" label="Jobs" />
-          <NavItem to="/dashboard/environments" label="Environments" />
-          <NavItem to="/dashboard/eco-mode" label="Eco Mode" />
-          <NavItem to="/dashboard/logs" label="Logs" />
         </div>
         <NavbarLink>
           <ButtonColor onClick={handleLogout}>Logout</ButtonColor>

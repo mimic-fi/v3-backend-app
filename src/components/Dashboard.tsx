@@ -55,10 +55,6 @@ export default function Dashboard({ onLogout, showError }: DashboardProps) {
       <DashboardContainer background={bg}>
         <div className="dashboard-content">
           <Routes>
-            <Route path="/status" element={<Status />} />
-            <Route path="/status/:tab" element={<Status />} />
-            <Route path="/api" element={<ApiSettings />} />
-            <Route path="/price-oracle" element={<PriceOracle />} />
             <Route
               path="/relayer-executor"
               element={<RelayerExecutorSettings />}
@@ -67,6 +63,12 @@ export default function Dashboard({ onLogout, showError }: DashboardProps) {
               path="/relayer-executor/:tab"
               element={<RelayerExecutorSettings />}
             />
+            <Route path="/status" element={<Status />} />
+            <Route path="/status/logs/groups" element={<LogsGroup />} />
+            <Route path="/status/logs/:id/groups" element={<LogsItem />} />
+            <Route path="/status/:tab" element={<Status />} />
+            <Route path="/api" element={<ApiSettings />} />
+            <Route path="/price-oracle" element={<PriceOracle />} />
             <Route path="/token-monitor" element={<TokenMonitors />} />
             <Route path="/token-registry" element={<TokenRegistry />} />
             <Route path="/token-list" element={<TokenList />} />
@@ -135,29 +137,7 @@ const DashboardContainer = styled.div<DashProps>`
       font-size: 12px;
     }
   }
-  /* button {
-    display: inline-block;
-    width: auto;
-    padding: 10px 24px;
-    border-radius: 16px;
-    border: 0px;
-    background: #6f5ce6;
-    font-family: 'DMSans';
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 150%;
-    text-align: center;
-    cursor: pointer;
-    color: #ffffff;
-    margin-top: 20px;
-    &:hover {
-      background: #582ea0;
-    }
-  }
-  button.white {
-    background: white;
-    color: #582ea0;
-  } */
+  
   h2 {
     font-size: 30px;
     margin-top: 60px;

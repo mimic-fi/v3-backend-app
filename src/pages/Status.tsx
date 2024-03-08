@@ -5,6 +5,7 @@ import StatusCrons from './StatusCrons';
 import StatusTransactions from './StatusTransactions'
 import StatusWallets from './StatusWallets'
 import StatusSubgraphs from './StatusSubgraphs'
+import LogsPage from './LogsPage'
 import styled from 'styled-components';
 import { Tab } from '../utils/styles';
 
@@ -57,6 +58,12 @@ export default function Status() {
         >
           Subgraphs
         </button>
+        <button
+          onClick={() => handleTabClick('logs')}
+          className={activeTab === 'logs' ? 'active' : ''}
+        >
+          Logs
+        </button>
       </Tab>
       <div>
         {activeTab === 'relayer' && <StatusRelayer />}
@@ -64,6 +71,7 @@ export default function Status() {
         {activeTab === 'transactions' && <StatusTransactions />}
         {activeTab === 'wallets' && <StatusWallets />}
         {activeTab === 'subgraphs' && <StatusSubgraphs />}
+        {activeTab === 'logs' && <LogsPage />}
       </div>
     </div>
   );
