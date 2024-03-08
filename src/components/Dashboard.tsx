@@ -81,6 +81,9 @@ export default function Dashboard({ onLogout, showError }: DashboardProps) {
             <Route path="/environments/:id/logs" element={<Logs />} />
             <Route path="/environments/:id/monitor" element={<Monitor />} />
             <Route path="/eco-mode" element={<EcoMode />} />
+            <Route path="/logs" element={<LogsPage />} />
+            <Route path="/logs/groups" element={<LogsGroup />} />
+            <Route path="/logs/:id/groups" element={<LogsItem />} />
             <Route path="/" element={<Status />} />
           </Routes>
         </div>
@@ -134,29 +137,7 @@ const DashboardContainer = styled.div<DashProps>`
       font-size: 12px;
     }
   }
-  /* button {
-    display: inline-block;
-    width: auto;
-    padding: 10px 24px;
-    border-radius: 16px;
-    border: 0px;
-    background: #6f5ce6;
-    font-family: 'DMSans';
-    font-weight: 700;
-    font-size: 16px;
-    line-height: 150%;
-    text-align: center;
-    cursor: pointer;
-    color: #ffffff;
-    margin-top: 20px;
-    &:hover {
-      background: #582ea0;
-    }
-  }
-  button.white {
-    background: white;
-    color: #582ea0;
-  } */
+  
   h2 {
     font-size: 30px;
     margin-top: 60px;
