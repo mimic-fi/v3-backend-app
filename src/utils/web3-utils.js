@@ -170,7 +170,7 @@ export const refresh = async () => {
     );
     localStorage.setItem('token', response.data.accessToken);
   } catch (error) {
-    throw new Error('Unable to refresh token');
+    console.error('Unable to refresh token');
     logout()
   }
 };
@@ -183,9 +183,9 @@ export function logout() {
 
 export function filterByNamespace(objects, searchTerm) {
   const lowerCaseSearchTerm = searchTerm?.toLowerCase();
-  
+
   // Filter the array based on the presence of the search term in the namespace property
-  return objects?.filter(obj => 
+  return objects?.filter(obj =>
       obj?.namespace?.toLowerCase()?.includes(lowerCaseSearchTerm)
   );
 }
