@@ -11,18 +11,87 @@ interface EnvironmentsProps {
 
 interface ResponseData {
   name: string;
-  simulations?: number;
-  executions?: number;
-  volume?: number;
-  fees?: number;
-  gasUsed?: number;
-  gasCharged?: number;
+  simulations: number;
+  executions: number;
+  volume: number;
+  fees: number;
 }
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
 const EnvironmentsYearly: React.FC<EnvironmentsProps> = ({ onSuccess = () => { } }) => {
   const [activeTab, setActiveTab] = useState('accounting');
+  const [year, setYear] = useState<number>(new Date().getFullYear());
+  const [data, setData] = useState<{ [key: string]: any[] }>({});
+  const token = localStorage.getItem('token');
+
+  useEffect(() => {
+    fetchDataForCurrentYear();
+  }, [year]);
+
+  const fetchDataForCurrentYear = async () => {
+    try {
+      const promises = [];
+
+      for (let month = 0; month < 12; month++) {
+
+        const startDate = new Date(year, month, 1).toISOString().split('T')[0];
+        const endDate = new Date(year, month + 1, 0).toISOString().split('T')[0];
+
+        const promise = axios.get(`${URL}/relayer-executor/environments/report`, {
+          params: {
+            startDate,
+            endDate,
+          },
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json',
+            'x-auth-token': token,
+          },
+        });
+
+        promises.push(promise);
+      }
+
+      const responses = await Promise.all(promises);
+
+      const mergedData: { [key: string]: any[] } = {};
+      responses.forEach(response => {
+        Object.entries(response.data).forEach((entry: [string, ResponseData]) => {
+          const [key, value] = entry;
+
+          if (!mergedData[key]) {
+            mergedData[key] = [];
+          }
+
+          let resultValue: { simulations: number; executions: number; volume: number; fees: number, gasCharged: number; gasUsed: number } = {
+            simulations: 0,
+            executions: 0,
+            volume: 0,
+            fees: 0,
+            gasCharged: 0,
+            gasUsed: 0,
+            name: '',
+          };
+
+          for (const key1 in value) {
+            const item = value[key1];
+            resultValue.simulations += item.simulations;
+            resultValue.executions += item.executions;
+            resultValue.volume += item.volume;
+            resultValue.fees += item.fees;
+            resultValue.gasCharged += item.gasCharged;
+            resultValue.gasUsed += item.gasUsed;
+          }
+          resultValue.name = Object.values(value)[0].name
+          mergedData[key].push(resultValue);
+        });
+      });
+      setData(mergedData);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   const handleLastYearButtonClick = () => {
     setYear(prevYear => prevYear - 1);
@@ -51,119 +120,6 @@ const EnvironmentsYearly: React.FC<EnvironmentsProps> = ({ onSuccess = () => { }
           Executions
         </Details>
       </FlexButtons>
-      {activeTab === 'accounting' && <Gas  activeTab="simulations"/> }
-      {activeTab === 'gas' && <Gas activeTab="gas"/> }
-      {activeTab === 'executions' && <Gas activeTab="volume"/> }
-    </Section>
-  );
-};
-
-interface ComponentProps {
-  activeTab: string;
-}
-
-const Gas: React.FC<ComponentProps> = ({ activeTab }) => {
-  const [data, setData] = useState<{ [key: string]: any[] }>({});
-  const token = localStorage.getItem('token');
-  const year = new Date().getFullYear();
-
-  useEffect(() => {
-    fetchDataForCurrentYear();
-  }, [year]);
-
-  const fetchDataForCurrentYear = async () => {
-    try {
-      const promises = [];
-      for (let month = 0; month < 12; month++) {
-        const startDate = new Date(year, month, 1).toISOString().split('T')[0];
-        const endDate = new Date(year, month + 1, 0).toISOString().split('T')[0];
-        const promise = axios.get(`${URL}/relayer-executor/environments/report/${activeTab}`, {
-          params: {
-            startDate,
-            endDate,
-          },
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Content-Type': 'application/json',
-            'x-auth-token': token,
-          },
-        });
-
-        promises.push(promise);
-      }
-
-      const responses = await Promise.all(promises);
-      console.log('res', responses)
-      const mergedData: { [key: string]: any[] } = {};
-      responses.forEach(response => {
-        Object.entries(response.data).forEach((entry: [string, ResponseData]) => {
-          const [key, value] = entry;
-          if (!mergedData[key]) {
-            mergedData[key] = [];
-          }
-          let resultValue = {}
-          if (activeTab === 'gas') {
-            resultValue = {
-              gasCharged: 0,
-              gasUsed: 0,
-              name: '',
-            };
-
-            for (const key1 in value) {
-              const item = value[key1];
-              if (item.gasCharged) {
-                resultValue.gasCharged += item.gasCharged;
-              }
-              if (item.gasUsed) {
-                resultValue.gasUsed += item.gasUsed;
-              }
-            }
-          } else if (activeTab === 'simulations') {
-            resultValue = {
-              simulations: 0,
-              executions: 0,
-              name: '',
-            };
-
-            for (const key1 in value) {
-              const item = value[key1];
-              if (item.simulations) {
-                resultValue.simulations += item.simulations;
-              }
-              if (item.executions) {
-                resultValue.executions += item.executions;
-              }
-            }
-          } else {
-            resultValue = {
-              volume: 0,
-              fees: 0,
-              name: '',
-            };
-
-            for (const key1 in value) {
-              const item = value[key1];
-              if (item.volume) {
-                resultValue.volume += item.volume;
-              }
-              if (item.fees) {
-                resultValue.fees += item.fees;
-              }
-            }
-          }
-
-          resultValue.name = Object.values(value)[0].name
-          mergedData[key].push(resultValue);
-        });
-      });
-      setData(mergedData);
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-
-  return (
-    <>
       {Object.keys(data).length === 0 ? <LoadingTable>Loading...</LoadingTable> :
         <Table>
           <thead>
@@ -202,7 +158,7 @@ const Gas: React.FC<ComponentProps> = ({ activeTab }) => {
                     <React.Fragment key={externalKey + '-' + internalKey}>
                       <td className="months">
                         <div>
-                          {activeTab === 'simulations' &&
+                          {activeTab === 'executions' &&
                             <>
                               Simulations: {value.simulations ? <span className="accent-2">{value.simulations}</span> : '0'}<br />
                               Executions: {value.executions ? <span className="accent-2">{value.executions}</span> : '0'}
@@ -214,7 +170,7 @@ const Gas: React.FC<ComponentProps> = ({ activeTab }) => {
                               Used: {value.gasUsed ? <span className="accent-2">$ {value.gasUsed.toFixed(2)}</span> : '$ 0'}
                             </>
                           }
-                          {activeTab === 'volume' &&
+                          {activeTab === 'accounting' &&
                             <>
                               Vol: {value.volume ? <span className="accent-2">$ {value.volume.toFixed(2)}</span> : '$ 0'}<br />
                               Fees: {value.fees ? <span className="accent-2">$ {value.fees.toFixed(2)}</span> : '$ 0'}<br />
@@ -228,9 +184,7 @@ const Gas: React.FC<ComponentProps> = ({ activeTab }) => {
                     <td key={index}></td>
                   ))}
                   <td className="months">
-
-
-                    {activeTab === 'simulations' &&
+                    {activeTab === 'executions' &&
                       <>
                         Total Simulations: <span className="accent">{Object.values(internalData).reduce((acc, cur) => acc + cur.simulations, 0)}</span><br />
                         Total Executions:  <span className="accent">{Object.values(internalData).reduce((acc, cur) => acc + cur.executions, 0)}</span>
@@ -238,11 +192,11 @@ const Gas: React.FC<ComponentProps> = ({ activeTab }) => {
                     }
                     {activeTab === 'gas' && (
                       <>
-                      Total Charged: <span className="accent">$ {Object.values(internalData).reduce((acc, cur) => acc + cur.gasCharged, 0).toFixed(2)}</span><br />
-                      Total Used:  <span className="accent">$ {Object.values(internalData).reduce((acc, cur) => acc + cur.gasUsed, 0).toFixed(2)}</span>
+                        Total Charged: <span className="accent">$ {Object.values(internalData).reduce((acc, cur) => acc + cur.gasCharged, 0).toFixed(2)}</span><br />
+                        Total Used:  <span className="accent">$ {Object.values(internalData).reduce((acc, cur) => acc + cur.gasUsed, 0).toFixed(2)}</span>
                       </>
                     )}
-                    {activeTab === 'volume' && (
+                    {activeTab === 'accounting' && (
                       <>
                         Total Volume: <span className="accent">$ {Object.values(internalData).reduce((acc, cur) => acc + cur.volume, 0).toFixed(2)}</span><br />
                         Total Fees:  <span className="accent">$ {Object.values(internalData).reduce((acc, cur) => acc + cur.fees, 0).toFixed(2)}</span>
@@ -255,7 +209,7 @@ const Gas: React.FC<ComponentProps> = ({ activeTab }) => {
             ))}
           </tbody>
         </Table>}
-    </>
+    </Section>
   );
 };
 
