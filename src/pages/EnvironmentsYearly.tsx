@@ -93,7 +93,6 @@ const Gas: React.FC<ComponentProps> = ({ activeTab }) => {
       }
 
       const responses = await Promise.all(promises);
-      console.log('res', responses)
       const mergedData: { [key: string]: any[] } = {};
       responses.forEach(response => {
         Object.entries(response.data).forEach((entry: [string, ResponseData]) => {
