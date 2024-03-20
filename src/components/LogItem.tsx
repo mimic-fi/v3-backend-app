@@ -18,7 +18,6 @@ const LogsItem = ({
   handleSelectPlanId,
   lite = false,
 }) => {
-  console.log(item.status)
   const [isOpen, setOpen] = useState(false);
   const icon = TasksDictionary[item?.task?.executionType]?.icon;
   const showStatusColored = colored && item?.status?.type;
