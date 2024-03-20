@@ -18,6 +18,7 @@ const LogsItem = ({
   handleSelectPlanId,
   lite = false,
 }) => {
+  console.log(item.status)
   const [isOpen, setOpen] = useState(false);
   const icon = TasksDictionary[item?.task?.executionType]?.icon;
   const showStatusColored = colored && item?.status?.type;
@@ -82,8 +83,8 @@ const statusStyles = {
     color: "#DE0000",
   },
   reverted: {
-    backgroundColor: "#7d23552e",
-    backgroundLabel: "#7d23552e",
+    backgroundColor: "#9a1e8269",
+    backgroundLabel: "#9a1e82",
     colorLabel: "#fff",
     color: "#DE0000",
   },
@@ -117,6 +118,12 @@ const statusStyles = {
     colorLabel: "#fff",
     color: "#FFF",
   },
+  simulatedAbort: {
+    backgroundColor: "#d3851636",
+    backgroundLabel: "#d36a1663", 
+    colorLabel: "#fff",
+    color: "#FFF",
+  }
 };
 
 const Flex = styled.div`
