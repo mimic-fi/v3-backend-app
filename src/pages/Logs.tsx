@@ -239,6 +239,7 @@ const Logs: FC<LogsProps> = () => {
     { value: "executionDelayed", label: "executionDelayed" },
     { value: "failed", label: "failed" },
     { value: "notExecuted", label: "notExecuted" },
+    { value: "simulatedAbort", label: "simulatedAbort" }
   ];
 
   const showOptions = (list) => {
