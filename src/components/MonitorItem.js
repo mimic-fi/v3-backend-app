@@ -86,12 +86,15 @@ const MonitorItem = ({ item, width, colored, environment, selectedOpenAll, selec
 
 const ExpandableComponent = ({ isOpen, item, width, selectedOpenAll, environment }) => {
   const defaultStatus = [
-    'success',
-    'reverted',
-    'simulatedOk',
-    'simulatedFail',
+    'notSimulated',
+    'simulationFailed',
+    'simulationReverted',
+    'simulationSucceeded',
     'executionDelayed',
-    'failed'
+    'executionSucceeded',
+    'executionReverted',
+    'executionNotReached',
+    'transactionReverted',
   ]
   const { data, isLoading } = useLogs(environment, 1, 20, { chainId: item.chainId, token: item?.address, status: defaultStatus }, 0, isOpen)
   return (

@@ -185,35 +185,50 @@ const RenderTransactionInfo = ({ item }) => {
 
 
 const statusStyles = {
-  fail: {
-    backgroundColor: '#DE0000',
-    backgroundLabel: '#DE0000',
-    colorLabel: '#fff',
-  },
-  reverted: {
-    backgroundColor: '#7d23552e',
-    backgroundLabel: '#7d23552e',
-    colorLabel: '#fff',
-  },
-  success: {
-    backgroundColor: '#33c2b036',
-    backgroundLabel: '#33c2b0',
-    colorLabel: '#fff',
-  },
-  simulatedOk: {
-    backgroundColor: '#d2d31636',
-    backgroundLabel: '#d2d31663',
-    colorLabel: '#fff',
-  },
   notSimulated: {
-    backgroundColor: '#ef406f1f',
-    backgroundLabel: '#ef406fb5',
-    colorLabel: '#ffffffc7',
+    backgroundColor: "#ef406f1f",
+    backgroundLabel: "#ef406fb5",
+    colorLabel: "#ffffffc7",
   },
-  simulatedFail: {
-    backgroundColor: '#80008012',
-    backgroundLabel: '#80008063',
-    colorLabel: '#ffffffc7',
+  simulationFailed: {
+    backgroundColor: "#d3851636",
+    backgroundLabel: "#d36a1663",
+    colorLabel: "#ffffffc7",
+  },
+  simulationReverted: {
+    backgroundColor: "#80008012",
+    backgroundLabel: "#80008063",
+    colorLabel: "#ffffffc7",
+  },
+  simulationSucceeded: {
+    backgroundColor: "#d2d31636",
+    backgroundLabel: "#d2d31663",
+    colorLabel: "#fff",
+  },
+  executionDelayed: {
+    backgroundColor: "#d75d0c4f",
+    backgroundLabel: "#d3781662",
+    colorLabel: "#fff",
+  },
+  executionSucceeded: {
+    backgroundColor: "#33c2b036",
+    backgroundLabel: "#33c2b0",
+    colorLabel: "#fff",
+  },
+  executionReverted: {
+    backgroundColor: "#7d23552e",
+    backgroundLabel: "#7d23552e",
+    colorLabel: "#fff",
+  },
+  executionNotReached: {
+    backgroundColor: "rgba(197,127,66,0.34)",
+    backgroundLabel: "#7a4321",
+    colorLabel: "#fff",
+  },
+  transactionReverted: {
+    backgroundColor: "#DE0000",
+    backgroundLabel: "#DE0000",
+    colorLabel: "#fff",
   },
 }
 

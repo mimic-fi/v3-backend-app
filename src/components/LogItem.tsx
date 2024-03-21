@@ -75,40 +75,28 @@ const LogsItem = ({
 };
 
 const statusStyles = {
-  failed: {
-    backgroundColor: "#DE0000",
-    backgroundLabel: "#DE0000",
-    colorLabel: "#fff",
-    color: "#DE0000",
-  },
-  reverted: {
-    backgroundColor: "#9a1e8269",
-    backgroundLabel: "#9a1e82",
-    colorLabel: "#fff",
-    color: "#DE0000",
-  },
-  success: {
-    backgroundColor: "#33c2b036",
-    backgroundLabel: "#33c2b0",
-    colorLabel: "#fff",
-    color: "#33C2B0",
-  },
-  simulatedOk: {
-    backgroundColor: "#d2d31636",
-    backgroundLabel: "#d2d31663",
-    colorLabel: "#fff",
-    color: "#FFF",
-  },
   notSimulated: {
     backgroundColor: "#ef406f1f",
     backgroundLabel: "#ef406fb5",
     colorLabel: "#ffffffc7",
     color: "#FFF",
   },
-  simulatedFail: {
+  simulationFailed: {
+    backgroundColor: "#d3851636",
+    backgroundLabel: "#d36a1663",
+    colorLabel: "#ffffffc7",
+    color: "#FFF",
+  },
+  simulationReverted: {
     backgroundColor: "#80008012",
     backgroundLabel: "#80008063",
     colorLabel: "#ffffffc7",
+    color: "#FFF",
+  },
+  simulationSucceeded: {
+    backgroundColor: "#d2d31636",
+    backgroundLabel: "#d2d31663",
+    colorLabel: "#fff",
     color: "#FFF",
   },
   executionDelayed: {
@@ -117,12 +105,30 @@ const statusStyles = {
     colorLabel: "#fff",
     color: "#FFF",
   },
-  simulatedAbort: {
-    backgroundColor: "#d3851636",
-    backgroundLabel: "#d36a1663", 
+  executionSucceeded: {
+    backgroundColor: "#33c2b036",
+    backgroundLabel: "#33c2b0",
+    colorLabel: "#fff",
+    color: "#33C2B0",
+  },
+  executionReverted: {
+    backgroundColor: "#7d23552e",
+    backgroundLabel: "#7d23552e",
+    colorLabel: "#fff",
+    color: "#DE0000",
+  },
+  executionNotReached: {
+    backgroundColor: "rgba(197,127,66,0.34)",
+    backgroundLabel: "#7a4321",
     colorLabel: "#fff",
     color: "#FFF",
-  }
+  },
+  transactionReverted: {
+    backgroundColor: "#DE0000",
+    backgroundLabel: "#DE0000",
+    colorLabel: "#fff",
+    color: "#DE0000",
+  },
 };
 
 const Flex = styled.div`

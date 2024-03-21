@@ -46,12 +46,15 @@ interface PaginationControlsProps {
 }
 
 const defaultStatus = [
-  "success",
-  "reverted",
-  "simulatedOk",
-  "simulatedFail",
+  "notSimulated",
+  "simulationFailed",
+  "simulationReverted",
+  "simulationSucceeded",
   "executionDelayed",
-  "failed",
+  "executionSucceeded",
+  "executionReverted",
+  "executionNotReached",
+  "transactionReverted",
 ];
 
 const Logs: FC<LogsProps> = () => {
@@ -234,8 +237,8 @@ const Logs: FC<LogsProps> = () => {
     { value: "success", label: "success" },
     { value: "reverted", label: "reverted" },
     { value: "notSimulated", label: "notSimulated" },
-    { value: "simulatedOk", label: "simulatedOk" },
-    { value: "simulatedFail", label: "simulatedFail" },
+    { value: "simulationSucceeded", label: "simulationSucceeded" },
+    { value: "simulationReverted", label: "simulationReverted" },
     { value: "executionDelayed", label: "executionDelayed" },
     { value: "failed", label: "failed" },
     { value: "notExecuted", label: "notExecuted" },
