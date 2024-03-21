@@ -47,8 +47,9 @@ interface TokenRegistryData {
   address: string;
   chainId: number;
   decimals: number;
+  spamCounter: number;
   isNativeToken: boolean;
-  isERC20: boolean;
+  enabled: boolean;
   isWrappedNativeToken: boolean;
   name: string;
   symbol: string;
@@ -60,7 +61,7 @@ const TokenRegistry: React.FC = () => {
   const [symbolFilter, setSymbolFilter] = useState<string>('');
   const [addressFilter, setAddressFilter] = useState<string>('');
   const [isNativeFilter, setIsNativeFilter] = useState<boolean | null>(null);
-  const [isERC20Filter, setIsERC20Filter] = useState<boolean | null>(null);
+  const [enabledFilter, setEnabledFilter] = useState<boolean | null>(null);
   const [isWrappedNativeFilter, setIsWrappedNativeFilter] = useState<boolean | null>(null);
 
   const [tokenRegistryData, setTokenRegistry] = useState<TokenRegistryData[] | null>(null);
@@ -85,7 +86,7 @@ const TokenRegistry: React.FC = () => {
             ...(addressFilter !== '' && { addresses: [addressFilter] }),
             isNativeToken: isNativeFilter,
             isWrappedNativeToken: isWrappedNativeFilter,
-            isERC20: isERC20Filter,
+            enabled: enabledFilter,
           },
           headers: {
             'Access-Control-Allow-Origin': '*',
@@ -113,7 +114,7 @@ const TokenRegistry: React.FC = () => {
 
   useEffect(() => {
     fetchTokenRegistry(1);
-  }, [symbolFilter, addressFilter, isNativeFilter, isERC20Filter, isWrappedNativeFilter]);
+  }, [symbolFilter, addressFilter, isNativeFilter, enabledFilter, isWrappedNativeFilter]);
 
   const handleSymbolFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSymbolFilter(event.target.value);
@@ -128,9 +129,9 @@ const TokenRegistry: React.FC = () => {
     setIsNativeFilter(value === 'yes' ? true : value === 'no' ? false : null);
   };
 
-  const handleIsERC20FilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleEnabledFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
-    setIsERC20Filter(value === 'yes' ? true : value === 'no' ? false : null);
+    setEnabledFilter(value === 'yes' ? true : value === 'no' ? false : null);
   };
 
   const handleIsWrappedNativeFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -183,7 +184,7 @@ const TokenRegistry: React.FC = () => {
   const handleUpdateToken = async () => {
     const updatedItem = {
       ...erc20Params,
-      isERC20: !erc20Params.isERC20,
+      enabled: !erc20Params.enabled,
     };
 
     const token = localStorage.getItem('token');
@@ -258,8 +259,8 @@ const TokenRegistry: React.FC = () => {
           </select>
         </Filter>
         <Filter>
-          <label>ERC20</label>
-          <select value={isERC20Filter === null ? 'all' : isERC20Filter ? 'yes' : 'no'} onChange={handleIsERC20FilterChange}>
+          <label>Enabled</label>
+          <select value={enabledFilter === null ? 'all' : enabledFilter ? 'yes' : 'no'} onChange={handleEnabledFilterChange}>
             <option value="all">All</option>
             <option value="yes">Yes</option>
             <option value="no">No</option>
@@ -284,7 +285,8 @@ const TokenRegistry: React.FC = () => {
                 <th>Name</th>
                 <th>Network</th>
                 <th>Decimals</th>
-                <th>ERC20</th>
+                <th>Spam Counter</th>
+                <th>Enabled</th>
                 <th>Native</th>
                 <th>Wrapped</th>
                 <th></th>
@@ -298,7 +300,8 @@ const TokenRegistry: React.FC = () => {
                   <td>{item.name}</td>
                   <td>{item.chainId}</td>
                   <td>{item.decimals}</td>
-                  <td className="pointer" onClick={() => handleERC20(item)}>{item.isERC20 ? '✅' : '❌'}</td>
+                  <td>{item.spamCounter}</td>
+                  <td className="pointer" onClick={() => handleERC20(item)}>{item.enabled ? '✅' : '❌'}</td>
                   <td>{item.isNativeToken ? '✅' : '❌'}</td>
                   <td>{item.isWrappedNativeToken ? '✅' : '❌'}</td>
                   <td>

@@ -22,7 +22,7 @@ interface TokensInfo {
     chainId?: number;
     decimals?: number;
     isNativeToken?: boolean;
-    isERC20?: boolean;
+    enabled?: boolean;
     isWrappedNativeToken?: boolean;
     name?: string;
     symbol?: string;
