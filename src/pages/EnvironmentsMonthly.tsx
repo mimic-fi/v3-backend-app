@@ -16,8 +16,8 @@ interface ResponseData {
   executions?: number;
   volume?: number;
   fees?: number;
-  gasUsed?: number;
-  gasCharged?: number;
+  used?: number;
+  charged?: number;
 }
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
@@ -41,7 +41,7 @@ const EnvironmentsMonthly: React.FC<EnvironmentsProps> = ({ onSuccess = () => { 
       const startDate = firstDayOfMonth.toISOString().split('T')[0];
       const endDate = new Date(lastDayOfMonth.getTime() + (24 * 60 * 60 * 1000) - 1).toISOString().split('T')[0];
 
-      const promise = axios.get(`${URL}/relayer-executor/environments/report/${activeTab}`, {
+      const promise = axios.get(`${URL}/relayer-executor/environments/reports/${activeTab}`, {
         params: {
           startDate,
           endDate,
@@ -54,7 +54,6 @@ const EnvironmentsMonthly: React.FC<EnvironmentsProps> = ({ onSuccess = () => { 
       });
 
       const response = await promise;
-
 
       setData(response.data);
     } catch (error) {
@@ -73,8 +72,8 @@ const EnvironmentsMonthly: React.FC<EnvironmentsProps> = ({ onSuccess = () => { 
       <h2>{currentDate.toLocaleString('en-US', { month: 'long' })}</h2>
       <FlexButtons>
         <Details
-          selected={activeTab === 'simulations'}
-          onClick={() => handleTabClick('simulations')}>
+          selected={activeTab === 'accounting'}
+          onClick={() => handleTabClick('accounting')}>
           Accounting
           </Details>
         <Details
@@ -83,8 +82,8 @@ const EnvironmentsMonthly: React.FC<EnvironmentsProps> = ({ onSuccess = () => { 
           Gas
         </Details>
         <Details
-          selected={activeTab === 'volume' }
-          onClick={() => handleTabClick('volume')}>
+          selected={activeTab === 'simulations' }
+          onClick={() => handleTabClick('simulations')}>
           Executions
         </Details>
       </FlexButtons>
@@ -126,11 +125,11 @@ const EnvironmentsMonthly: React.FC<EnvironmentsProps> = ({ onSuccess = () => { 
                             }
                             {activeTab === 'gas' &&
                               <>
-                                Charged: {internalData[network] ?.gasCharged ? <span className="accent-2">$ {internalData[network]?.gasCharged?.toFixed(2)}</span> : '$ 0'}<br />
-                                Used: {internalData[network] ?.gasUsed ? <span className="accent-2">$ {internalData[network]?.gasUsed?.toFixed(2)}</span> : '$ 0'}<br />
+                                Charged: {internalData[network] ?.charged ? <span className="accent-2">$ {internalData[network]?.charged?.toFixed(2)}</span> : '$ 0'}<br />
+                                Used: {internalData[network] ?.used ? <span className="accent-2">$ {internalData[network]?.used?.toFixed(2)}</span> : '$ 0'}<br />
                               </>
                             }
-                            {activeTab === 'volume' &&
+                            {activeTab === 'accounting' &&
                               <>
                                 Volume: {internalData[network] ?.volume ? <span className="accent-2">$ {internalData[network]?.volume?.toFixed(2)}</span> : '$ 0'}<br />
                                 Fees: {internalData[network] ?.fees ? <span className="accent-2">$ {internalData[network]?.fees?.toFixed(2)}</span> : '$ 0'}
@@ -150,11 +149,11 @@ const EnvironmentsMonthly: React.FC<EnvironmentsProps> = ({ onSuccess = () => { 
                       }
                       {activeTab === 'gas' &&
                         <>
-                          Gas Charged:<span className="accent">{Object.values(internalData).reduce((acc, cur) => acc + cur.gasCharged, 0).toFixed(2)}</span><br />
-                          Gas Used: <span className="accent">{Object.values(internalData).reduce((acc, cur) => acc + cur.gasUsed, 0).toFixed(2)}</span><br />
+                          Gas Charged:<span className="accent">{Object.values(internalData).reduce((acc, cur) => acc + cur.charged, 0).toFixed(2)}</span><br />
+                          Gas Used: <span className="accent">{Object.values(internalData).reduce((acc, cur) => acc + cur.used, 0).toFixed(2)}</span><br />
                         </>
                       }
-                      {activeTab === 'volume' &&
+                      {activeTab === 'accounting' &&
                         <>
                           Volume: <span className="accent">$ {Object.values(internalData).reduce((acc, cur) => acc + cur.volume, 0).toFixed(2)}</span><br />
                           Fees: <span className="accent">$ {Object.values(internalData).reduce((acc, cur) => acc + cur.fees, 0).toFixed(2)}</span><br />

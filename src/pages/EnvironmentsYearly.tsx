@@ -15,8 +15,8 @@ interface ResponseData {
   executions?: number;
   volume?: number;
   fees?: number;
-  gasUsed?: number;
-  gasCharged?: number;
+  used?: number;
+  charged?: number;
 }
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
@@ -46,14 +46,14 @@ const EnvironmentsYearly: React.FC<EnvironmentsProps> = ({ onSuccess = () => { }
           Gas
         </Details>
         <Details
-          selected={activeTab === 'executions' }
-          onClick={() => handleTabClick('executions')}>
+          selected={activeTab === 'simulations' }
+          onClick={() => handleTabClick('simulations')}>
           Executions
         </Details>
       </FlexButtons>
-      {activeTab === 'accounting' && <Gas  activeTab="simulations"/> }
+      {activeTab === 'accounting' && <Gas  activeTab="accounting"/> }
       {activeTab === 'gas' && <Gas activeTab="gas"/> }
-      {activeTab === 'executions' && <Gas activeTab="volume"/> }
+      {activeTab === 'simulations' && <Gas activeTab="simulations"/> }
     </Section>
   );
 };
@@ -77,7 +77,7 @@ const Gas: React.FC<ComponentProps> = ({ activeTab }) => {
       for (let month = 0; month < 12; month++) {
         const startDate = new Date(year, month, 1).toISOString().split('T')[0];
         const endDate = new Date(year, month + 1, 0).toISOString().split('T')[0];
-        const promise = axios.get(`${URL}/relayer-executor/environments/report/${activeTab}`, {
+        const promise = axios.get(`${URL}/relayer-executor/environments/reports/${activeTab}`, {
           params: {
             startDate,
             endDate,
@@ -103,18 +103,18 @@ const Gas: React.FC<ComponentProps> = ({ activeTab }) => {
           let resultValue = {}
           if (activeTab === 'gas') {
             resultValue = {
-              gasCharged: 0,
-              gasUsed: 0,
+              charged: 0,
+              used: 0,
               name: '',
             };
 
             for (const key1 in value) {
               const item = value[key1];
-              if (item.gasCharged) {
-                resultValue.gasCharged += item.gasCharged;
+              if (item.charged) {
+                resultValue.charged += item.charged;
               }
-              if (item.gasUsed) {
-                resultValue.gasUsed += item.gasUsed;
+              if (item.used) {
+                resultValue.used += item.used;
               }
             }
           } else if (activeTab === 'simulations') {
@@ -209,11 +209,11 @@ const Gas: React.FC<ComponentProps> = ({ activeTab }) => {
                           }
                           {activeTab === 'gas' &&
                             <>
-                              Charged: {value.gasCharged ? <span className="accent-2">$ {value.gasCharged.toFixed(2)}</span> : '$ 0'}<br />
-                              Used: {value.gasUsed ? <span className="accent-2">$ {value.gasUsed.toFixed(2)}</span> : '$ 0'}
+                              Charged: {value.charged ? <span className="accent-2">$ {value.charged.toFixed(2)}</span> : '$ 0'}<br />
+                              Used: {value.used ? <span className="accent-2">$ {value.used.toFixed(2)}</span> : '$ 0'}
                             </>
                           }
-                          {activeTab === 'volume' &&
+                          {activeTab === 'accounting' &&
                             <>
                               Vol: {value.volume ? <span className="accent-2">$ {value.volume.toFixed(2)}</span> : '$ 0'}<br />
                               Fees: {value.fees ? <span className="accent-2">$ {value.fees.toFixed(2)}</span> : '$ 0'}<br />
@@ -237,11 +237,11 @@ const Gas: React.FC<ComponentProps> = ({ activeTab }) => {
                     }
                     {activeTab === 'gas' && (
                       <>
-                      Total Charged: <span className="accent">$ {Object.values(internalData).reduce((acc, cur) => acc + cur.gasCharged, 0).toFixed(2)}</span><br />
-                      Total Used:  <span className="accent">$ {Object.values(internalData).reduce((acc, cur) => acc + cur.gasUsed, 0).toFixed(2)}</span>
+                      Total Charged: <span className="accent">$ {Object.values(internalData).reduce((acc, cur) => acc + cur.charged, 0).toFixed(2)}</span><br />
+                      Total Used:  <span className="accent">$ {Object.values(internalData).reduce((acc, cur) => acc + cur.used, 0).toFixed(2)}</span>
                       </>
                     )}
-                    {activeTab === 'volume' && (
+                    {activeTab === 'accounting' && (
                       <>
                         Total Volume: <span className="accent">$ {Object.values(internalData).reduce((acc, cur) => acc + cur.volume, 0).toFixed(2)}</span><br />
                         Total Fees:  <span className="accent">$ {Object.values(internalData).reduce((acc, cur) => acc + cur.fees, 0).toFixed(2)}</span>
