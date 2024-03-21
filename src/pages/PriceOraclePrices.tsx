@@ -54,7 +54,7 @@ const PricesSearch: React.FC = () => {
       setData(response.data)
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        if (error.response ?.status === 401) {
+        if (error.response?.status === 401) {
           try {
             await refresh();
             await handleFormSubmit(e);
@@ -96,7 +96,7 @@ const PricesSearch: React.FC = () => {
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        if (error.response ?.status === 401) {
+        if (error.response?.status === 401) {
           try {
             await refresh();
             handleRefresh();
@@ -161,7 +161,7 @@ const PricesSearch: React.FC = () => {
           <tbody>
             {data.map((item, index) => (
               <tr key={index}>
-                <td><Token tokens={[item ?.address]} chain={item.chainId} /></td>
+                <td><Token tokens={[item?.address]} chain={item.chainId} /></td>
                 <td>{item.address}</td>
                 <td>
                   <Network network={item.chainId} width={1200} />

@@ -63,7 +63,7 @@ const EcoModes: React.FC = () => {
 
       setEcoModes(response.data);
     } catch (error: any) {
-      if (error.response ?.status === 401) {
+      if (error.response?.status === 401) {
         try {
           await refresh();
           await fetchEcoModes();
@@ -101,7 +101,7 @@ const EcoModes: React.FC = () => {
         toast.success('Eco mode successfully deleted');
 
       } catch (error: any) {
-        if (error.response ?.status === 401) {
+        if (error.response?.status === 401) {
           try {
             await refresh();
             await handleConfirmDelete();
@@ -213,7 +213,7 @@ const Timelocks: React.FC<{ item: EcoMode; }> = ({ item }) => {
       );
       setTimelocks(response.data);
     } catch (error: any) {
-      if (error.response ?.status === 401) {
+      if (error.response?.status === 401) {
         try {
           await refresh();
           await fetchTimelocks();

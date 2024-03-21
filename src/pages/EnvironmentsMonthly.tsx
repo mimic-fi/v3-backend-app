@@ -119,20 +119,20 @@ const EnvironmentsMonthly: React.FC<EnvironmentsProps> = ({ onSuccess = () => { 
                           <div>
                             {activeTab === 'simulations' &&
                               <>
-                                Simulations: {internalData[network] ?.simulations ? <span className="accent-2">{internalData[network]?.simulations}</span> : '0'}<br />
-                                Executions: {internalData[network] ?.executions ? <span className="accent-2">{internalData[network]?.executions}</span> : '0'}
+                                Simulations: {internalData[network]?.simulations ? <span className="accent-2">{internalData[network]?.simulations}</span> : '0'}<br />
+                                Executions: {internalData[network]?.executions ? <span className="accent-2">{internalData[network]?.executions}</span> : '0'}
                               </>
                             }
                             {activeTab === 'gas' &&
                               <>
-                                Charged: {internalData[network] ?.charged ? <span className="accent-2">$ {internalData[network]?.charged?.toFixed(2)}</span> : '$ 0'}<br />
-                                Used: {internalData[network] ?.used ? <span className="accent-2">$ {internalData[network]?.used?.toFixed(2)}</span> : '$ 0'}<br />
+                                Charged: {internalData[network]?.charged ? <span className="accent-2">$ {internalData[network]?.charged?.toFixed(2)}</span> : '$ 0'}<br />
+                                Used: {internalData[network]?.used ? <span className="accent-2">$ {internalData[network]?.used?.toFixed(2)}</span> : '$ 0'}<br />
                               </>
                             }
                             {activeTab === 'accounting' &&
                               <>
-                                Volume: {internalData[network] ?.volume ? <span className="accent-2">$ {internalData[network]?.volume?.toFixed(2)}</span> : '$ 0'}<br />
-                                Fees: {internalData[network] ?.fees ? <span className="accent-2">$ {internalData[network]?.fees?.toFixed(2)}</span> : '$ 0'}
+                                Volume: {internalData[network]?.volume ? <span className="accent-2">$ {internalData[network]?.volume?.toFixed(2)}</span> : '$ 0'}<br />
+                                Fees: {internalData[network]?.fees ? <span className="accent-2">$ {internalData[network]?.fees?.toFixed(2)}</span> : '$ 0'}
                               </>
                             }
                           </div>
