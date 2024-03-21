@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { BrowserRouter as Router, Route, Routes, Navigate, HashRouter } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, Navigate, HashRouter } from 'react-router-dom'
 import {
   useQuery,
   useMutation,
@@ -28,7 +28,7 @@ export default function App() {
   const queryClient = new QueryClient()
 
   return (
-    <HashRouter>
+    <BrowserRouter>
       <QueryClientProvider client={queryClient} >
         {error && <ErrorAlert message={error} onClose={closeError} />}
         <Routes>
@@ -37,6 +37,6 @@ export default function App() {
           <Route path="/dashboard/*" element={isLoggedIn ? <Dashboard onLogout={() => setIsLoggedIn(false)} showError={showError} /> : <Navigate to="/login" />} />
         </Routes>
       </QueryClientProvider>
-    </HashRouter>
+    </BrowserRouter>
   )
 }
