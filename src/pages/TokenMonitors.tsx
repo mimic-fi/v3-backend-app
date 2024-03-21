@@ -4,9 +4,10 @@ import styled from 'styled-components';
 import Network from '../utils/Network';
 import Address from '../utils/Address';
 import Token from '../components/Token';
+import JobsMonitor from './JobsMonitor';
 import TokenMonitorForm from '../components/TokenMonitorForm';
 import CustomConfirmationModal from '../components/CustomConfirmationModal';
-import { ContainerTable, Filter, Filters } from '../utils/styles';
+import { ContainerTable, Filter, Filters, Tab } from '../utils/styles';
 import deleteIcon from '../assets/delete.png';
 import { toast } from 'react-toastify';
 import { refresh } from '../utils/web3-utils';
@@ -19,6 +20,39 @@ interface TokenMonitorSetting {
 }
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
+
+
+function Tabs() {
+  const [activeTab, setActiveTab] = useState('monitors');
+
+
+  const handleTabClick = (tab: string) => {
+    setActiveTab(tab);
+  };
+
+  return (
+    <div>
+      <Tab>
+        <button
+          onClick={() => handleTabClick('monitors')}
+          className={activeTab === 'monitors' ? 'active' : ''}
+        >
+          Monitors
+        </button>
+        <button
+          onClick={() => handleTabClick('job')}
+          className={activeTab === 'job' ? 'active' : ''}
+        >
+          Job
+        </button>
+      </Tab>
+      <div>
+        {activeTab === 'monitors' && <TokenMonitors />}
+        {activeTab === 'job' && <JobsMonitor /> }
+      </div>
+    </div>
+  );
+}
 
 const TokenMonitors: React.FC = () => {
   const [
@@ -208,6 +242,7 @@ const TokenMonitors: React.FC = () => {
     </TokenMonitorSection>
   );
 };
+
 const TokenContainer = styled.div`
   display: flex;
   max-width: 400px;
@@ -226,4 +261,4 @@ const TokenMonitorSection = styled.div`
   }
 `;
 
-export default TokenMonitors;
+export default Tabs;

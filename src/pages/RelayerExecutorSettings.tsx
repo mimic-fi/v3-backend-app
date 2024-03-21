@@ -6,6 +6,7 @@ import RelayerExecutorChains from './RelayerExecutorChains';
 import RelayerExecutorTasks from './RelayerExecutorTasks';
 import NetworkThresholds from './NetworkThresholds';
 import SubgraphsNetworks from './SubgraphsNetworks';
+import JobsExecutor from './JobsExecutor';
 import EcoMode from './EcoMode';
 import TransactionDelays from './TransactionDelays';
 import styled from 'styled-components';
@@ -78,6 +79,12 @@ export default function RelayerExecutorSettings() {
         >
           Transaction Delays
         </button>
+        <button
+          onClick={() => handleTabClick('job')}
+          className={activeTab === 'job' ? 'active' : ''}
+        >
+          Job
+        </button>
       </Tab>
       <div>
         {activeTab === 'settings' && <RelayerExecutorForm />}
@@ -88,6 +95,7 @@ export default function RelayerExecutorSettings() {
         {activeTab === 'subgraphs' && <SubgraphsNetworks />}
         {activeTab === 'ecoMode' && <EcoMode />}
         {activeTab === 'transactions' && <TransactionDelays />}
+        {activeTab === 'job' && <JobsExecutor />}
       </div>
     </div>
   );
