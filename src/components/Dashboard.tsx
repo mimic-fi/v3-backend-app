@@ -9,7 +9,6 @@ import TokenRegistry from '../pages/TokenRegistry';
 import TokenList from '../pages/TokenList';
 import TokenMonitors from '../pages/TokenMonitors';
 import Web3 from '../pages/Web3';
-import Jobs from '../pages/Jobs';
 import styled from 'styled-components';
 import bg from '../assets/background-dashboard.png';
 import Environments from '../pages/Environments';
@@ -73,8 +72,6 @@ export default function Dashboard({ onLogout, showError }: DashboardProps) {
             <Route path="/token-registry" element={<TokenRegistry />} />
             <Route path="/token-list" element={<TokenList />} />
             <Route path="/web3" element={<Web3 />} />
-            <Route path="/jobs" element={<Jobs />} />
-            <Route path="/jobs/:id" element={<Jobs />} />
             <Route path="/environments" element={<Environments />} />
             <Route path="/environments/:id" element={<Environments />} />
             <Route path="/environments" element={<Environments />} />
@@ -137,7 +134,7 @@ const DashboardContainer = styled.div<DashProps>`
       font-size: 12px;
     }
   }
-  
+
   h2 {
     font-size: 30px;
     margin-top: 60px;
