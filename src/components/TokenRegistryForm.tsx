@@ -18,7 +18,8 @@ interface TokenFormData {
   name: string;
   decimals: number;
   chainId: number;
-  isERC20: boolean;
+  spamCounter: number;
+  enabled: boolean;
   isNativeToken: boolean;
   isWrappedNativeToken: boolean;
   [key: string]: string | number | boolean | string[];
@@ -31,7 +32,8 @@ const TokenListForm: React.FC<TokenListFormProps> = ({ onSuccess = () => {} }) =
     name: '',
     decimals: 0,
     chainId: 0,
-    isERC20: true,
+    spamCounter: 0,
+    enabled: true,
     isNativeToken: false,
     isWrappedNativeToken: false,
   });
@@ -157,6 +159,15 @@ const TokenListForm: React.FC<TokenListFormProps> = ({ onSuccess = () => {} }) =
                 required
               />
             </div>
+            <div>
+              <label>Spam Counter</label>
+              <input
+                type="number"
+                value={formData.spamCounter}
+                onChange={(e) => setFormData({ ...formData, spamCounter: parseInt(e.target.value, 10) })}
+                required
+              />
+            </div>
           </Group>
           <Group>
             <div>
@@ -174,10 +185,10 @@ const TokenListForm: React.FC<TokenListFormProps> = ({ onSuccess = () => {} }) =
               />
             </div>
             <div>
-              <label>Is ERC20</label>
+              <label>Enabled</label>
               <Switch
-                ison={formData.isERC20}
-                onToggle={() => handleSwitchToggle('isERC20')}
+                ison={formData.enabled}
+                onToggle={() => handleSwitchToggle('enabled')}
               />
             </div>
           </Group>
