@@ -28,6 +28,8 @@ interface EcoMode {
   safeGuardPeriodPct: number;
   averageSuccessSpeedSmoothFactor: number;
   maximumExecutionsPerPeriod: number;
+  gasPriceMedianThreshold: number;
+  isolatedTasksAvoidanceList: [string];
   _id: string;
   updatedAt: string;
   smartVault: {
@@ -60,7 +62,6 @@ const EcoModes: React.FC = () => {
           },
         }
       );
-
       setEcoModes(response.data);
     } catch (error: any) {
       if (error.response?.status === 401) {
@@ -137,6 +138,8 @@ const EcoModes: React.FC = () => {
                     <th>Success Speed Smooth Factor</th>
                     <th>Safe Guard Period Pct</th>
                     <th>Max Executions Per Period</th>
+                    <th>Gas Price Median Threshold</th>
+                    <th>Isolated Tasks Avoidance List</th>
                     <th>Last Update</th>
                     <th>Timelocks</th>
                     <th></th>
@@ -156,6 +159,15 @@ const EcoModes: React.FC = () => {
                       </td>
                       <td>{item.safeGuardPeriodPct}</td>
                       <td>{item.maximumExecutionsPerPeriod}</td>
+                      <td>{item.gasPriceMedianThreshold}</td>
+                      <td>{item.isolatedTasksAvoidanceList &&
+                        item.isolatedTasksAvoidanceList.map((task, index) => (
+                          <React.Fragment key={index}>
+                            {task}
+                            {index !== item.isolatedTasksAvoidanceList.length - 1 && <br />}
+                          </React.Fragment>
+                        ))}
+                      </td>
                       <td>
                         {moment(item.updatedAt).format('MMMM DD, YYYY [at] HH:mm:ss')}
                       </td>

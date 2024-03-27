@@ -41,7 +41,7 @@ const RelayerExecutorForm: React.FC<RelayerExecutorFormProps> = ({ onSuccess = (
         setEditedSettings(response.data)
 
       } catch (error: any) {
-        if (error.response.status === 401) {
+        if (error?.response?.status === 401) {
           try {
             await refresh();
             await fetchApiSettings();

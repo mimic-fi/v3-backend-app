@@ -5,6 +5,7 @@ import TokenList from './TokenList';
 import TokenRegistryForm from '../components/TokenRegistryForm';
 import CustomConfirmationModal from '../components/CustomConfirmationModal';
 import deleteIcon from '../assets/delete.png';
+import Network from "../utils/Network";
 import { toast } from 'react-toastify';
 import { ContainerTable, LittleButton, Filter, Filters } from '../utils/styles';
 import { refresh } from '../utils/web3-utils';
@@ -48,6 +49,7 @@ interface TokenRegistryData {
   chainId: number;
   decimals: number;
   spamCounter: number;
+  priority: number;
   isNativeToken: boolean;
   enabled: boolean;
   isWrappedNativeToken: boolean;
@@ -95,7 +97,7 @@ const TokenRegistry: React.FC = () => {
           },
         }
       );
-
+      console.log(response.data.data)
       setTokenRegistry(response?.data?.data);
       setTotalPages(response?.data?.pages);
       setTotalItems(response?.data?.total);
@@ -286,6 +288,7 @@ const TokenRegistry: React.FC = () => {
                 <th>Network</th>
                 <th>Decimals</th>
                 <th>Spam Counter</th>
+                <th>Priority</th>
                 <th>Enabled</th>
                 <th>Native</th>
                 <th>Wrapped</th>
@@ -298,9 +301,10 @@ const TokenRegistry: React.FC = () => {
                   <td>{item.address}</td>
                   <td>{item.symbol}</td>
                   <td>{item.name}</td>
-                  <td>{item.chainId}</td>
+                  <td><Network network={item.chainId} width={1200} /></td>
                   <td>{item.decimals}</td>
                   <td>{item.spamCounter}</td>
+                  <td>{item.priority}</td>
                   <td className="pointer" onClick={() => handleERC20(item)}>{item.enabled ? '✅' : '❌'}</td>
                   <td>{item.isNativeToken ? '✅' : '❌'}</td>
                   <td>{item.isWrappedNativeToken ? '✅' : '❌'}</td>
