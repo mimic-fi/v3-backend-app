@@ -60,7 +60,7 @@ const NoncesTable: React.FC<{ name: string; nonceData: NoncesData; balances: Bal
             <th>Balances</th>
             <th>Balance USD</th>
             <th>Average Tx Cost</th>
-            <th>Remaining Tx</th>
+            <th>Remaining Txs</th>
           </tr>
         </thead>
         <tbody>
