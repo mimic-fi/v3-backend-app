@@ -59,6 +59,8 @@ const NoncesTable: React.FC<{ name: string; nonceData: NoncesData; balances: Bal
             <th>Local</th>
             <th>Balances</th>
             <th>Balance USD</th>
+            <th>Average Tx Cost</th>
+            <th>Remaining Tx</th>
           </tr>
         </thead>
         <tbody>
@@ -74,14 +76,15 @@ const NoncesTable: React.FC<{ name: string; nonceData: NoncesData; balances: Bal
               <td>{value.onChain}</td>
               <td className={value.local > value.onChain ? "red" : ""}>{value.local}</td>
               <td>{(balances && key in balances) ? formatTokenAmount(balances[key], 18, {digits: 2}) : ''}</td>
-              <td>
+
                 <PriceUsd
                   address="0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
                   chainId={key}
                   balance={(balances && key in balances) ? parseFloat(formatTokenAmount(balances[key], 18, { digits: 7 }) || '') : 0}
                   cost={cost}
                 />
-              </td>
+
+
             </tr>
 
 
@@ -242,9 +245,10 @@ const PriceUsd: React.FC<PriceProps> = ({
     }
   }
   let highlighted = false
+  let balanceUSD = 0
   if(data && (Object.values(data).find(item => item.chainId === cost.chainId)?.price)) {
-    let balanceUSD = data ? ((Object.values(data).find(item => item.chainId === cost.chainId)?.price) * balance).toFixed(2) : null;
-    if(cost && cost.averageCost && (parseFloat((cost.averageCost*20)).toFixed(2) > parseFloat(balanceUSD))) {
+    balanceUSD = data ? ((Object.values(data).find(item => item.chainId === cost.chainId)?.price) * balance) : 0;
+    if(cost && cost.averageCost && (parseFloat((cost.averageCost*20)).toFixed(2) > parseFloat(balanceUSD.toFixed(2)))) {
       highlighted = true
     }
   }
@@ -255,6 +259,7 @@ const PriceUsd: React.FC<PriceProps> = ({
 
   return (
     <>
+    <td>
       {data && (
           <>
             {data.map((item, index) => (
@@ -262,6 +267,12 @@ const PriceUsd: React.FC<PriceProps> = ({
             ))}
           </>
       )}
+    </td>
+    <td>$ {cost?.averageCost?.toFixed(2)}</td>
+    <td>{cost?.averageCost ?
+      <span className={balanceUSD/cost?.averageCost < 20 ? 'highlighted' : '' }>
+      {(balanceUSD/cost?.averageCost).toFixed(2)}</span> : '-'}
+    </td>
     </>
   )
 }
