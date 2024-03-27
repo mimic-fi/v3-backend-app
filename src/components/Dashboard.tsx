@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation, Navigate } from 'react-router-dom';
 import NavBar from './NavBar';
 import ApiSettings from '../pages/ApiSettings';
 import Status from '../pages/Status';
@@ -19,38 +19,11 @@ import LogsItem from '../pages/LogsItem';
 import Logs from '../pages/Logs';
 import Monitor from '../pages/Monitor';
 
-interface DashboardProps {
-  onLogout: () => void;
-  showError: (message: string) => void;
-}
-
-export default function Dashboard({ onLogout, showError }: DashboardProps) {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [storedPath, setStoredPath] = useState<string | null>(localStorage.getItem('currentPath') || null);
-
-  useEffect(() => {
-    const path = localStorage.getItem('currentPath');
-    if (storedPath) {
-      setStoredPath(path);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (location.pathname !== storedPath) {
-      setStoredPath(location.pathname);
-      localStorage.setItem('currentPath', location.pathname);
-    }
-  }, [location.pathname, storedPath]);
-
-  const handleLogout = () => {
-    localStorage.removeItem('currentPath');
-    onLogout();
-  };
+export default function Dashboard() {
 
   return (
     <DashboardSection>
-      <NavBar onLogout={handleLogout} />
+      <NavBar />
       <DashboardContainer background={bg}>
         <div className="dashboard-content">
           <Routes>
@@ -81,7 +54,7 @@ export default function Dashboard({ onLogout, showError }: DashboardProps) {
             <Route path="/logs" element={<LogsPage />} />
             <Route path="/logs/groups" element={<LogsGroup />} />
             <Route path="/logs/:id/groups" element={<LogsItem />} />
-            <Route path="/" element={<Status />} />
+            <Route path="/" element={<Navigate to="/dashboard/status" replace />} />
           </Routes>
         </div>
       </DashboardContainer>

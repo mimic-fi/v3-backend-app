@@ -66,7 +66,7 @@ const NoncesTable: React.FC<{ name: string; nonceData: NoncesData; balances: Bal
         <tbody>
           {Object.entries<any>(nonceData).map(([key, value], index) => {
             let cost = ''
-            if (costs && typeof costs === 'object') { // Verificar si 'costs' no es nulo ni indefinido y es un objeto
+            if (costs && typeof costs === 'object') { 
               const keyNumber = parseInt(key);
               cost = Object.values(costs).find(item => item.chainId === keyNumber);
             }

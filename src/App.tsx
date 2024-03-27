@@ -34,7 +34,7 @@ export default function App() {
         <Routes>
           <Route path='/' element={<Navigate to='/login' replace />} />
           <Route path="/login" element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login onLogin={() => setIsLoggedIn(true)} showError={showError} />} />
-          <Route path="/dashboard/*" element={isLoggedIn ? <Dashboard onLogout={() => setIsLoggedIn(false)} showError={showError} /> : <Navigate to="/login" />} />
+          <Route path="/dashboard/*" element={isLoggedIn ? <Dashboard /> : <Navigate to="/login" />} />
         </Routes>
       </QueryClientProvider>
     </HashRouter>
