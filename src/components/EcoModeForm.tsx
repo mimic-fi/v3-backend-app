@@ -20,7 +20,9 @@ const EcoModeForm: React.FC<EcoModeFormProps> = ({ onSuccess = () => { } }) => {
   const [guardPeriod, setGuardPeriod] = useState('');
   const [smoothFactor, seSmoothFactor] = useState('');
   const [executions, setExecutions] = useState('');
+  const [shouldAvoidIsolatedTask, setShouldAvoidIsolatedTask] = useState('');
   const [isActive, setIsActive] = useState(false);
+  const [gasPriceMedianThreshold, setGasPriceMedianThreshold] = useState('');
   const [message, setMessage] = useState('');
 
   const handleFormSubmit = async (e: React.FormEvent) => {
@@ -37,6 +39,8 @@ const EcoModeForm: React.FC<EcoModeFormProps> = ({ onSuccess = () => { } }) => {
           safeGuardPeriodPct: parseFloat(guardPeriod),
           averageSuccessSpeedSmoothFactor: parseFloat(smoothFactor),
           maximumExecutionsPerPeriod: parseFloat(executions),
+          isolatedTasksAvoidanceList: shouldAvoidIsolatedTask.split(",") || [],
+          gasPriceMedianThreshold: parseFloat(gasPriceMedianThreshold),
         },
         {
           headers: {
@@ -47,11 +51,7 @@ const EcoModeForm: React.FC<EcoModeFormProps> = ({ onSuccess = () => { } }) => {
         }
       );
 
-      setMessage(`The token has been successfully created`);
-
-      onSuccess();
-
-      toast.success('Token creado con éxito');
+      setMessage(`The eco-mode has been successfully created`);
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         if (error.response.status === 401) {
@@ -107,6 +107,9 @@ const EcoModeForm: React.FC<EcoModeFormProps> = ({ onSuccess = () => { } }) => {
                   type="number"
                   value={guardPeriod}
                   onChange={(e) => setGuardPeriod(e.target.value)}
+                  min="0"
+                  max="1"
+                  step="0.01"
                   required
                 />
               </div>
@@ -116,6 +119,9 @@ const EcoModeForm: React.FC<EcoModeFormProps> = ({ onSuccess = () => { } }) => {
                   type="number"
                   value={smoothFactor}
                   onChange={(e) => seSmoothFactor(e.target.value)}
+                  min="0"
+                  max="1"
+                  step="0.01"
                   required
                 />
               </div>
@@ -128,6 +134,29 @@ const EcoModeForm: React.FC<EcoModeFormProps> = ({ onSuccess = () => { } }) => {
                   value={executions}
                   onChange={(e) => setExecutions(e.target.value)}
                   required
+                />
+              </div>
+              <div>
+                <label>Gas Price Median Threshold</label>
+                <input
+                  type="number"
+                  value={gasPriceMedianThreshold}
+                  onChange={(e) => setGasPriceMedianThreshold(e.target.value)}
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  required
+                />
+              </div>
+            </Group>
+            <Group>
+              <div>
+                <label>Should Avoid Isolated Task (comma-separated)</label>
+                <input
+                  type="text"
+                  name="shouldAvoidIsolatedTask"
+                  value={shouldAvoidIsolatedTask}
+                  onChange={(e) => setShouldAvoidIsolatedTask(e.target.value)}
                 />
               </div>
               <div>

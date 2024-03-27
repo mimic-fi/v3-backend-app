@@ -19,6 +19,7 @@ interface TokenFormData {
   decimals: number;
   chainId: number;
   spamCounter: number;
+  priority: number;
   enabled: boolean;
   isNativeToken: boolean;
   isWrappedNativeToken: boolean;
@@ -32,6 +33,7 @@ const TokenListForm: React.FC<TokenListFormProps> = ({ onSuccess = () => {} }) =
     name: '',
     decimals: 0,
     chainId: 0,
+    priority: 0,
     spamCounter: 0,
     enabled: true,
     isNativeToken: false,
@@ -171,12 +173,23 @@ const TokenListForm: React.FC<TokenListFormProps> = ({ onSuccess = () => {} }) =
           </Group>
           <Group>
             <div>
+              <label>Priority</label>
+              <input
+                type="number"
+                value={formData.priority}
+                onChange={(e) => setFormData({ ...formData, priority: parseInt(e.target.value, 10) })}
+                required
+              />
+            </div>
+            <div>
               <label>Is Native Token</label>
               <Switch
                 ison={formData.isNativeToken}
                 onToggle={() => handleSwitchToggle('isNativeToken')}
               />
             </div>
+          </Group>
+          <Group>
             <div>
               <label>Is Wrapped Native Token</label>
               <Switch

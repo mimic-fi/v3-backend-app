@@ -42,13 +42,14 @@ interface ApiSetting {
   _id: string
   rateLimitRequests: number
   rateLimitWindowMs: number
-  corsAllowedOrigins: string[]
+  corsAllowedOrigins: string
 }
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL
 
 const ApiSettings: React.FC = () => {
   const [apiSettings, setApiSettings] = useState<ApiSetting | null>(null)
+  const [message, setMessage] = useState('');
   const [editedSettings, setEditedSettings] = useState<Partial<
     ApiSetting
   > | null>(null)
@@ -86,29 +87,32 @@ const ApiSettings: React.FC = () => {
     setEditedSettings(apiSettings)
   }
 
-  const handleSaveClick = async () => {
+  const handleSaveClick = async (e: React.FormEvent) => {
+    e.preventDefault()
     try {
       const token = localStorage.getItem('token')
-      await axios.put(`${URL}/api/settings`, editedSettings, {
+      const apiData = {
+        ...editedSettings,
+        corsAllowedOrigins: editedSettings?.corsAllowedOrigins?.split(',')
+      };
+      await axios.put(`${URL}/api/settings`, apiData, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Content-type': 'application/json',
           'x-auth-token': `${token}`,
         },
       }).then(response => {
-        localStorage.setItem('put', response.toString())
+        setMessage(`The API form was succesfully updated`);
       })
       .catch(error => {
-        alert('error del put: ' + error)
         localStorage.setItem('put', error.toString())
       });
-
 
     } catch (error: any) {
       if (error.response?.status === 401) {
         try {
           await refresh();
-          await handleSaveClick();
+          await handleSaveClick(e);
         } catch (refreshError) {
           console.error(`Error: Unable to refresh token. Please log in again.`);
         }
@@ -130,29 +134,40 @@ const ApiSettings: React.FC = () => {
     <ApiSection>
       {apiSettings ? (
         <>
-          <Form bg={bg}>
-            <div className="container">
-              {Object.entries(editedSettings as ApiSetting).map(
-                ([key, value]) => (
-                  <div key={key}>
-                    <label>{key}</label>
-                    <input
-                      type="text"
-                      name={key}
-                      value={String(value)}
-                      onChange={handleInputChange}
-                      disabled={key === '_id'}
-                    />
-                  </div>
-                )
-              )}
-            </div>
-            <div className="buttons">
-              <ButtonViolet onClick={handleSaveClick}>Guardar</ButtonViolet>
-              <ButtonWhite onClick={handleCancelEditClick}>
-                Cancelar
-              </ButtonWhite>
-            </div>
+          <Form bg={bg} onSubmit={handleSaveClick}>
+            {message !== '' ? (
+              <Message>
+                <span>{message}</span>
+                <span className="close" onClick={() => setMessage('')}>
+                  X
+                </span>
+              </Message>
+            ) : (
+              <>
+                <div className="container">
+                  {Object.entries(editedSettings as ApiSetting).map(
+                    ([key, value]) => (
+                      <div key={key}>
+                        <label>{key}</label>
+                        <input
+                          type="text"
+                          name={key}
+                          value={String(value)}
+                          onChange={handleInputChange}
+                          disabled={key === '_id' || key === 'updatedAt'}
+                        />
+                      </div>
+                    )
+                  )}
+                </div>
+                <div className="buttons">
+                  <ButtonViolet type="submit">Guardar</ButtonViolet>
+                  <ButtonWhite onClick={handleCancelEditClick}>
+                    Cancelar
+                  </ButtonWhite>
+                </div>
+              </>
+          )}
           </Form>
         </>
       ) : (
@@ -200,6 +215,17 @@ const ApiSection = styled.div`
   flex-direction: column;
   align-items: flex-start;
   width: 874px;
+`
+
+const Message = styled.div`
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+  width: 100%;
+  .close {
+    cursor: pointer;
+    font-weight: bold;
+  }
 `
 
 export default Tabs

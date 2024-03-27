@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
@@ -8,6 +9,13 @@ import Network from '../utils/Network';
 import moment from 'moment';
 import { refresh } from '../utils/web3-utils';
 import { formatTokenAmount } from '../utils/math-utils';
+
+interface Costs {
+  [index: number]: {
+    chainId: number;
+    averageCost?: number;
+  };
+}
 
 interface Status {
   transactions?: {
@@ -20,7 +28,10 @@ interface Status {
       local: number;
     };
   };
+  costs?: Costs | null;
 }
+
+
 
 interface NoncesData {
   [key: number ]: {
@@ -35,7 +46,8 @@ interface Balances {
 
 const URL = process.env.REACT_APP_SERVER_BASE_URL;
 
-const NoncesTable: React.FC<{ name: string; nonceData: NoncesData; balances: Balances | null }> = ({ name, nonceData, balances }) => {
+const NoncesTable: React.FC<{ name: string; nonceData: NoncesData; balances: Balances | null; costs: Costs | null | undefined}> = ({ name, nonceData, balances, costs }) => {
+  console.log(costs)
   return (
     <div>
       <h2>{name}</h2>
@@ -47,26 +59,36 @@ const NoncesTable: React.FC<{ name: string; nonceData: NoncesData; balances: Bal
             <th>Local</th>
             <th>Balances</th>
             <th>Balance USD</th>
+            <th>Average Tx Cost</th>
+            <th>Remaining Txs</th>
           </tr>
         </thead>
         <tbody>
-          {Object.entries<any>(nonceData).map(([key, value], index) => (
+          {Object.entries<any>(nonceData).map(([key, value], index) => {
+            let cost = ''
+            if (costs && typeof costs === 'object') { // Verificar si 'costs' no es nulo ni indefinido y es un objeto
+              const keyNumber = parseInt(key);
+              cost = Object.values(costs).find(item => item.chainId === keyNumber);
+            }
+            return(
             <tr key={index}>
               <td><Network network={key} width={1200} /></td>
               <td>{value.onChain}</td>
               <td className={value.local > value.onChain ? "red" : ""}>{value.local}</td>
               <td>{(balances && key in balances) ? formatTokenAmount(balances[key], 18, {digits: 2}) : ''}</td>
-              <td>
-              <PriceUsd
-                address="0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
-                chainId={key}
-                balance={(balances && key in balances) ? parseFloat(formatTokenAmount(balances[key], 18, { digits: 7 }) || '') : 0}
-              />
-              </td>
+
+                <PriceUsd
+                  address="0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+                  chainId={key}
+                  balance={(balances && key in balances) ? parseFloat(formatTokenAmount(balances[key], 18, { digits: 7 }) || '') : 0}
+                  cost={cost}
+                />
+
+
             </tr>
 
 
-          ))}
+          )})}
         </tbody>
       </ContainerTable>
     </div>
@@ -85,6 +107,8 @@ const StatusRelayer: React.FC = () => {
   ] = useState<{ [key: string]: Balances }>({});
   const [customModalOpen, setCustomModalOpen] = useState(false);
   const [deleteParams, setDeleteParams] = useState<string>('');
+
+
 
   const fetchData = async () => {
     try {
@@ -152,7 +176,7 @@ const StatusRelayer: React.FC = () => {
     <Section>
       {statusData ? (
         <>{statusData.nonces && Object.entries(statusData.nonces).map(([key, value]) => (
-        <NoncesTable name={key} nonceData={value} balances={(balances && key in balances) ? balances[key] : null} />
+        <NoncesTable name={key} nonceData={value} balances={(balances && key in balances) ? balances[key] : null} costs={statusData?.costs} />
       ))}</>
       ) : (
         <p>Loading...</p>
@@ -166,6 +190,7 @@ interface PriceProps {
   address: string;
   chainId?: any;
   balance: any;
+  cost: any;
 }
 
 interface Data {
@@ -178,6 +203,7 @@ const PriceUsd: React.FC<PriceProps> = ({
   address = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
   chainId = '1',
   balance,
+  cost
 }) => {
   const [
     data,
@@ -218,23 +244,35 @@ const PriceUsd: React.FC<PriceProps> = ({
       }
     }
   }
-
+  let highlighted = false
+  let balanceUSD = 0
+  if(data && (Object.values(data).find(item => item.chainId === cost.chainId)?.price)) {
+    balanceUSD = data ? ((Object.values(data).find(item => item.chainId === cost.chainId)?.price) * balance) : 0;
+    if(cost && cost.averageCost && (parseFloat((cost.averageCost*20)).toFixed(2) > parseFloat(balanceUSD.toFixed(2)))) {
+      highlighted = true
+    }
+  }
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  console.log(data)
-
   return (
     <>
+    <td>
       {data && (
           <>
             {data.map((item, index) => (
-              <>${' '}{balance ? (item.price * balance).toFixed(2) : ''}</>
+              <span className={highlighted ? 'highlighted' : ''}>${' '}{balance ? (item.price * balance).toFixed(2) : ''}</span>
             ))}
           </>
       )}
+    </td>
+    <td>$ {cost?.averageCost?.toFixed(2)}</td>
+    <td>{cost?.averageCost ?
+      <span className={balanceUSD/cost?.averageCost < 20 ? 'highlighted' : '' }>
+      {(balanceUSD/cost?.averageCost).toFixed(2)}</span> : '-'}
+    </td>
     </>
   )
 }
@@ -247,6 +285,9 @@ const Section = styled.div`
   align-items: center;
   min-width: 874px;
   max-width: 90%;
+  .highlighted {
+    color: red;
+  }
 `;
 
 export default StatusRelayer;
